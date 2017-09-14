@@ -2,17 +2,15 @@
 
 ado.net访问数据库例子：
  
-string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+	string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
 
-IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
-  var adort = dbProvider.Query(new DbExecuteParameter()
- {
-  CommandText = "select * from [user]"
- });
+	IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
+  	var adort = dbProvider.Query(new DbExecuteParameter()
+ 	{
+  	   CommandText = "select * from [user]"
+ 	});
 
-
-//批量入库
-
+	//批量入库
  	    DataTable dt = new DataTable();
             dt.Columns.Add("uname");
             dt.Columns.Add("age");
@@ -26,7 +24,6 @@ IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderTy
             {
                 DstDataTable = dt
             });
-
 
 
 //entity framework 使用例子：
