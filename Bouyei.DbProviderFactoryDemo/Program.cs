@@ -34,16 +34,26 @@ namespace DbProviderDemo
 
             ////ado.net 使用例子
             string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-            AdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
             var adort = dbProvider.Query(new DbExecuteParameter()
             {
                 CommandText = "select * from [user]"
             });
 
-
             DataTable dt = new DataTable();
-            var qrt= dbProvider.QueryToTable(new DbExecuteParameter("select * from [user]"), dt);
+            dt.Columns.Add("uname");
+            dt.Columns.Add("age");
 
+            dt.Rows.Add(new object[] { "bouyei", 27 });
+            dt.Rows.Add(new object[] { "aileenyin", 25 });
+            dt.Rows.Add(new object[] { "hhhh", 13 });
+            dt.TableName = "user";
+
+            var brt = dbProvider.BulkCopy(new DbExecuteBulkParameter()
+            {
+                DstDataTable = dt
+            });
+ 
             //entity framework 使用例子
             IOrmProvider ormProvider = OrmProvider.CreateProvider("DbConnection");
             try

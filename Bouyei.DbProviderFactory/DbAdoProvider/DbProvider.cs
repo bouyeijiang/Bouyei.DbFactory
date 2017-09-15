@@ -716,7 +716,7 @@ namespace Bouyei.DbProviderFactory.DbAdoProvider
                             if (reader.HasRows == false)
                                 return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
 
-                            var items = reader.GetGenericObjectValues<T>(dbExecuteParameter.IgnoreCase);
+                            var items = reader.CreateObjects<T>(dbExecuteParameter.IgnoreCase);
 
                             return ResultInfo<List<T>, string>.Create(items, string.Empty);
                         }

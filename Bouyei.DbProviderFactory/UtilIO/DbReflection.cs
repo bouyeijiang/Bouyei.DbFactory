@@ -16,21 +16,21 @@ namespace Bouyei.DbProviderFactory.UtilIO
 {
     internal static class DbReflection
     {
-        public static T GetGenericObjectValue<T>(this DbDataReader reader, bool ignoreCase = false) where T : new()
+        public static T CreateObject<T>(this DbDataReader reader, bool ignoreCase = false) where T : new()
         {
             T value = new T();
             Type toType = typeof(T);
-            PropertyInfo[] pinfos = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
+            PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+        
             foreach (var pi in pinfos)
             {
                 for (int i = 0; i < reader.FieldCount; ++i)
                 {
                     if (NameEqual(pi.Name, reader.GetName(i), ignoreCase))
                     {
-                        object attrValue = reader.GetValue(i);
+                        object dbValue = reader.GetValue(i);
 
-                        if (attrValue == null || attrValue == DBNull.Value)
+                        if (dbValue == null || dbValue == DBNull.Value)
                             continue;
 
                         //转换类型
@@ -41,17 +41,17 @@ namespace Bouyei.DbProviderFactory.UtilIO
 
                         if (dstType.IsGenericType && dstType.GetGenericTypeDefinition() == typeof(Nullable<>))
                         {
-                            dstValue = Convert.ChangeType(attrValue, dstType.GetGenericArguments()[0]);
+                            dstValue = Convert.ChangeType(dbValue, dstType.GetGenericArguments()[0]);
                         }
                         else if (dstType.IsEnum)
                         {
-                            dstValue = Enum.ToObject(dstType, attrValue);
+                            dstValue = Enum.ToObject(dstType, dbValue);
                         }
                         else
                         {
-                            dstValue = Convert.ChangeType(attrValue, dstType);
+                            dstValue = Convert.ChangeType(dbValue, dstType);
                         }
-                        pi.SetValue(value, dstValue, null);
+                        pi.SetValue(value, dstValue);
                         break;
                     }
                 }
@@ -65,11 +65,12 @@ namespace Bouyei.DbProviderFactory.UtilIO
         /// <typeparam name="T"></typeparam>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public static List<T> GetGenericObjectValues<T>(this DbDataReader reader, bool ignoreCase = false) where T : new()
+        public static List<T> CreateObjects<T>(this DbDataReader reader, bool ignoreCase = false) where T : new()
         {
-            List<T> items = new List<T>(16);
-            PropertyInfo[] pinfos = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            List<T> items = new List<T>(64);
             Type toType = typeof(T);
+
+            PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
             while (reader.Read())
             {
@@ -81,12 +82,12 @@ namespace Bouyei.DbProviderFactory.UtilIO
                     {
                         if (NameEqual(pi.Name, reader.GetName(i), ignoreCase))
                         {
-                            object attrValue = reader.GetValue(i);
+                            object dbValue = reader.GetValue(i);
 
-                            if (attrValue == null || attrValue == DBNull.Value)
+                            if (dbValue == null || dbValue == DBNull.Value)
                                 continue;
 
-                            //转换类型
+                            //转换为指定类型
                             var dstPro = toType.GetProperty(pi.Name);
                             var dstType = dstPro.PropertyType;
 
@@ -94,17 +95,17 @@ namespace Bouyei.DbProviderFactory.UtilIO
 
                             if (dstType.IsGenericType && dstType.GetGenericTypeDefinition() == typeof(Nullable<>))
                             {
-                                dstValue = Convert.ChangeType(attrValue, dstType.GetGenericArguments()[0]);
+                                dstValue = Convert.ChangeType(dbValue, dstType.GetGenericArguments()[0]);
                             }
                             else if (dstType.IsEnum)
                             {
-                                dstValue = Enum.ToObject(dstType, attrValue);
+                                dstValue = Enum.ToObject(dstType, dbValue);
                             }
                             else
                             {
-                                dstValue = Convert.ChangeType(attrValue, dstType);
+                                dstValue = Convert.ChangeType(dbValue, dstType);
                             }
-                            pi.SetValue(value, dstValue, null);
+                            pi.SetValue(value, dstValue);
                             break;
                         }
                     }
