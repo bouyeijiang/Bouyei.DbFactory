@@ -82,10 +82,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 dbConn.ConnectionString = (this.ConnectionString = ConnectionString);
             }
 
+            if (dbConn.State != ConnectionState.Open)
+                dbConn.Open();
+
             return dbConn;
         }
 
-        protected DbDataAdapter CreateAdapter()
+        protected DbDataAdapter CreateAdapter(DbCommand cmd=null)
         {
             if (IsSingleton)
             {
@@ -97,7 +100,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 if (dbDataAdapter != null) dbDataAdapter.Dispose();
                 dbDataAdapter = dbProviderFactory.CreateDataAdapter();
             }
-
             return dbDataAdapter;
         }
 

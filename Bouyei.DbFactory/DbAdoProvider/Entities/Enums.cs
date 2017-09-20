@@ -20,7 +20,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
     {
         SqlServer = 0x00,
         DB2 = 0x02,
-        [Obsolete("请使用Oracle 第三方provider")]
+        [Obsolete("请使用Oracle 第三方provider代替")]
         MsOracle = 0x04,
         Oracle = 0x08,
         MySql = 0x16,

@@ -122,8 +122,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     return new ResultInfo<bool, string>(true, string.Empty);
                 }
             }
@@ -155,8 +153,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     DataTable dt = new DataTable();
 
                     using (DbDataAdapter adapter = this.CreateAdapter())
@@ -198,8 +194,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     DataSet ds = new DataSet();
 
                     using (DbDataAdapter adapter = CreateAdapter())
@@ -242,8 +236,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 int rows = 0;
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
                         using (DbDataReader reader = cmd.ExecuteReader())
@@ -294,8 +286,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 int rows = 0;
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
                         using (DbDataReader reader = cmd.ExecuteReader())
@@ -345,8 +335,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 DbConnection conn = CreateConnection(DbConnectionString);
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     DbCommand cmd = CreateCommand(dbExecuteParameter, conn);
                     {
                         IDataReader reader = cmd.ExecuteReader();
@@ -382,7 +370,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
                         int rt = cmd.ExecuteNonQuery();
@@ -422,8 +409,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn ))
                     {
                         using (DbDataReader dReader = cmd.ExecuteReader())
@@ -471,7 +456,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
                     using (DbTransaction tran = BeginTransaction(conn))
                     {
                         try
@@ -529,7 +513,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
                     using (DbTransaction tran = BeginTransaction(conn))
                     {
                         try
@@ -586,8 +569,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
                         object obj = cmd.ExecuteScalar();
@@ -707,8 +688,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
                         using (DbDataReader reader = cmd.ExecuteReader())
@@ -757,17 +736,15 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 using (DbConnection conn = CreateConnection(DbConnectionString))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-
-                    using (DbDataAdapter adapter = this.CreateAdapter())
+                    using (DbDataAdapter adapter = CreateAdapter())
                     {
-                        using (DbCommand cmd = this.CreateCommand(dbExecuteParameter, conn))
+                        using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                         {
                             DataTable dt = new DataTable();
                             adapter.SelectCommand = cmd;
                             adapter.Fill(dt);
 
-                            if (dt.Rows.Count == 0) return ResultInfo<int, string>.Create(-1, "无可更新的数据行");
+                            if (dt.Rows.Count == 0) return ResultInfo<int, string>.Create(0, "无可更新的数据行");
 
                             bool isContinue = action(dt);
                             if (isContinue == false) return ResultInfo<int, string>.Create(0, string.Empty);

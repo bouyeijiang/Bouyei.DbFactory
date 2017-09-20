@@ -92,7 +92,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
                 bulkCopy.Close();
         }
 
-        private void InitBulkCopy(DataTable dt, int batchSize = 102400)
+        private void InitBulkCopy(DataTable dt, int batchSize)
         {
             if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
@@ -112,7 +112,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
             }
         }
 
-        private void InitBulkCopy(string tableName, string[] columnNames, int batchSize = 102400)
+        private void InitBulkCopy(string tableName, string[] columnNames, int batchSize)
         {
             if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
@@ -131,7 +131,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
             }
         }
 
-        private void InitBulkCopy(string tableName, int batchSize = 102400)
+        private void InitBulkCopy(string tableName, int batchSize)
         {
             if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
@@ -172,7 +172,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
 
         public void WriteToServer(string tableName, DataRow[] rows)
         {
-            InitBulkCopy(tableName);
+            InitBulkCopy(tableName, rows.Length);
             bulkCopy.WriteToServer(rows);
         }
 
