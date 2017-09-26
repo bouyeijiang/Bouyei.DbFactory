@@ -575,7 +575,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
                         var rValue = GetReturnParameter(cmd);
 
-                        return   ResultInfo<T, string>.Create(obj == null ? default(T) : (T)obj,
+                        return   ResultInfo<T, string>.Create(obj == null ? default(T) : (T)Convert.ChangeType(obj,typeof(T)),
                           rValue == null ? string.Empty : rValue.ToString());
                     }
                 }
