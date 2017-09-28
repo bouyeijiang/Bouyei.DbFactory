@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Data;
 using Bouyei.DbFactory;
 using System.Configuration;
+using System.Threading;
 
 namespace DbFactoryDemo
 {

@@ -16,7 +16,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -112,8 +112,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UtilIO\DbReflection.cs" />
-    <Compile Include="UtilIO\DataTableHelper.cs" />
+    <Compile Include="Utils\ProviderModels.cs" />
+    <Compile Include="Utils\DbReflection.cs" />
+    <Compile Include="Utils\DataTableHelper.cs" />
     <Compile Include="DbAdoProvider\Entities\Structures.cs" />
     <Compile Include="DbAdoProvider\Entities\Enums.cs" />
     <Compile Include="DbAdoProvider\IDbProvider.cs" />
@@ -164,7 +165,7 @@
     <Compile Include="DbEntityProvider\EntityExtension.cs" />
     <Compile Include="DbMapper\EntityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UtilIO\CsvHelper.cs" />
+    <Compile Include="Utils\CsvHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

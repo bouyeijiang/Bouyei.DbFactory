@@ -16,20 +16,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
     public delegate void BulkCopiedArgs(long rows);
 
     [Flags]
-    public enum ProviderType
-    {
-        SqlServer = 0x00,
-        DB2 = 0x02,
-        [Obsolete("请使用Oracle 第三方provider代替")]
-        MsOracle = 0x04,
-        Oracle = 0x08,
-        MySql = 0x16,
-        SQLite = 0x32,
-        OleDb = 0x64,
-        Odbc = 0x128
-    }
-
-    [Flags]
     public enum BulkCopyOptions
     {
         None = -1,

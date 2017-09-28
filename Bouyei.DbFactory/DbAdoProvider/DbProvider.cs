@@ -22,21 +22,23 @@ namespace Bouyei.DbFactory.DbAdoProvider
     public class DbProvider : DbCommonBuilder, IDbProvider
     {
         #region variable
-        private int signal = 0;
+        private LockParam lParam = new LockParam()
+        {
+            LockTimeout = 5,//s
+            SleepInterval = 1000,
+        };
         private bool disposed = false;
-        private int lockInterval = 1000;
 
         public string DbConnectionString { get; set; }
         
         public ProviderType DbType { get; set; }
 
-        private int timeoutLock = 5;//s
-        public int TimeoutLock
+        public int LockTimeout
         {
-            get { return timeoutLock; }
+            get { return lParam.LockTimeout; }
             set
             {
-                timeoutLock = value < 5 ? 5 : timeoutLock;
+                lParam.LockTimeout = value < 5 ? 5 : value;
             }
         }
 
@@ -105,414 +107,274 @@ namespace Bouyei.DbFactory.DbAdoProvider
         #region public
         public ResultInfo<bool, string> Connect(string ConnectionString)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock))
+                this.DbConnectionString = ConnectionString;
+                try
                 {
-                    return ResultInfo<bool,string>.Create(false, "等待锁超时...");
-                }
-                _times += (lockInterval / 1000);
-            }
-            this.DbConnectionString = ConnectionString;
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    return new ResultInfo<bool, string>(true, string.Empty);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new ResultInfo<bool, string>(false, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
-            }
-        }
-
-        public ResultInfo<DataTable, string> Query(DbExecuteParameter dbExecuteParameter)
-        {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
-            {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
-                {
-                    return ResultInfo<DataTable, string>.Create(null, "等待锁超时...");
-                }
-                _times += (lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    DataTable dt = new DataTable();
-
-                    using (DbDataAdapter adapter = this.CreateAdapter())
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     {
-                        using (DbCommand cmd = this.CreateCommand(dbExecuteParameter, conn))
-                        {
-                            adapter.SelectCommand = cmd;
-                            adapter.Fill(dt);
-                        }
+                        return new ResultInfo<bool, string>(true, string.Empty);
                     }
-                    return new ResultInfo<DataTable, string>(dt, string.Empty);
                 }
-            }
-            catch (Exception ex)
-            {
-                return new ResultInfo<DataTable, string>(null, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return new ResultInfo<bool, string>(false, ex.ToString());
+                }
             }
         }
 
-        public ResultInfo<DataSet, string> QueryToSet(DbExecuteParameter dbExecuteParameter)
+        public ResultInfo<DataTable, string> Query(DbExecuteParameter dbParameter)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<DataSet, string>.Create(null, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    DataSet ds = new DataSet();
-
-                    using (DbDataAdapter adapter = CreateAdapter())
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     {
-                        using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                        DataTable dt = new DataTable();
+
+                        using (DbDataAdapter adapter = this.CreateAdapter())
                         {
-                            adapter.SelectCommand = cmd;
-                            adapter.Fill(ds);
-                        }
-                    }
-                    return ResultInfo<DataSet, string>.Create(ds, string.Empty);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new ResultInfo<DataSet, string>(null, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
-            }
-        }
-
-        public ResultInfo<int, string> QueryToReader(DbExecuteParameter dbExecuteParameter, Func<IDataReader,bool> rowAction)
-        {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
-            {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if(_times>= (timeoutLock + dbExecuteParameter.ExectueTimeout))
-                {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                int rows = 0;
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
-                    {
-                        using (DbDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows == false)
-                                return ResultInfo<int, string>.Create(0, string.Empty);
-                            bool isContinue = false;
-
-                            while (reader.Read())
+                            using (DbCommand cmd = this.CreateCommand(dbParameter, conn))
                             {
-                                isContinue = rowAction(reader);
-                                if (isContinue == false) break;
-                                ++rows;
+                                adapter.SelectCommand = cmd;
+                                adapter.Fill(dt);
+                            }
+                        }
+                        return new ResultInfo<DataTable, string>(dt, string.Empty);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new ResultInfo<DataTable, string>(null, ex.ToString());
+                }
+            }
+        }
+
+        public ResultInfo<DataSet, string> QueryToSet(DbExecuteParameter dbParameter)
+        {
+            using (LockWait lwait = new LockWait(ref lParam))
+            {
+                try
+                {
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
+                    {
+                        DataSet ds = new DataSet();
+
+                        using (DbDataAdapter adapter = CreateAdapter())
+                        {
+                            using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                            {
+                                adapter.SelectCommand = cmd;
+                                adapter.Fill(ds);
+                            }
+                        }
+                        return ResultInfo<DataSet, string>.Create(ds, string.Empty);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new ResultInfo<DataSet, string>(null, ex.ToString());
+                }
+            }
+        }
+
+        public ResultInfo<int, string> QueryToReader(DbExecuteParameter dbParameter, Func<IDataReader,bool> rowAction)
+        {
+            using (LockWait lwait = new LockWait(ref lParam))
+            {
+                try
+                {
+                    int rows = 0;
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
+                    {
+                        using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                        {
+                            using (DbDataReader reader = cmd.ExecuteReader())
+                            {
+                                if (reader.HasRows == false)
+                                    return ResultInfo<int, string>.Create(0, string.Empty);
+                                bool isContinue = false;
+
+                                while (reader.Read())
+                                {
+                                    isContinue = rowAction(reader);
+                                    if (isContinue == false) break;
+                                    ++rows;
+                                }
                             }
                         }
                     }
-                }
 
-                return ResultInfo<int, string>.Create(rows, string.Empty);
-            }
-            catch (Exception ex)
-            {
-                return new ResultInfo<int, string>(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                    return ResultInfo<int, string>.Create(rows, string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    return new ResultInfo<int, string>(-1, ex.ToString());
+                }
             }
         }
 
-        public ResultInfo<int,string> QueryTo<T>(DbExecuteParameter dbExecuteParameter,Func<T,bool> rowAction)
+        public ResultInfo<int,string> QueryTo<T>(DbExecuteParameter dbParameter,Func<T,bool> rowAction)
              where T:new()
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                int rows = 0;
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                    int rows = 0;
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
+                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbDataReader reader = cmd.ExecuteReader())
                     {
-                        using (DbDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows == false)
-                                return ResultInfo<int, string>.Create(0, string.Empty);
+                        if (reader.HasRows == false)
+                            return ResultInfo<int, string>.Create(0, string.Empty);
 
-                            bool isContinue = false;
-                            while (reader.Read())
-                            {
-                                T row = reader.DataReaderTo<T>(dbExecuteParameter.IgnoreCase);
-                                isContinue = rowAction(row);
-                                if (isContinue == false) break;
-                                ++rows;
-                            }
+                        bool isContinue = false;
+                        while (reader.Read())
+                        {
+                            T row = reader.DataReaderTo<T>(dbParameter.IgnoreCase);
+                            isContinue = rowAction(row);
+                            if (isContinue == false) break;
+                            ++rows;
+                        }
+                    }
+
+                    return ResultInfo<int, string>.Create(rows, string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    return new ResultInfo<int, string>(-1, ex.ToString());
+                }
+            }
+        }
+
+        public ResultInfo<IDataReader, string> QueryToReader(DbExecuteParameter dbParameter)
+        {
+            using (LockWait lwait = new LockWait(ref lParam))
+            {
+                try
+                {
+                    DbConnection conn = CreateConnection(DbConnectionString);
+                    {
+                        DbCommand cmd = CreateCommand(dbParameter, conn);
+                        {
+                            IDataReader reader = cmd.ExecuteReader();
+                            return ResultInfo<IDataReader, string>.Create(reader, string.Empty);
                         }
                     }
                 }
-
-                return ResultInfo<int, string>.Create(rows, string.Empty);
-            }
-            catch (Exception ex)
-            {
-                return new ResultInfo<int, string>(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<IDataReader, string>.Create(null, ex.Message);
+                }
             }
         }
 
-        public ResultInfo<IDataReader, string> QueryToReader(DbExecuteParameter dbExecuteParameter)
+        public ResultInfo<int, string> ExecuteCmd(DbExecuteParameter dbParameter)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<IDataReader, string>.Create(null, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                DbConnection conn = CreateConnection(DbConnectionString);
-                {
-                    DbCommand cmd = CreateCommand(dbExecuteParameter, conn);
-                    {
-                        IDataReader reader = cmd.ExecuteReader();
-                        return ResultInfo<IDataReader, string>.Create(reader, string.Empty);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return   ResultInfo<IDataReader, string>.Create(null, ex.Message);
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
-            }
-        }
-
-        public ResultInfo<int, string> ExecuteCmd(DbExecuteParameter dbExecuteParameter)
-        {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
-            {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
-                {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
+                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
                     {
                         int rt = cmd.ExecuteNonQuery();
 
                         var rValue = GetReturnParameter(cmd);
 
-                        return   ResultInfo<int, string>.Create(rt < 0 ? 0 : rt,
+                        return ResultInfo<int, string>.Create(rt < 0 ? 0 : rt,
                             rValue == null ? string.Empty : rValue.ToString());
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return   ResultInfo<int, string>.Create(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                }
             }
         }
 
-        public ResultInfo<int, string> QueryToTable(DbExecuteParameter dbExecuteParameter, DataTable dstTable)
+        public ResultInfo<int, string> QueryToTable(DbExecuteParameter dbParameter, DataTable dstTable)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn ))
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
+                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbDataReader dReader = cmd.ExecuteReader())
                     {
-                        using (DbDataReader dReader = cmd.ExecuteReader())
-                        {
-                            int oCnt = dstTable.Rows.Count;
+                        int oCnt = dstTable.Rows.Count;
 
-                            dstTable.Load(dReader);
+                        dstTable.Load(dReader);
 
-                            return   ResultInfo<int, string>.Create(dstTable.Rows.Count - oCnt, string.Empty);
-                        }
+                        return ResultInfo<int, string>.Create(dstTable.Rows.Count - oCnt, string.Empty);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return   ResultInfo<int, string>.Create(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                }
             }
         }
 
         /// <summary>
-        /// 同时执行多个sql语句使用
+        /// add transactions
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public ResultInfo<int, string> ExecuteTransaction(DbExecuteParameter dbExecuteParameter)
+        public ResultInfo<int, string> ExecuteTransaction(DbExecuteParameter dbParameter)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction tran = BeginTransaction(conn))
                     {
                         try
                         {
-                            using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn, tran))
+                            using (DbCommand cmd = CreateCommand(dbParameter, conn, tran))
                             {
                                 int rt = cmd.ExecuteNonQuery();
                                 tran.Commit();
 
                                 var rValue = GetReturnParameter(cmd);
 
-                                return   ResultInfo<int, string>.Create(rt < 0 ? 0 : rt,
+                                return ResultInfo<int, string>.Create(rt < 0 ? 0 : rt,
                                     rValue != null ? rValue.ToString() : string.Empty);
                             }
                         }
                         catch (Exception ex)
                         {
                             tran.Rollback();
-                            return   ResultInfo<int, string>.Create(-1, ex.ToString());
+                            return ResultInfo<int, string>.Create(-1, ex.ToString());
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return   ResultInfo<int, string>.Create(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                }
             }
         }
 
         /// <summary>
-        /// command集合事务批量执行
+        ///add a transaction to the script collection
         /// </summary>
         /// <param name="timeout"></param>
         /// <param name="CommandTexts"></param>
         /// <returns></returns>
         public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + timeout))
+                try
                 {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction tran = BeginTransaction(conn))
                     {
                         try
@@ -530,7 +392,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
                                 }
                             }
                             tran.Commit();
-
                             return new ResultInfo<int, string>(rows < 0 ? 0 : rows, string.Empty);
                         }
                         catch (Exception ex)
@@ -540,175 +401,122 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return new ResultInfo<int, string>(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return new ResultInfo<int, string>(-1, ex.ToString());
+                }
             }
         }
 
         public ResultInfo<T, string> ExecuteScalar<T>(DbExecuteParameter dbExecuteParameter)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<T, string>.Create(default(T), "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
                         object obj = cmd.ExecuteScalar();
 
                         var rValue = GetReturnParameter(cmd);
 
-                        return   ResultInfo<T, string>.Create(obj == null ? default(T) : (T)Convert.ChangeType(obj,typeof(T)),
+                        return ResultInfo<T, string>.Create(obj == null ? default(T) : (T)Convert.ChangeType(obj, typeof(T)),
                           rValue == null ? string.Empty : rValue.ToString());
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return ResultInfo<T, string>.Create(default(T), ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<T, string>.Create(default(T), ex.ToString());
+                }
             }
         }
 
         public ResultInfo<int, string> BulkCopy(DbExecuteBulkParameter dbExecuteParameter)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                Exception temex = null;
-                int cnt = 0;
-                using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbExecuteParameter.IsTransaction))
-                {
-                    bulkCopy.Open();
-                    bulkCopy.BulkCopiedHandler = dbExecuteParameter.BulkCopiedHandler;
-
-                    bulkCopy.BatchSize = dbExecuteParameter.BatchSize;
-                    bulkCopy.BulkCopyTimeout = dbExecuteParameter.ExectueTimeout;
-
-                    try
+                    Exception temex = null;
+                    int cnt = 0;
+                    using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbExecuteParameter.IsTransaction))
                     {
-                        if ((dbExecuteParameter.DstDataTable == null 
-                            || dbExecuteParameter.DstDataTable.Rows.Count == 0)
-                            && dbExecuteParameter.IDataReader != null)
-                        {
-                            bulkCopy.WriteToServer(dbExecuteParameter.IDataReader, dbExecuteParameter.DstTableName);
-                            cnt = 1;
-                        }
-                        else
-                        {
-                            if (dbExecuteParameter.BatchSize > dbExecuteParameter.DstDataTable.Rows.Count)
-                                dbExecuteParameter.BatchSize = dbExecuteParameter.DstDataTable.Rows.Count;
+                        bulkCopy.Open();
+                        bulkCopy.BulkCopiedHandler = dbExecuteParameter.BulkCopiedHandler;
 
-                            bulkCopy.DestinationTableName = dbExecuteParameter.DstDataTable.TableName;
-                            bulkCopy.WriteToServer(dbExecuteParameter.DstDataTable);
-                            cnt = dbExecuteParameter.DstDataTable.Rows.Count;
-                        }
+                        bulkCopy.BatchSize = dbExecuteParameter.BatchSize;
+                        bulkCopy.BulkCopyTimeout = dbExecuteParameter.ExectueTimeout;
 
-                        //use transaction
-                        if (dbExecuteParameter.IsTransaction)
+                        try
                         {
-                            //有事务回调则由外边控制事务提交,否则直接提交事务
-                            if (dbExecuteParameter.TransactionCallback != null)
-                                dbExecuteParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
+                            if ((dbExecuteParameter.DstDataTable == null
+                                || dbExecuteParameter.DstDataTable.Rows.Count == 0)
+                                && dbExecuteParameter.IDataReader != null)
+                            {
+                                bulkCopy.WriteToServer(dbExecuteParameter.IDataReader, dbExecuteParameter.DstTableName);
+                                cnt = 1;
+                            }
                             else
-                                bulkCopy.dbTrans.Commit();
+                            {
+                                if (dbExecuteParameter.BatchSize > dbExecuteParameter.DstDataTable.Rows.Count)
+                                    dbExecuteParameter.BatchSize = dbExecuteParameter.DstDataTable.Rows.Count;
+
+                                bulkCopy.DestinationTableName = dbExecuteParameter.DstDataTable.TableName;
+                                bulkCopy.WriteToServer(dbExecuteParameter.DstDataTable);
+                                cnt = dbExecuteParameter.DstDataTable.Rows.Count;
+                            }
+
+                            //use transaction
+                            if (dbExecuteParameter.IsTransaction)
+                            {
+                                //有事务回调则由外边控制事务提交,否则直接提交事务
+                                if (dbExecuteParameter.TransactionCallback != null)
+                                    dbExecuteParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
+                                else
+                                    bulkCopy.dbTrans.Commit();
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        temex = ex;
-                        if (dbExecuteParameter.IsTransaction)
+                        catch (Exception ex)
                         {
-                            if (bulkCopy.dbTrans != null)
-                                bulkCopy.dbTrans.Rollback();
+                            temex = ex;
+                            if (dbExecuteParameter.IsTransaction)
+                                if (bulkCopy.dbTrans != null)
+                                    bulkCopy.dbTrans.Rollback();
                         }
                     }
+
+                    if (temex != null) throw temex;
+                    return ResultInfo<int, string>.Create(cnt, string.Empty);
                 }
-
-                if (temex != null) throw temex;
-
-                return   ResultInfo<int, string>.Create(cnt, string.Empty);
-            }
-            catch (Exception ex)
-            {
-                return   ResultInfo<int, string>.Create(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                }
             }
         }
 
         public ResultInfo<List<T>, string> Query<T>(DbExecuteParameter dbExecuteParameter) where T : new()
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<List<T>, string>.Create(null, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                    using (DbDataReader reader = cmd.ExecuteReader())
                     {
-                        using (DbDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows == false)
-                                return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
+                        if (reader.HasRows == false)
+                            return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
 
-                            var items = reader.CreateObjects<T>(dbExecuteParameter.IgnoreCase);
-
-                            return ResultInfo<List<T>, string>.Create(items, string.Empty);
-                        }
+                        var items = reader.CreateObjects<T>(dbExecuteParameter.IgnoreCase);
+                        return ResultInfo<List<T>, string>.Create(items, string.Empty);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return ResultInfo<List<T>, string>.Create(null, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<List<T>, string>.Create(null, ex.ToString());
+                }
             }
         }
 
@@ -720,60 +528,40 @@ namespace Bouyei.DbFactory.DbAdoProvider
         /// <returns></returns>
         public ResultInfo<int, string> QueryChanged(DbExecuteParameter dbExecuteParameter, Func<DataTable,bool> action)
         {
-            int _times = 0;
-            while (Interlocked.CompareExchange(ref signal, 1, 0) == 1)
+            using (LockWait lwait = new LockWait(ref lParam))
             {
-                Thread.Sleep(lockInterval);
-
-                //waiting for lock to do;
-                if (_times >= (timeoutLock + dbExecuteParameter.ExectueTimeout))
+                try
                 {
-                    return ResultInfo<int, string>.Create(-1, "等待锁超时...");
-                }
-                _times +=(lockInterval/1000);
-            }
-            try
-            {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
-                {
+                    using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbDataAdapter adapter = CreateAdapter())
+                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
                     {
-                        using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                        DataTable dt = new DataTable();
+                        adapter.SelectCommand = cmd;
+                        adapter.Fill(dt);
+
+                        if (dt.Rows.Count == 0) return ResultInfo<int, string>.Create(0, "无可更新的数据行");
+
+                        bool isContinue = action(dt);
+                        if (isContinue == false) return ResultInfo<int, string>.Create(0, string.Empty);
+
+                        DataTable changedt = dt.GetChanges(DataRowState.Added | DataRowState.Deleted | DataRowState.Modified);
+
+                        if (changedt == null || changedt.Rows.Count == 0)
+                            return ResultInfo<int, string>.Create(0, string.Empty);
+
+                        using (DbCommandBuilder dbBuilder = this.CreateCommandBuilder())
                         {
-                            DataTable dt = new DataTable();
-                            adapter.SelectCommand = cmd;
-                            adapter.Fill(dt);
-
-                            if (dt.Rows.Count == 0) return ResultInfo<int, string>.Create(0, "无可更新的数据行");
-
-                            bool isContinue = action(dt);
-                            if (isContinue == false) return ResultInfo<int, string>.Create(0, string.Empty);
-
-                            DataTable changedt = dt.GetChanges(DataRowState.Added | DataRowState.Deleted | DataRowState.Modified);
-                            if (changedt != null && changedt.Rows.Count > 0)
-                            {
-                                using (DbCommandBuilder dbBuilder = this.CreateCommandBuilder())
-                                {
-                                    dbBuilder.DataAdapter = adapter;
-                                    int rt = adapter.Update(changedt);
-                                    return ResultInfo<int, string>.Create(rt, string.Empty);
-                                }
-                            }
-                            else
-                            {
-                                return ResultInfo<int, string>.Create(0, string.Empty);
-                            }
+                            dbBuilder.DataAdapter = adapter;
+                            int rt = adapter.Update(changedt);
+                            return ResultInfo<int, string>.Create(rt, string.Empty);
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return ResultInfo<int, string>.Create(-1, ex.ToString());
-            }
-            finally
-            {
-                Interlocked.Exchange(ref signal, 0);
+                catch (Exception ex)
+                {
+                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                }
             }
         }
         #endregion
