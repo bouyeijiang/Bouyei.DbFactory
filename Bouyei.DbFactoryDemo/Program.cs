@@ -35,6 +35,7 @@ namespace DbFactoryDemo
             ////ado.net 使用例子
             string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
+            var ext = dbProvider.Connect(connectionString);
             var adort = dbProvider.Query(new DbExecuteParameter()
             {
                 CommandText = "select * from [user]"
