@@ -17,7 +17,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
     public interface IDbProvider: IDisposable
     {
         string DbConnectionString { get; set; }
-
         ProviderType DbType { get; set; }
         ResultInfo<bool, string> Connect(string connString);
         ResultInfo<DataTable, string> Query(DbExecuteParameter dbExecuteParameter);
@@ -29,13 +28,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
         ResultInfo<int, string> QueryChanged(DbExecuteParameter dbExecuteParameter, Func<DataTable,bool> action);
         ResultInfo<int, string> QueryToTable(DbExecuteParameter dbExecuteParameter, DataTable dstTable);
         ResultInfo<int, string> ExecuteCmd(DbExecuteParameter dbExecuteParameter);
-
         ResultInfo<int, string> ExecuteTransaction(DbExecuteParameter dbExecuteParameter);
-
         ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800);
-
         ResultInfo<T, string> ExecuteScalar<T>(DbExecuteParameter dbExecuteParameter);
-
         ResultInfo<int, string> BulkCopy(DbExecuteBulkParameter dbExecuteParameter);
     }
 }

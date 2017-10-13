@@ -16,9 +16,7 @@ using System.Threading;
 namespace Bouyei.DbFactory.DbAdoProvider
 {
     using UtilIO;
-    /// <summary>
-    /// 连接池
-    /// </summary>
+    
     public class DbProvider : DbCommonBuilder, IDbProvider
     {
         #region variable
@@ -159,17 +157,12 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
+                    using (DbDataAdapter adapter = CreateAdapter())
+                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
                     {
                         DataSet ds = new DataSet();
-
-                        using (DbDataAdapter adapter = CreateAdapter())
-                        {
-                            using (DbCommand cmd = CreateCommand(dbParameter, conn))
-                            {
-                                adapter.SelectCommand = cmd;
-                                adapter.Fill(ds);
-                            }
-                        }
+                        adapter.SelectCommand = cmd;
+                        adapter.Fill(ds);
                         return ResultInfo<DataSet, string>.Create(ds, string.Empty);
                     }
                 }
@@ -180,7 +173,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> QueryToReader(DbExecuteParameter dbParameter, Func<IDataReader,bool> rowAction)
+        public ResultInfo<int, string> QueryToReader(DbExecuteParameter dbParameter, Func<IDataReader, bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -188,25 +181,20 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
+                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbDataReader reader = cmd.ExecuteReader())
                     {
-                        using (DbCommand cmd = CreateCommand(dbParameter, conn))
-                        {
-                            using (DbDataReader reader = cmd.ExecuteReader())
-                            {
-                                if (reader.HasRows == false)
-                                    return ResultInfo<int, string>.Create(0, string.Empty);
-                                bool isContinue = false;
+                        if (reader.HasRows == false)
+                            return ResultInfo<int, string>.Create(0, string.Empty);
+                        bool isContinue = false;
 
-                                while (reader.Read())
-                                {
-                                    isContinue = rowAction(reader);
-                                    if (isContinue == false) break;
-                                    ++rows;
-                                }
-                            }
+                        while (reader.Read())
+                        {
+                            isContinue = rowAction(reader);
+                            if (isContinue == false) break;
+                            ++rows;
                         }
                     }
-
                     return ResultInfo<int, string>.Create(rows, string.Empty);
                 }
                 catch (Exception ex)
@@ -257,13 +245,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     DbConnection conn = CreateConnection(DbConnectionString);
-                    {
-                        DbCommand cmd = CreateCommand(dbParameter, conn);
-                        {
-                            IDataReader reader = cmd.ExecuteReader();
-                            return ResultInfo<IDataReader, string>.Create(reader, string.Empty);
-                        }
-                    }
+                    DbCommand cmd = CreateCommand(dbParameter, conn);
+                    IDataReader reader = cmd.ExecuteReader();
+                    return ResultInfo<IDataReader, string>.Create(reader, string.Empty);
                 }
                 catch (Exception ex)
                 {

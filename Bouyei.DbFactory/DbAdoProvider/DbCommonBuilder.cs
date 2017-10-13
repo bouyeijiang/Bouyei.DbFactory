@@ -213,8 +213,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                     return dbProviderParameter;
             }
         }
-
-
+         
         protected DbCommonBulkCopy CreateBulkCopy(string ConnectionString, bool isTransaction = false)
         {
             if (dbBulkCopy != null) dbBulkCopy.Dispose();

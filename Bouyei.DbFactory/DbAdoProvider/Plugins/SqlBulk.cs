@@ -47,7 +47,8 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
 
             SqlConnection connection = (SqlConnection)dbConnection;
             if (dbTrans == null) bulkCopy = new SqlBulkCopy(connection);
-            else bulkCopy = new SqlBulkCopy(connection, (SqlBulkCopyOptions)option, (SqlTransaction)dbTrans);
+            else bulkCopy = new SqlBulkCopy(connection,
+                (SqlBulkCopyOptions)option, (SqlTransaction)dbTrans);
 
             bulkCopy.BulkCopyTimeout = timeout;
             bulkCopy.EnableStreaming = true;
