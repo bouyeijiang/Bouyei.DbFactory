@@ -129,19 +129,14 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
+                    using (DbDataAdapter adapter = this.CreateAdapter())
+                    using (DbCommand cmd = this.CreateCommand(dbParameter, conn))
                     {
                         DataTable dt = new DataTable();
-
-                        using (DbDataAdapter adapter = this.CreateAdapter())
-                        {
-                            using (DbCommand cmd = this.CreateCommand(dbParameter, conn))
-                            {
-                                adapter.SelectCommand = cmd;
-                                adapter.Fill(dt);
-                            }
-                        }
+                        adapter.SelectCommand = cmd;
+                        adapter.Fill(dt);
                         return new ResultInfo<DataTable, string>(dt, string.Empty);
-                    }
+                    }                   
                 }
                 catch (Exception ex)
                 {

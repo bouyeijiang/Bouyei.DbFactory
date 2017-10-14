@@ -60,6 +60,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 if (ProviderName == ProviderType.SqlServer) sqlBulkCopy.Dispose();
                 else if (ProviderName == ProviderType.DB2) db2BulkCopy.Dispose();
                 else if (ProviderName == ProviderType.Oracle) oracleBulkCopy.Dispose();
+                else if (ProviderName == ProviderType.MySql) mySqlBulkCopy.Dispose();
             }
         }
 
