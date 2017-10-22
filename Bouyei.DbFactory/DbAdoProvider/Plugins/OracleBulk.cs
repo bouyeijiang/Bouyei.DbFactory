@@ -86,7 +86,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
                 bulkCopy.Close();
         }
 
-        private void InitBulkCopy(DataTable dt, int batchSize = 10240)
+        private void InitBulkCopy(DataTable dt, int batchSize)
         {
             if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
