@@ -11,7 +11,7 @@ using System.Data.Entity;
 
 namespace Bouyei.DbFactory.DbEntityProvider
 {
-    using UtilIO;
+    using DbUtils;
 
     internal class EntityContext : DbContext, IDisposable
     { 

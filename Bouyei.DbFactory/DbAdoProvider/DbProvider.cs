@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
-    using UtilIO;
+    using DbUtils;
     
     public class DbProvider : DbCommonBuilder, IDbProvider
     {

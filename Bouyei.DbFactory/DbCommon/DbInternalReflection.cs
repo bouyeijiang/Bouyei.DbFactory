@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Data;
 using System.Data.Common;
 
-namespace Bouyei.DbFactory.UtilIO
+namespace Bouyei.DbFactory.DbUtils
 {
     internal static class DbReflection
     {

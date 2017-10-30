@@ -12,7 +12,7 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 
-namespace Bouyei.DbFactory.UtilIO
+namespace Bouyei.DbFactory.DbUtils
 {
     public static class DataTableHelper
     {

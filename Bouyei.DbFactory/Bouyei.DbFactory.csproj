@@ -112,9 +112,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\ProviderModels.cs" />
-    <Compile Include="Utils\DbReflection.cs" />
-    <Compile Include="Utils\DataTableHelper.cs" />
+    <Compile Include="DbCommon\DbInternalCommon.cs" />
+    <Compile Include="DbCommon\DbInternalReflection.cs" />
+    <Compile Include="DbCommon\DbEnums.cs" />
+    <Compile Include="DbUtils\DataTableHelper.cs" />
     <Compile Include="DbAdoProvider\Entities\Structures.cs" />
     <Compile Include="DbAdoProvider\Entities\Enums.cs" />
     <Compile Include="DbAdoProvider\IDbProvider.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="DbEntityProvider\EntityExtension.cs" />
     <Compile Include="DbMapper\EntityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\CsvHelper.cs" />
+    <Compile Include="DbUtils\DbCsvHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

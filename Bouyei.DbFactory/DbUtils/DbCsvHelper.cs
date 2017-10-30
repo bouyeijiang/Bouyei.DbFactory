@@ -10,9 +10,9 @@ using System.Data;
 using System.Linq;
 using System.IO;
 
-namespace Bouyei.DbFactory.UtilIO
+namespace Bouyei.DbFactory.DbUtils
 {
-    public class CsvHelper
+    public class DbCsvHelper
     {
         public MemoryStream ExportCsv(DataTable dt)
         {

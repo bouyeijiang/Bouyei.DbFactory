@@ -217,7 +217,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
             else if (ProviderName == ProviderType.MySql)
             {
-                UtilIO.CsvHelper csv = new UtilIO.CsvHelper();
+                DbUtils.DbCsvHelper csv = new DbUtils.DbCsvHelper();
                 string fname = dataTable.TableName + DateTime.Now.Ticks;
                 bool rt = csv.ExportSvcToFile(dataTable, fname);
                 if (rt == false) return;

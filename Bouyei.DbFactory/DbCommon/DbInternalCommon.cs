@@ -14,20 +14,6 @@ using System.Threading;
 
 namespace Bouyei.DbFactory
 {
-    [Flags]
-    public enum ProviderType : byte
-    {
-        SqlServer = 0x00,
-        DB2 = 0x01,
-        [Obsolete("请使用Oracle 第三方provider代替")]
-        MsOracle = 0x02,
-        Oracle = 0x04,
-        MySql = 0x08,
-        SQLite = 0x10,
-        OleDb = 0x20,
-        Odbc = 0x40
-    }
-
     internal class LockWait : IDisposable
     {
         LockParam lParam = null;
