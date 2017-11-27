@@ -246,7 +246,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<IDataReader, string>.Create(null, ex.Message);
+                    return ResultInfo<IDataReader, string>.Create(null, ex.ToString());
                 }
             }
         }
