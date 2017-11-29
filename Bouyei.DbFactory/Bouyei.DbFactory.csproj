@@ -115,6 +115,7 @@
     <Compile Include="DbCommon\DbInternalCommon.cs" />
     <Compile Include="DbCommon\DbInternalReflection.cs" />
     <Compile Include="DbCommon\DbEnums.cs" />
+    <Compile Include="DbCommon\DbStructures.cs" />
     <Compile Include="DbUtils\DataTableHelper.cs" />
     <Compile Include="DbAdoProvider\Entities\Structures.cs" />
     <Compile Include="DbAdoProvider\Entities\Enums.cs" />

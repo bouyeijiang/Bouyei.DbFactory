@@ -13,8 +13,6 @@ using System.Text;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
-    public delegate void BulkCopiedArgs(long rows);
-
     [Flags]
     public enum BulkCopyOptions
     {
