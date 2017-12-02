@@ -94,7 +94,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         }
 
         public static DbProvider CreateProvider(
-            ConnectionConfiguraton connectionConfiguration)
+            ConnectionConfiguration connectionConfiguration)
         {
             return new DbProvider(connectionConfiguration.ToString(),
                 connectionConfiguration.DbType);
@@ -299,12 +299,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        /// <summary>
-        /// add transactions
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
         public ResultInfo<int, string> ExecuteTransaction(DbExecuteParameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
@@ -341,12 +335,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        /// <summary>
-        ///add a transaction to the script collection
-        /// </summary>
-        /// <param name="timeout"></param>
-        /// <param name="CommandTexts"></param>
-        /// <returns></returns>
         public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800)
         {
             using (LockWait lwait = new LockWait(ref lParam))
@@ -364,7 +352,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                                 using (DbCommand cmd = CreateCommand(new DbExecuteParameter()
                                 {
                                     CommandText = CommandTexts[i],
-                                    ExectueTimeout = timeout
+                                    ExecuteTimeout = timeout
                                 }, conn, tran))
                                 {
                                     rows += cmd.ExecuteNonQuery();
@@ -425,25 +413,25 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         bulkCopy.BulkCopiedHandler = dbExecuteParameter.BulkCopiedHandler;
 
                         bulkCopy.BatchSize = dbExecuteParameter.BatchSize;
-                        bulkCopy.BulkCopyTimeout = dbExecuteParameter.ExectueTimeout;
+                        bulkCopy.BulkCopyTimeout = dbExecuteParameter.ExecuteTimeout;
 
                         try
                         {
-                            if ((dbExecuteParameter.DstDataTable == null
-                                || dbExecuteParameter.DstDataTable.Rows.Count == 0)
+                            if ((dbExecuteParameter.DataSource == null
+                                || dbExecuteParameter.DataSource.Rows.Count == 0)
                                 && dbExecuteParameter.IDataReader != null)
                             {
-                                bulkCopy.WriteToServer(dbExecuteParameter.IDataReader, dbExecuteParameter.DstTableName);
+                                bulkCopy.WriteToServer(dbExecuteParameter.IDataReader, dbExecuteParameter.TableName);
                                 cnt = 1;
                             }
                             else
                             {
-                                if (dbExecuteParameter.BatchSize > dbExecuteParameter.DstDataTable.Rows.Count)
-                                    dbExecuteParameter.BatchSize = dbExecuteParameter.DstDataTable.Rows.Count;
+                                if (dbExecuteParameter.BatchSize > dbExecuteParameter.DataSource.Rows.Count)
+                                    dbExecuteParameter.BatchSize = dbExecuteParameter.DataSource.Rows.Count;
 
-                                bulkCopy.DestinationTableName = dbExecuteParameter.DstDataTable.TableName;
-                                bulkCopy.WriteToServer(dbExecuteParameter.DstDataTable);
-                                cnt = dbExecuteParameter.DstDataTable.Rows.Count;
+                                bulkCopy.DestinationTableName = dbExecuteParameter.DataSource.TableName;
+                                bulkCopy.WriteToServer(dbExecuteParameter.DataSource);
+                                cnt = dbExecuteParameter.DataSource.Rows.Count;
                             }
 
                             //use transaction
@@ -460,8 +448,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         {
                             temex = ex;
                             if (dbExecuteParameter.IsTransaction)
-                                if (bulkCopy.dbTrans != null)
-                                    bulkCopy.dbTrans.Rollback();
+                            {
+                                if (bulkCopy.dbTrans != null) bulkCopy.dbTrans.Rollback();
+                            }
                         }
                     }
 

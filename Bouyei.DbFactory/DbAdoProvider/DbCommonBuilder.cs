@@ -138,7 +138,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
             dbCommand.Connection = dbConn;
             dbCommand.CommandText = dbParameter.CommandText;
-            dbCommand.CommandTimeout = dbParameter.ExectueTimeout;
+            dbCommand.CommandTimeout = dbParameter.ExecuteTimeout;
 
             if (dbParameter.dbProviderParameters != null)
             {

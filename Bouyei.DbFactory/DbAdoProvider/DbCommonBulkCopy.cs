@@ -136,6 +136,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 if (IsTransaction)
                 {
                     dbTrans = dbConn.BeginTransaction();
+                    DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction; 
                 }
                 sqlBulkCopy = new SqlBulk(dbConn, dbTrans, BulkCopyTimeout, DbBulkCopyOption);
             }
@@ -152,6 +153,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 if (isTransaction)
                 {
                     dbTrans = dbConn.BeginTransaction();
+                    DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
                 }
                 db2BulkCopy = new Db2Bulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
             }
@@ -168,6 +170,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 if (isTransaction)
                 {
                     dbTrans = dbConn.BeginTransaction();
+                    DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
                 }
 
                 oracleBulkCopy = new OracleBulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);

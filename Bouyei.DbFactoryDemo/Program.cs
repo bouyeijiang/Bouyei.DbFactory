@@ -53,7 +53,7 @@ namespace DbFactoryDemo
 
             var brt = dbProvider.BulkCopy(new DbExecuteBulkParameter()
             {
-                DstDataTable = dt
+                DataSource = dt
             });
  
             //entity framework 使用例子

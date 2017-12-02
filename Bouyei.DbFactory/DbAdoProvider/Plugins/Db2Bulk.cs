@@ -42,9 +42,10 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
         {
             this.Option = option;
             this.ConnectionString = ConnectionString;
-            DB2Connection oracleConnection = (DB2Connection)dbConnection;
-            bulkCopy = new DB2BulkCopy(oracleConnection, (DB2BulkCopyOptions)option);
-            bulkCopy.BulkCopyTimeout = timeout;
+            bulkCopy = new DB2BulkCopy((DB2Connection)dbConnection, (DB2BulkCopyOptions)option)
+            {
+                BulkCopyTimeout = timeout
+            };
         }
         private DB2BulkCopy CreatedBulkCopy(BulkCopyOptions option)
         {

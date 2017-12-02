@@ -39,12 +39,11 @@ namespace Bouyei.DbFactory
         }
     }
 
-    public class DbExecuteParameter
+    public class DbExecuteParameter:BaseParameter
     {
         public DbExecuteParameter(int ExecuteTimeout)
-        {
-            this.ExectueTimeout = ExecuteTimeout;
-        }
+            :base(ExecuteTimeout)
+        { }
 
         public DbExecuteParameter(params DbProviderParameter[] dbProviderParameters)
         {
@@ -54,9 +53,9 @@ namespace Bouyei.DbFactory
         public DbExecuteParameter(string CommandText,
             int ExectueTimeout = 1800,
             DbProviderParameter[] dbProviderParameters = null)
+            :base(ExectueTimeout)
         {
             this.CommandText = CommandText;
-            this.ExectueTimeout = ExectueTimeout;
             this.dbProviderParameters = dbProviderParameters;
         }
         /// <summary>
@@ -72,51 +71,46 @@ namespace Bouyei.DbFactory
         /// </summary>
         public bool IsStoredProcedure { get; set; }
         /// <summary>
-        /// 超时默认值,1800s
-        /// </summary>
-        public int ExectueTimeout { get; set; }
-        /// <summary>
         /// 指定脚本的传入参数
         /// </summary>
         public DbProviderParameter[] dbProviderParameters { get; set; }
     }
 
-    public class DbExecuteBulkParameter : DbExecuteParameter
+    public class DbExecuteBulkParameter : BaseParameter
     {
-
         public DbExecuteBulkParameter()
             : base()
         { }
 
-        public DbExecuteBulkParameter(DataTable dstDataTable,
+        public DbExecuteBulkParameter(DataTable dataSource,
             int BatchSize = 10240,
             int ExecuteTimeout = 1800,
             bool IsTransaction = false)
             : base(ExecuteTimeout)
         {
-            this.DstDataTable = dstDataTable;
-            this.DstTableName = dstDataTable.TableName;
+            this.DataSource = dataSource;
+            this.TableName = dataSource.TableName;
             this.batchSize = BatchSize;
             this.IsTransaction = IsTransaction;
         }
 
-        public DbExecuteBulkParameter(string dstTableName, IDataReader iDataReader,
-           int BatchSize = 10240,
-           int ExecuteTimeout = 1800,
-           bool IsTransaction = false)
-            : base(ExecuteTimeout)
+        public DbExecuteBulkParameter(string tableName, IDataReader iDataReader,
+           int batchSize = 10240,
+           int executeTimeout = 1800,
+           bool isTransaction = false)
+            : base(executeTimeout)
         {
             this.IDataReader = iDataReader;
-            this.DstTableName = dstTableName;
-            this.batchSize = BatchSize;
-            this.IsTransaction = IsTransaction;
+            this.TableName = tableName;
+            this.batchSize = batchSize;
+            this.IsTransaction = isTransaction;
         }
 
-        public string DstTableName { get; private set; }
+        public string TableName { get; private set; }
         /// <summary>
         /// 如果使用DataTable该数据集批量写入，必需设置TableName
         /// </summary>
-        public DataTable DstDataTable { get; set; }
+        public DataTable DataSource { get; set; }
 
         public IDataReader IDataReader { get; set; }
 
@@ -172,7 +166,7 @@ namespace Bouyei.DbFactory
     }
 
     [Serializable]
-    public class ConnectionConfiguraton
+    public class ConnectionConfiguration
     {
         public ProviderType DbType { get; set; }
 
@@ -237,6 +231,19 @@ namespace Bouyei.DbFactory
                     break;
             }
             return ConnectionString;
+        }
+    }
+
+    public class BaseParameter
+    {
+        /// <summary>
+        /// 超时默认值,1800s
+        /// </summary>
+        public int ExecuteTimeout { get; set; }
+
+        public BaseParameter(int ExecuteTimeout=60)
+        {
+            this.ExecuteTimeout = ExecuteTimeout;
         }
     }
 }
