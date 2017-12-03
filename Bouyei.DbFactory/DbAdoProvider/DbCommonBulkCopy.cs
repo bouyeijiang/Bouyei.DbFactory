@@ -152,7 +152,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
                 if (isTransaction)
                 {
-                    dbTrans = dbConn.BeginTransaction();
                     DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
                 }
                 db2BulkCopy = new Db2Bulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
@@ -169,7 +168,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
                 if (isTransaction)
                 {
-                    dbTrans = dbConn.BeginTransaction();
                     DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
                 }
 

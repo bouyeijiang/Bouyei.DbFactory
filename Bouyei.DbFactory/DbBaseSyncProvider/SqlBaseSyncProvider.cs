@@ -71,68 +71,54 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
 
         private SyncResultInfo SqlExecuteSyncTask(SqlConnection sourceConn, SqlConnection targetConn, SyncDirectionType direction)
         {
-            //DbSyncProvider d = new DbSyncProvider();
-            //SqlConnection conn = (SqlConnection)sourceConn;
-
-            //d.SelectScopeInfoCommand = new SqlCommand("", conn);
-            //d.UpdateScopeInfoCommand = new SqlCommand("", conn);
-            //d.SelectNewTimestampCommand = new SqlCommand("", conn);
-
-            SyncOrchestrator syncSession = new SyncOrchestrator
+            using (SqlSyncProvider localProvider = new SqlSyncProvider(ScopeName, sourceConn))
+            using (SqlSyncProvider remoteProvider = new SqlSyncProvider(ScopeName, targetConn))
             {
-                //LocalProvider = new DbSyncProvider()
-                //{
-                //    Connection = sourceConn,
-                //    ScopeName = ScopeName
-                //},
-                //RemoteProvider = new DbSyncProvider()
-                //{
-                //    Connection = targetConn,
-                //    ScopeName = ScopeName
-                //},
-
-                LocalProvider = new SqlSyncProvider(ScopeName, sourceConn),
-                RemoteProvider = new SqlSyncProvider(ScopeName, targetConn),
-                Direction = (SyncDirectionOrder)direction,
-            };
-
-            if (SyncProgressHanlder != null)
-            {
-                syncSession.SessionProgress += (object sender, SyncStagedProgressEventArgs e) =>
+                SyncOrchestrator syncSession = new SyncOrchestrator
                 {
-                    SyncProgressHanlder(new SyncProgressInfo()
+                    LocalProvider = localProvider,
+                    RemoteProvider = remoteProvider,
+                    Direction = (SyncDirectionOrder)direction,
+                };
+
+                if (SyncProgressHanlder != null)
+                {
+                    syncSession.SessionProgress += (object sender, SyncStagedProgressEventArgs e) =>
                     {
-                        CompletedValue = (int)e.CompletedWork,
-                        SessionStage = e.Stage.ToString(),
-                        SynPosition = e.ReportingProvider.ToString(),
-                        TotalValue = (int)e.TotalWork
-                    });
+                        SyncProgressHanlder(new SyncProgressInfo()
+                        {
+                            CompletedValue = (int)e.CompletedWork,
+                            SessionStage = e.Stage.ToString(),
+                            SynPosition = e.ReportingProvider.ToString(),
+                            TotalValue = (int)e.TotalWork
+                        });
+                    };
+                }
+                if (SyncStateHandler != null)
+                {
+                    syncSession.StateChanged += (object sender, SyncOrchestratorStateChangedEventArgs e) =>
+                    {
+                        SyncStateHandler(new SyncStateInfo()
+                        {
+                            NewState = e.NewState.ToString(),
+                            OldState = e.OldState.ToString()
+                        });
+                    };
+                }
+
+                SyncOperationStatistics syncResult = syncSession.Synchronize();
+                return new SyncResultInfo
+                {
+                    SyncStartTime = syncResult.SyncStartTime,
+                    SyncEndTime = syncResult.SyncEndTime,
+                    DownloadChangesApplied = syncResult.DownloadChangesApplied,
+                    DownloadChangesFailed = syncResult.DownloadChangesFailed,
+                    DownloadChangesTotal = syncResult.DownloadChangesTotal,
+                    UploadChangesApplied = syncResult.UploadChangesApplied,
+                    UploadChangesFailed = syncResult.UploadChangesFailed,
+                    UploadChangesTotal = syncResult.UploadChangesTotal
                 };
             }
-            if (SyncStateHandler != null)
-            {
-                syncSession.StateChanged += (object sender, SyncOrchestratorStateChangedEventArgs e) =>
-                {
-                    SyncStateHandler(new SyncStateInfo()
-                    {
-                        NewState = e.NewState.ToString(),
-                        OldState = e.OldState.ToString()
-                    });
-                };
-            }
-
-            SyncOperationStatistics syncResult = syncSession.Synchronize();
-            return new SyncResultInfo
-            {
-                SyncStartTime = syncResult.SyncStartTime,
-                SyncEndTime = syncResult.SyncEndTime,
-                DownloadChangesApplied = syncResult.DownloadChangesApplied,
-                DownloadChangesFailed = syncResult.DownloadChangesFailed,
-                DownloadChangesTotal = syncResult.DownloadChangesTotal,
-                UploadChangesApplied = syncResult.UploadChangesApplied,
-                UploadChangesFailed = syncResult.UploadChangesFailed,
-                UploadChangesTotal = syncResult.UploadChangesTotal
-            };
         }
 
         private void SqlInitSync(SqlConnection targetConn, SqlConnection sourceConn)
