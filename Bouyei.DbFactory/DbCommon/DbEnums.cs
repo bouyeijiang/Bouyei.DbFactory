@@ -26,4 +26,24 @@ namespace Bouyei.DbFactory
         OleDb = 0x20,
         Odbc = 0x40
     }
+
+    public enum SyncDirectionType
+    {
+        //
+        // 摘要:
+        //     先上载，再下载。
+        UploadAndDownload = 0,
+        //
+        // 摘要:
+        //     先下载，再上载。
+        DownloadAndUpload = 1,
+        //
+        // 摘要:
+        //     仅上载。
+        Upload = 2,
+        //
+        // 摘要:
+        //     仅下载。
+        Download = 3
+    }
 }

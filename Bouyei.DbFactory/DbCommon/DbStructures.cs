@@ -6,12 +6,17 @@
  *profile: www.openthinking.cn
 ---------------------------------------------------------------*/
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
 namespace Bouyei.DbFactory
 {
     public delegate void BulkCopiedArgs(long rows);
+
+    public delegate void SyncProgressArgs(SyncProgressInfo info);
+
+    public delegate void SyncStateArgs(SyncStateInfo info);
 
     public class DbProviderParameter : DbParameter
     {
@@ -245,5 +250,127 @@ namespace Bouyei.DbFactory
         {
             this.ExecuteTimeout = ExecuteTimeout;
         }
+    }
+
+    public class SyncTableSchema
+    {
+        public string TableName { get; set; }
+
+        public List<SyncColumnName> Columns { get; set; }
+    }
+
+    public class SyncColumnName
+    {
+        public SyncColumnName()
+        { }
+
+        public SyncColumnName(string ColumnName)
+        {
+            this.ColumnName = ColumnName;
+        }
+        public string ColumnName { get; set; }
+
+        public string DataType { get; set; }
+
+        public int Size { get; set; }
+
+        public bool IsPrimaryKey { get; set; }
+
+        public int IncrementStep { get; set; }
+
+        public int IncrementStart { get; set; }
+    }
+
+    public class SyncResultInfo
+    {
+        public SyncResultInfo() { }
+        //
+        // 摘要:
+        //     获取或设置同步会话开始的日期和时间。
+        //
+        // 返回结果:
+        //     同步会话开始的日期和时间。
+        public DateTime SyncStartTime { get; set; }
+        //
+        // 摘要:
+        //     获取或设置同步会话结束的日期和时间。
+        //
+        // 返回结果:
+        //     同步会话结束的日期和时间。
+        public DateTime SyncEndTime { get; set; }
+        //
+        // 摘要:
+        //     获取在下载会话期间成功应用的变更的总数。
+        //
+        // 返回结果:
+        //     在下载会话期间成功应用的变更的总数。如果未发生下载会话，则返回 0。
+        public int DownloadChangesApplied { get; set; }
+        //
+        // 摘要:
+        //     获取在下载会话期间未应用的变更的总数。
+        //
+        // 返回结果:
+        //     在下载会话期间未应用的变更的总数。
+        public int DownloadChangesFailed { get; set; }
+        //
+        // 摘要:
+        //     获取在下载会话期间尝试的变更的总数。
+        //
+        // 返回结果:
+        //     在下载会话期间尝试的变更的总数。
+        public int DownloadChangesTotal { get; set; }
+        //
+        // 摘要:
+        //     获取在上载会话期间成功应用的变更的总数。
+        //
+        // 返回结果:
+        //     在上载会话期间成功应用的变更的总数。
+        public int UploadChangesApplied { get; set; }
+        //
+        // 摘要:
+        //     获取在上载会话期间应用失败的变更的总数。
+        //
+        // 返回结果:
+        //     在上载会话期间应用失败的变更的总数。
+        public int UploadChangesFailed { get; set; }
+        //
+        // 摘要:
+        //     获取在上载会话期间尝试的变更的总数。
+        //
+        // 返回结果:
+        //     在上载会话期间尝试的变更的总数。
+        public int UploadChangesTotal { get; set; }
+    }
+
+    public class SyncParameter
+    {
+        //public int SourceTimeout { get; set; }
+
+        //public int TargetTimeout { get; set; }
+
+        public bool IsPreprovision { get; set; }
+
+        public bool IsDeprovision { get; set; }
+
+        public SyncDirectionType Direction { get; set; }
+
+    }
+
+    public class SyncProgressInfo
+    {
+        public int CompletedValue { get; set; }
+
+        public int TotalValue { get; set; }
+
+        public string SessionStage { get; set; }
+
+        public string SynPosition { get; set; }
+    }
+
+    public class SyncStateInfo
+    {
+        public string OldState { get; set; }
+
+        public string NewState { get; set; }
     }
 }

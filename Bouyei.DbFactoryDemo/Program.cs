@@ -9,21 +9,20 @@ using Bouyei.DbFactory;
 using System.Configuration;
 using System.Threading;
 
-namespace DbFactoryDemo
+namespace Bouyei.DbFactoryDemo
 {
     using Bouyei.DbFactory.DbAdoProvider;
     using Bouyei.DbFactory.DbSqlProvider;
     using Bouyei.DbFactory.DbSqlProvider.Extensions;
     using Bouyei.DbFactory.DbMapper;
-    using Bouyei.DbEntities; 
+    using Bouyei.DbEntities;
 
     class Program
     {
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
             //生成简单查询脚本
             var sqlProvider = SqlProvider.CreateProvider();
-
             var sql = sqlProvider.Select("username", "realname", "age")
                 .From("sys_user").Where(new KeyValue()
                 {
@@ -35,7 +34,19 @@ namespace DbFactoryDemo
 
             ////ado.net 使用例子
             string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
+            AdoDemo(connectionString);
+
+            //orm
+            OrmDemo(connectionString);
+
+            //Data Sync Provider
+            SyncProviderDemo syncProvider = new SyncProviderDemo();
+            syncProvider.Execute();
+        }
+
+        private static void AdoDemo(string connectionString)
+        {
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, ProviderType.SqlServer);
             var ext = dbProvider.Connect(connectionString);
             var adort = dbProvider.Query(new DbExecuteParameter()
             {
@@ -55,7 +66,10 @@ namespace DbFactoryDemo
             {
                 DataSource = dt
             });
- 
+        }
+
+        private static void OrmDemo(string connectionString)
+        {
             //entity framework 使用例子
             IOrmProvider ormProvider = OrmProvider.CreateProvider("DbConnection");
             try
@@ -74,7 +88,7 @@ namespace DbFactoryDemo
                 //保存修改
                 int rt = ormProvider.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.Write(ex.Message);
             }
@@ -82,7 +96,7 @@ namespace DbFactoryDemo
 
         class UserDto
         {
-           public string UserName { get; set; }
+            public string UserName { get; set; }
 
             public string Pwd { get; set; }
         }
