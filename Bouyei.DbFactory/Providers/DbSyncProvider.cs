@@ -15,6 +15,9 @@ namespace Bouyei.DbFactory
 {
     using DbBaseSyncProvider;
 
+    /// <summary>
+    /// dependency Microsoft Sync Framework sdk
+    /// </summary>
     public class DbSyncProvider : IDbSyncProvider
     {
         SqlBaseSyncProvider sqlSyncProvider = null;
@@ -58,6 +61,11 @@ namespace Bouyei.DbFactory
                 ScopeName, TableSchemaes, SyncProviderType);
         }
 
+        /// <summary>
+        /// executing task
+        /// </summary>
+        /// <param name="syncParameter"></param>
+        /// <returns></returns>
         public SyncResultInfo ExecuteSync(SyncParameter syncParameter)
         {
             if (SyncProviderType == ProviderType.SqlServer)
@@ -73,11 +81,30 @@ namespace Bouyei.DbFactory
             }
         }
 
+        /// <summary>
+        ///remove setting
+        /// </summary>
         public void DeprovisionScope()
         {
             if (SyncProviderType == ProviderType.SqlServer)
             {
                 sqlSyncProvider.DeprovisionScope();
+            }
+            else
+            {
+                throw new Exception("no support this provider type instance" + SyncProviderType.ToString());
+            }
+        }
+
+        /// <summary>
+        /// initilize setting
+        /// </summary>
+        /// <param name="filterSchemaes"></param>
+        public void ProvisionScope(List<SyncFilterSchema> filterSchemaes)
+        {
+            if (SyncProviderType == ProviderType.SqlServer)
+            {
+                sqlSyncProvider.ProvisionScope(filterSchemaes);
             }
             else
             {

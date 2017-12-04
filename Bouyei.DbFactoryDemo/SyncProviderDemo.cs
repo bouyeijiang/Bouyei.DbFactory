@@ -27,7 +27,8 @@ namespace Bouyei.DbFactoryDemo
                 Columns = new List<SyncColumnName>() {
                     new SyncColumnName("name"){ DataType="nvarchar",Size=50},
                     new SyncColumnName("id"){ DataType="int", IsPrimaryKey= true, IncrementStart=1, IncrementStep=1,Size=4},
-                    new  SyncColumnName("no"){ DataType="int",Size=4}
+                    new  SyncColumnName("no"){ DataType="int",Size=4},
+                    new SyncColumnName("age"){DataType="int",Size=4 }
                 }
             });
 
@@ -36,11 +37,22 @@ namespace Bouyei.DbFactoryDemo
             dbSyncProvider = DbSyncProvider.CreateProvider(sourceConnString, targetConnString,
                 "ScopeName", tableSchema);
 
-            //dbSyncProvider.DeprovisionScope();
+            //清空同步记录设置 需要重新初始化设置
+            dbSyncProvider.DeprovisionScope();
+
+            //重设同步记录设置 初次使用需要初始化
+            dbSyncProvider.ProvisionScope(null);
+
+            //dbSyncProvider.ProvisionScope(new List<SyncFilterSchema>() {
+            //     new SyncFilterSchema(){
+            //          FilterColumns=new List<string>(){"[age]"},
+            //          FilterClause="[side].[age]>20"
+            //     }
+            //});
 
             var rt = dbSyncProvider.ExecuteSync(new SyncParameter()
             {
-                Direction = SyncDirectionType.Upload
+                Direction = SyncDirectionType.Upload,
             });
 
             Console.WriteLine("beginTime" + rt.SyncStartTime);

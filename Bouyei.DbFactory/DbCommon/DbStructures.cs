@@ -259,6 +259,15 @@ namespace Bouyei.DbFactory
         public List<SyncColumnName> Columns { get; set; }
     }
 
+    public class SyncFilterSchema
+    {
+        public string TableName { get; set; }
+
+        public string FilterClause { get; set; }
+
+        public List<string> FilterColumns { get; set; }
+    }
+
     public class SyncColumnName
     {
         public SyncColumnName()
@@ -344,16 +353,7 @@ namespace Bouyei.DbFactory
 
     public class SyncParameter
     {
-        //public int SourceTimeout { get; set; }
-
-        //public int TargetTimeout { get; set; }
-
-        public bool IsPreprovision { get; set; }
-
-        public bool IsDeprovision { get; set; }
-
         public SyncDirectionType Direction { get; set; }
-
     }
 
     public class SyncProgressInfo

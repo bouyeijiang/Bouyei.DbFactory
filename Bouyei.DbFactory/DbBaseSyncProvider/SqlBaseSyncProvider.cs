@@ -48,15 +48,7 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             using (SqlConnection serverConn = new SqlConnection(TargetConnectionString))
             using (SqlConnection clientConn = new SqlConnection(SourceConnectionString))
             {
-                if (syncParameter.IsPreprovision)
-                    SqlInitSync(serverConn, clientConn);
-
-                var rt = SqlExecuteSyncTask(clientConn, serverConn, syncParameter.Direction);
-
-                if (syncParameter.IsDeprovision)
-                    SqlDeprovisionSync(clientConn, serverConn);
-
-                return rt;
+               return SqlExecuteSyncTask(clientConn, serverConn, syncParameter.Direction);
             }
         }
 
@@ -66,6 +58,15 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             using (SqlConnection clientConn = new SqlConnection(SourceConnectionString))
             {
                 SqlDeprovisionSync(clientConn, serverConn);
+            }
+        }
+
+        public void ProvisionScope(List<SyncFilterSchema> filterSchemaes)
+        {
+            using (SqlConnection serverConn = new SqlConnection(TargetConnectionString))
+            using (SqlConnection clientConn = new SqlConnection(SourceConnectionString))
+            {
+                SqlInitSync(clientConn, serverConn, filterSchemaes);
             }
         }
 
@@ -121,10 +122,10 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             }
         }
 
-        private void SqlInitSync(SqlConnection targetConn, SqlConnection sourceConn)
+        private void SqlInitSync(SqlConnection targetConn, SqlConnection sourceConn,List<SyncFilterSchema> filterSchemaes)
         {
             var scopeDesc = PreProvisionTarget();
-            SqlSetScopeProvisioning(targetConn, scopeDesc);
+            SqlSetScopeProvisioning(targetConn, scopeDesc,filterSchemaes);
 
             SqlPreProvisionSourceFromTarget(sourceConn, targetConn);
         }
@@ -148,8 +149,7 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
 
         private bool SqlScopeExists(SqlConnection dbConnection)
         {
-            DbSyncScopeDescription scopeDesc = SqlSyncDescriptionBuilder.GetDescriptionForScope(ScopeName, dbConnection);
-            SqlSyncScopeProvisioning scopeProvisioning = new SqlSyncScopeProvisioning(dbConnection, scopeDesc);
+            SqlSyncScopeProvisioning scopeProvisioning = new SqlSyncScopeProvisioning(dbConnection);
             return scopeProvisioning.ScopeExists(ScopeName);
         }
 
@@ -178,8 +178,6 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             }
 
             return targetScopeDesc;
-
-            // SqlSetScopeProvisioning(targetConn, targetScopeDesc);
         }
 
         private void SqlPreProvisionSourceFromTarget(SqlConnection sourceConn, SqlConnection targetConn)
@@ -193,14 +191,25 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             }
         }
 
-        private bool SqlSetScopeProvisioning(SqlConnection sqlConn, DbSyncScopeDescription scopeDesc)
+        private bool SqlSetScopeProvisioning(SqlConnection sqlConn, DbSyncScopeDescription scopeDesc,
+            List<SyncFilterSchema> filterSchemaes)
         {
-            SqlSyncScopeProvisioning targetScopeProvisioning = new SqlSyncScopeProvisioning(sqlConn, scopeDesc);
-            bool exist = targetScopeProvisioning.ScopeExists(ScopeName);
+            SqlSyncScopeProvisioning scopeProvisioning = new SqlSyncScopeProvisioning(sqlConn, scopeDesc);
+            bool exist = scopeProvisioning.ScopeExists(ScopeName);
             if (exist == false)
             {
-                targetScopeProvisioning.SetCreateTableDefault(DbSyncCreationOption.CreateOrUseExisting);
-                targetScopeProvisioning.Apply();
+                scopeProvisioning.SetUseBulkProceduresDefault(true);
+                if (filterSchemaes != null)
+                    foreach (var table in filterSchemaes)
+                    {
+                        foreach (var col in table.FilterColumns)
+                        {
+                            scopeProvisioning.Tables[table.TableName].AddFilterColumn(col);
+                        }
+                        scopeProvisioning.Tables[table.TableName].FilterClause = table.FilterClause;
+                    }
+
+                scopeProvisioning.Apply();
             }
 
             return exist == false;

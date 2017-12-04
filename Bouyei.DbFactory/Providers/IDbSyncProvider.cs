@@ -26,5 +26,7 @@ namespace Bouyei.DbFactory
         SyncResultInfo ExecuteSync(SyncParameter syncParameter);
 
         void DeprovisionScope();
+
+        void ProvisionScope(List<SyncFilterSchema> filterSchemaes);
     }
 }
