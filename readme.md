@@ -55,7 +55,9 @@ ado.net访问数据库例子：
                 //int rt = ormProvider.SaveChanges();
 
 
-  List<SyncTableSchema> tableSchema = new List<SyncTableSchema>();
+//数据库表同步
+
+            List<SyncTableSchema> tableSchema = new List<SyncTableSchema>();
             tableSchema.Add(new SyncTableSchema()
             {
                 TableName = "user",
@@ -67,9 +69,6 @@ ado.net访问数据库例子：
                 }
             });
 
-
-
-//数据库表同步
 
             string sourceConnString = "Server=127.0.0.1;Database=A;User Id=sa;Password=bouyei;";
             string targetConnString = "Server=127.0.0.1;Database=B;User Id=sa;Password=bouyei;";
