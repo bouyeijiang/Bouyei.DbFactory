@@ -41,14 +41,15 @@ namespace Bouyei.DbFactoryDemo
             dbSyncProvider.DeprovisionScope();
 
             //重设同步记录设置 初次使用需要初始化
-            dbSyncProvider.ProvisionScope(null);
+            // dbSyncProvider.ProvisionScope(null);
 
-            //dbSyncProvider.ProvisionScope(new List<SyncFilterSchema>() {
-            //     new SyncFilterSchema(){
-            //          FilterColumns=new List<string>(){"[age]"},
-            //          FilterClause="[side].[age]>20"
-            //     }
-            //});
+            dbSyncProvider.ProvisionScope(new List<SyncFilterSchema>() {
+                 new SyncFilterSchema(){
+                      TableName="user",
+                      FilterColumns=new List<string>(){"[age]"},
+                      FilterClause="[side].[age]>20"
+                 }
+            });
 
             var rt = dbSyncProvider.ExecuteSync(new SyncParameter()
             {

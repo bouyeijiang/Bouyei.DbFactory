@@ -125,9 +125,9 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
         private void SqlInitSync(SqlConnection targetConn, SqlConnection sourceConn,List<SyncFilterSchema> filterSchemaes)
         {
             var scopeDesc = PreProvisionTarget();
-            SqlSetScopeProvisioning(targetConn, scopeDesc,filterSchemaes);
 
-            SqlPreProvisionSourceFromTarget(sourceConn, targetConn);
+            SqlSetScopeProvisioning(targetConn, scopeDesc,filterSchemaes);
+            SqlSetScopeProvisioning(sourceConn, scopeDesc,filterSchemaes);
         }
 
         private void SqlDeprovisionSync(SqlConnection sourceConn, SqlConnection targetConn)
@@ -180,17 +180,6 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             return targetScopeDesc;
         }
 
-        private void SqlPreProvisionSourceFromTarget(SqlConnection sourceConn, SqlConnection targetConn)
-        {
-            DbSyncScopeDescription targetScopeDesc = SqlSyncDescriptionBuilder.GetDescriptionForScope(ScopeName, targetConn);
-            SqlSyncScopeProvisioning sourceScopeProvisioning = new SqlSyncScopeProvisioning(sourceConn, targetScopeDesc);
-            bool exist = sourceScopeProvisioning.ScopeExists(ScopeName);
-            if (exist == false)
-            {
-                sourceScopeProvisioning.Apply();
-            }
-        }
-
         private bool SqlSetScopeProvisioning(SqlConnection sqlConn, DbSyncScopeDescription scopeDesc,
             List<SyncFilterSchema> filterSchemaes)
         {
@@ -198,6 +187,7 @@ namespace Bouyei.DbFactory.DbBaseSyncProvider
             bool exist = scopeProvisioning.ScopeExists(ScopeName);
             if (exist == false)
             {
+                scopeProvisioning.SetCreateTableDefault(DbSyncCreationOption.CreateOrUseExisting);
                 scopeProvisioning.SetUseBulkProceduresDefault(true);
                 if (filterSchemaes != null)
                     foreach (var table in filterSchemaes)

@@ -22,22 +22,22 @@ namespace Bouyei.DbFactoryDemo
         static void Main(string[] args)
         {
             //生成简单查询脚本
-            var sqlProvider = SqlProvider.CreateProvider();
-            var sql = sqlProvider.Select("username", "realname", "age")
-                .From("sys_user").Where(new KeyValue()
-                {
-                    Name = "username",
-                    Value = "bouyei"
-                }).SqlString;
+            //var sqlProvider = SqlProvider.CreateProvider();
+            //var sql = sqlProvider.Select("username", "realname", "age")
+            //    .From("sys_user").Where(new KeyValue()
+            //    {
+            //        Name = "username",
+            //        Value = "bouyei"
+            //    }).SqlString;
 
-            //结果:Select username,realname,age From sys_user Where username='bouyei' 
+            ////结果:Select username,realname,age From sys_user Where username='bouyei' 
 
-            ////ado.net 使用例子
-            string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-            AdoDemo(connectionString);
+            //////ado.net 使用例子
+            //string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+            //AdoDemo(connectionString);
 
-            //orm
-            OrmDemo(connectionString);
+            ////orm
+            //OrmDemo(connectionString);
 
             //Data Sync Provider
             SyncProviderDemo syncProvider = new SyncProviderDemo();
