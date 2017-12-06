@@ -88,7 +88,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             return dbConn;
         }
 
-        protected DbDataAdapter CreateAdapter(DbCommand cmd=null)
+        protected DbDataAdapter CreateAdapter()
         {
             if (IsSingleton)
             {

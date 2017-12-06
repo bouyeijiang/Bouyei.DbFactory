@@ -129,8 +129,8 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbDataAdapter adapter = this.CreateAdapter())
                     using (DbCommand cmd = this.CreateCommand(conn, dbParameter))
+                    using (DbDataAdapter adapter = this.CreateAdapter())
                     {
                         DataTable dt = new DataTable();
                         adapter.SelectCommand = cmd;
@@ -152,8 +152,8 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbDataAdapter adapter = CreateAdapter())
                     using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataSet ds = new DataSet();
                         adapter.SelectCommand = cmd;
@@ -500,8 +500,8 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbDataAdapter adapter = CreateAdapter())
                     using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
+                    using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataTable dt = new DataTable();
                         adapter.SelectCommand = cmd;
