@@ -130,7 +130,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbDataAdapter adapter = this.CreateAdapter())
-                    using (DbCommand cmd = this.CreateCommand(dbParameter, conn))
+                    using (DbCommand cmd = this.CreateCommand(conn, dbParameter))
                     {
                         DataTable dt = new DataTable();
                         adapter.SelectCommand = cmd;
@@ -153,7 +153,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbDataAdapter adapter = CreateAdapter())
-                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     {
                         DataSet ds = new DataSet();
                         adapter.SelectCommand = cmd;
@@ -176,7 +176,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows == false)
@@ -208,7 +208,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows == false)
@@ -240,7 +240,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     DbConnection conn = CreateConnection(DbConnectionString);
-                    DbCommand cmd = CreateCommand(dbParameter, conn);
+                    DbCommand cmd = CreateCommand(conn, dbParameter);
                     IDataReader reader = cmd.ExecuteReader();
                     return ResultInfo<IDataReader, string>.Create(reader, string.Empty);
                 }
@@ -258,7 +258,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     {
                         int rt = cmd.ExecuteNonQuery();
 
@@ -282,7 +282,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(dbParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     using (DbDataReader dReader = cmd.ExecuteReader())
                     {
                         int oCnt = dstTable.Rows.Count;
@@ -310,7 +310,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                     {
                         try
                         {
-                            using (DbCommand cmd = CreateCommand(dbParameter, conn, tran))
+                            using (DbCommand cmd = CreateCommand(conn, dbParameter, tran))
                             {
                                 int rt = cmd.ExecuteNonQuery();
                                 tran.Commit();
@@ -347,17 +347,16 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         try
                         {
                             int rows = 0;
-                            for (int i = 0; i < CommandTexts.Length; ++i)
+                            using (DbCommand cmd = CreateCommand(conn, null, tran))
                             {
-                                using (DbCommand cmd = CreateCommand(new DbExecuteParameter()
+                                cmd.CommandTimeout = timeout;
+                                for (int i = 0; i < CommandTexts.Length; ++i)
                                 {
-                                    CommandText = CommandTexts[i],
-                                    ExecuteTimeout = timeout
-                                }, conn, tran))
-                                {
+                                    cmd.CommandText = CommandTexts[i];
                                     rows += cmd.ExecuteNonQuery();
                                 }
                             }
+
                             tran.Commit();
                             return new ResultInfo<int, string>(rows < 0 ? 0 : rows, string.Empty);
                         }
@@ -382,7 +381,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
                     {
                         object obj = cmd.ExecuteScalar();
 
@@ -471,7 +470,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows == false)
@@ -502,7 +501,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbDataAdapter adapter = CreateAdapter())
-                    using (DbCommand cmd = CreateCommand(dbExecuteParameter, conn))
+                    using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
                     {
                         DataTable dt = new DataTable();
                         adapter.SelectCommand = cmd;
