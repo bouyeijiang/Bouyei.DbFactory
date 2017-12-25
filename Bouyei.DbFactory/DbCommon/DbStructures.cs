@@ -18,7 +18,7 @@ namespace Bouyei.DbFactory
 
     public delegate void SyncStateArgs(SyncStateInfo info);
 
-    public class DbProviderParameter : DbParameter
+    public class CmdParameter : DbParameter
     {
         public override DbType DbType { get; set; }
 
@@ -44,20 +44,20 @@ namespace Bouyei.DbFactory
         }
     }
 
-    public class DbExecuteParameter:BaseParameter
+    public class Parameter:BaseParameter
     {
-        public DbExecuteParameter(int ExecuteTimeout)
+        public Parameter(int ExecuteTimeout)
             :base(ExecuteTimeout)
         { }
 
-        public DbExecuteParameter(params DbProviderParameter[] dbProviderParameters)
+        public Parameter(params CmdParameter[] dbProviderParameters)
         {
             this.dbProviderParameters = dbProviderParameters;
         }
 
-        public DbExecuteParameter(string CommandText,
+        public Parameter(string CommandText,
             int ExectueTimeout = 1800,
-            DbProviderParameter[] dbProviderParameters = null)
+            CmdParameter[] dbProviderParameters = null)
             :base(ExectueTimeout)
         {
             this.CommandText = CommandText;
@@ -78,16 +78,16 @@ namespace Bouyei.DbFactory
         /// <summary>
         /// 指定脚本的传入参数
         /// </summary>
-        public DbProviderParameter[] dbProviderParameters { get; set; }
+        public CmdParameter[] dbProviderParameters { get; set; }
     }
-
-    public class DbExecuteBulkParameter : BaseParameter
+     
+    public class BulkParameter : BaseParameter
     {
-        public DbExecuteBulkParameter()
+        public BulkParameter()
             : base()
         { }
 
-        public DbExecuteBulkParameter(DataTable dataSource,
+        public BulkParameter(DataTable dataSource,
             int BatchSize = 10240,
             int ExecuteTimeout = 1800,
             bool IsTransaction = false)
@@ -99,7 +99,7 @@ namespace Bouyei.DbFactory
             this.IsTransaction = IsTransaction;
         }
 
-        public DbExecuteBulkParameter(string tableName, IDataReader iDataReader,
+        public BulkParameter(string tableName, IDataReader iDataReader,
            int batchSize = 10240,
            int executeTimeout = 1800,
            bool isTransaction = false)
@@ -171,7 +171,7 @@ namespace Bouyei.DbFactory
     }
 
     [Serializable]
-    public class ConnectionConfiguration
+    public class ConnectionConfig
     {
         public ProviderType DbType { get; set; }
 

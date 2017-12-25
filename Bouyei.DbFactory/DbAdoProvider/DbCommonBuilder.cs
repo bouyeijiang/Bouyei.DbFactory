@@ -118,7 +118,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             return dbCommandBuilder;
         }
 
-        protected DbCommand CreateCommand(DbConnection dbConn, DbExecuteParameter dbParameter, DbTransaction dbTrans = null)
+        protected DbCommand CreateCommand(DbConnection dbConn, Parameter dbParameter, DbTransaction dbTrans = null)
         {
             if (IsSingleton)
             {
@@ -145,7 +145,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
             if (dbParameter.dbProviderParameters != null)
             {
-                foreach (DbProviderParameter param in dbParameter.dbProviderParameters)
+                foreach (CmdParameter param in dbParameter.dbProviderParameters)
                 {
                     dbCommand.Parameters.Add(CreateParameter(param));
                 }
@@ -160,7 +160,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             return dbTransaction;
         }
 
-        protected DbParameter CreateParameter(DbProviderParameter dbProviderParameter)
+        protected DbParameter CreateParameter(CmdParameter dbProviderParameter)
         {
             switch (DbProviderType)
             {

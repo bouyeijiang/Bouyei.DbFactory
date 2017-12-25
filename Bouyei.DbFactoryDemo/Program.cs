@@ -48,7 +48,7 @@ namespace Bouyei.DbFactoryDemo
         {
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, ProviderType.SqlServer);
             var ext = dbProvider.Connect(connectionString);
-            var adort = dbProvider.Query(new DbExecuteParameter()
+            var adort = dbProvider.Query(new Parameter()
             {
                 CommandText = "select * from [user]"
             });
@@ -62,7 +62,7 @@ namespace Bouyei.DbFactoryDemo
             dt.Rows.Add(new object[] { "hhhh", 13 });
             dt.TableName = "user";
 
-            var brt = dbProvider.BulkCopy(new DbExecuteBulkParameter()
+            var brt = dbProvider.BulkCopy(new BulkParameter()
             {
                 DataSource = dt
             });

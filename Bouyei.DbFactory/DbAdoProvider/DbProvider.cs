@@ -94,7 +94,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         }
 
         public static DbProvider CreateProvider(
-            ConnectionConfiguration connectionConfiguration)
+            ConnectionConfig connectionConfiguration)
         {
             return new DbProvider(connectionConfiguration.ToString(),
                 connectionConfiguration.DbType);
@@ -122,7 +122,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<DataTable, string> Query(DbExecuteParameter dbParameter)
+        public ResultInfo<DataTable, string> Query(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -145,7 +145,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<DataSet, string> QueryToSet(DbExecuteParameter dbParameter)
+        public ResultInfo<DataSet, string> QueryToSet(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -168,7 +168,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> QueryToReader(DbExecuteParameter dbParameter, Func<IDataReader, bool> rowAction)
+        public ResultInfo<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader, bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -199,7 +199,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int,string> QueryTo<T>(DbExecuteParameter dbParameter,Func<T,bool> rowAction)
+        public ResultInfo<int,string> QueryTo<T>(Parameter dbParameter,Func<T,bool> rowAction)
              where T:new()
         {
             using (LockWait lwait = new LockWait(ref lParam))
@@ -233,7 +233,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<IDataReader, string> QueryToReader(DbExecuteParameter dbParameter)
+        public ResultInfo<IDataReader, string> QueryToReader(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -251,7 +251,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> ExecuteCmd(DbExecuteParameter dbParameter)
+        public ResultInfo<int, string> ExecuteCmd(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -275,7 +275,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> QueryToTable(DbExecuteParameter dbParameter, DataTable dstTable)
+        public ResultInfo<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -299,7 +299,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> ExecuteTransaction(DbExecuteParameter dbParameter)
+        public ResultInfo<int, string> ExecuteTransaction(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -374,14 +374,14 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<T, string> ExecuteScalar<T>(DbExecuteParameter dbExecuteParameter)
+        public ResultInfo<T, string> ExecuteScalar<T>(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     {
                         object obj = cmd.ExecuteScalar();
 
@@ -398,7 +398,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> BulkCopy(DbExecuteBulkParameter dbExecuteParameter)
+        public ResultInfo<int, string> BulkCopy(BulkParameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -406,39 +406,39 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     Exception temex = null;
                     int cnt = 0;
-                    using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbExecuteParameter.IsTransaction))
+                    using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbParameter.IsTransaction))
                     {
                         bulkCopy.Open();
-                        bulkCopy.BulkCopiedHandler = dbExecuteParameter.BulkCopiedHandler;
+                        bulkCopy.BulkCopiedHandler = dbParameter.BulkCopiedHandler;
 
-                        bulkCopy.BatchSize = dbExecuteParameter.BatchSize;
-                        bulkCopy.BulkCopyTimeout = dbExecuteParameter.ExecuteTimeout;
+                        bulkCopy.BatchSize = dbParameter.BatchSize;
+                        bulkCopy.BulkCopyTimeout = dbParameter.ExecuteTimeout;
 
                         try
                         {
-                            if ((dbExecuteParameter.DataSource == null
-                                || dbExecuteParameter.DataSource.Rows.Count == 0)
-                                && dbExecuteParameter.IDataReader != null)
+                            if ((dbParameter.DataSource == null
+                                || dbParameter.DataSource.Rows.Count == 0)
+                                && dbParameter.IDataReader != null)
                             {
-                                bulkCopy.WriteToServer(dbExecuteParameter.IDataReader, dbExecuteParameter.TableName);
+                                bulkCopy.WriteToServer(dbParameter.IDataReader, dbParameter.TableName);
                                 cnt = 1;
                             }
                             else
                             {
-                                if (dbExecuteParameter.BatchSize > dbExecuteParameter.DataSource.Rows.Count)
-                                    dbExecuteParameter.BatchSize = dbExecuteParameter.DataSource.Rows.Count;
+                                if (dbParameter.BatchSize > dbParameter.DataSource.Rows.Count)
+                                    dbParameter.BatchSize = dbParameter.DataSource.Rows.Count;
 
-                                bulkCopy.DestinationTableName = dbExecuteParameter.DataSource.TableName;
-                                bulkCopy.WriteToServer(dbExecuteParameter.DataSource);
-                                cnt = dbExecuteParameter.DataSource.Rows.Count;
+                                bulkCopy.DestinationTableName = dbParameter.DataSource.TableName;
+                                bulkCopy.WriteToServer(dbParameter.DataSource);
+                                cnt = dbParameter.DataSource.Rows.Count;
                             }
 
                             //use transaction
-                            if (dbExecuteParameter.IsTransaction)
+                            if (dbParameter.IsTransaction)
                             {
                                 //有事务回调则由外边控制事务提交,否则直接提交事务
-                                if (dbExecuteParameter.TransactionCallback != null)
-                                    dbExecuteParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
+                                if (dbParameter.TransactionCallback != null)
+                                    dbParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
                                 else
                                     bulkCopy.dbTrans.Commit();
                             }
@@ -446,7 +446,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         catch (Exception ex)
                         {
                             temex = ex;
-                            if (dbExecuteParameter.IsTransaction)
+                            if (dbParameter.IsTransaction)
                             {
                                 if (bulkCopy.dbTrans != null) bulkCopy.dbTrans.Rollback();
                             }
@@ -463,20 +463,20 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<List<T>, string> Query<T>(DbExecuteParameter dbExecuteParameter) where T : new()
+        public ResultInfo<List<T>, string> Query<T>(Parameter dbParameter) where T : new()
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows == false)
                             return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
 
-                        var items = reader.CreateObjects<T>(dbExecuteParameter.IgnoreCase);
+                        var items = reader.CreateObjects<T>(dbParameter.IgnoreCase);
                         return ResultInfo<List<T>, string>.Create(items, string.Empty);
                     }
                 }
@@ -490,17 +490,17 @@ namespace Bouyei.DbFactory.DbAdoProvider
         /// <summary>
         /// Fun<DataTable,bool>回调方法返回false则中断执行直接返回
         /// </summary>
-        /// <param name="dbExecuteParameter"></param>
+        /// <param name="dbParameter"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public ResultInfo<int, string> QueryChanged(DbExecuteParameter dbExecuteParameter, Func<DataTable,bool> action)
+        public ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbExecuteParameter))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
                     using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataTable dt = new DataTable();
