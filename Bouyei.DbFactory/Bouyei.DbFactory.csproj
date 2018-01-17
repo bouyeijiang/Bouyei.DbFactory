@@ -203,7 +203,7 @@
     <Content Include="libs\Microsoft.Synchronization.Data.Server.dll" />
     <Content Include="libs\Microsoft.Synchronization.Data.SqlServer.dll" />
     <Content Include="libs\Microsoft.Synchronization.dll" />
-    <Content Include="libs\MySql.Data.dll" />
+    <Content Include="libs\MySql.Data.MySqlClient.dll" />
     <Content Include="libs\Oracle.DataAccess.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

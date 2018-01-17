@@ -8,6 +8,7 @@ using System.Data;
 using Bouyei.DbFactory;
 using System.Configuration;
 using System.Threading;
+using System.Data.Common;
 
 namespace Bouyei.DbFactoryDemo
 {
@@ -40,13 +41,17 @@ namespace Bouyei.DbFactoryDemo
             //OrmDemo(connectionString);
 
             //Data Sync Provider
-            SyncProviderDemo syncProvider = new SyncProviderDemo();
-            syncProvider.Execute();
+            //SyncProviderDemo syncProvider = new SyncProviderDemo();
+            //syncProvider.Execute();
+
+            AdoDemo("");
         }
 
         private static void AdoDemo(string connectionString)
         {
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, ProviderType.SqlServer);
+           DataTable inverant=  DbProviderFactories.GetFactoryClasses();
+
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, ProviderType.MySql);
             var ext = dbProvider.Connect(connectionString);
             var adort = dbProvider.Query(new Parameter()
             {
