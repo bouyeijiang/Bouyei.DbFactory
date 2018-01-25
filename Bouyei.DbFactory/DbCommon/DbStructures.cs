@@ -75,12 +75,13 @@ namespace Bouyei.DbFactory
         /// 脚本是否为存储过程
         /// </summary>
         public bool IsStoredProcedure { get; set; }
+
         /// <summary>
         /// 指定脚本的传入参数
         /// </summary>
         public CmdParameter[] dbProviderParameters { get; set; }
     }
-     
+    
     public class BulkParameter : BaseParameter
     {
         public BulkParameter()

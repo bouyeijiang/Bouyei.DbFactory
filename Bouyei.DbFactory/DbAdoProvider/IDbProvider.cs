@@ -29,7 +29,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         ResultInfo<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable);
         ResultInfo<int, string> ExecuteCmd(Parameter dbParameter);
         ResultInfo<int, string> ExecuteTransaction(Parameter dbParameter);
-        ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800);
+        ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> rowAction=null);
         ResultInfo<T, string> ExecuteScalar<T>(Parameter dbParameter);
         ResultInfo<int, string> BulkCopy(BulkParameter dbParameter);
     }

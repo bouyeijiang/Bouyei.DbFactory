@@ -335,7 +335,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800)
+        public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts,int timeout = 1800, Func<int, bool> action = null)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -353,12 +353,32 @@ namespace Bouyei.DbFactory.DbAdoProvider
                                 for (int i = 0; i < CommandTexts.Length; ++i)
                                 {
                                     cmd.CommandText = CommandTexts[i];
-                                    rows += cmd.ExecuteNonQuery();
+                                    int erow = cmd.ExecuteNonQuery();
+
+                                    if (action != null)
+                                    {
+                                        bool isContinue = action(erow);
+                                        if (isContinue == false)
+                                        {
+                                            rows = 0;
+                                            break;
+                                        }
+                                    }
+
+                                    if (erow < 0)
+                                    {
+                                        rows = 0;
+                                        break;
+                                    }
+                                    rows += erow;
                                 }
                             }
 
-                            tran.Commit();
-                            return new ResultInfo<int, string>(rows < 0 ? 0 : rows, string.Empty);
+                            if (rows > 0)
+                            {
+                                tran.Commit();
+                            }
+                            return new ResultInfo<int, string>(rows, string.Empty);
                         }
                         catch (Exception ex)
                         {
