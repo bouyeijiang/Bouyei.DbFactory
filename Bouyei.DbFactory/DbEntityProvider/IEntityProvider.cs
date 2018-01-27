@@ -33,7 +33,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         IEnumerable<TEntity> InsertRange<TEntity>(TEntity[] entities,bool isSaveChange=false) where TEntity : class;
 
-        long BulkCopyWrite<TEntity>(IList<TEntity> collection, int batchSize = 10240) where TEntity : class;
+        long BulkCopy<TEntity>(IList<TEntity> collection, int batchSize = 10240) where TEntity : class;
 
         void Update<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class;
 
@@ -43,7 +43,10 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         int ExecuteCommand(string command, params object[] parameters);
 
-        int ExecuteCommandTransaction(string command,System.Data.IsolationLevel IsolationLevel, params object[] parameters);
+        int ExecuteTransaction(string command,
+            System.Data.IsolationLevel IsolationLevel=System.Data.IsolationLevel.Serializable, params object[] parameters);
+
+        int ExecuteTransaction(string[] commands, params object[] parameters);
 
         List<T> ExecuteQuery<T>(string command, params object[] parameters);
 

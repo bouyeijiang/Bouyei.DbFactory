@@ -82,9 +82,9 @@ namespace Bouyei.DbFactory.DbEntityProvider
            return this.eContext.InsertRange<TEntity>(entities, isSaveChange);
         }
 
-        public long BulkCopyWrite<TEntity>(IList<TEntity> buffer,int batchSize=10240) where TEntity : class
+        public long BulkCopy<TEntity>(IList<TEntity> buffer,int batchSize=10240) where TEntity : class
         {
-            return this.eContext.BulkCopyWrite<TEntity>(buffer,batchSize);
+            return this.eContext.BulkCopy<TEntity>(buffer,batchSize);
         }
 
         public void Update<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
@@ -113,9 +113,15 @@ namespace Bouyei.DbFactory.DbEntityProvider
            return this.eContext.ExecuteCommand(command, parameters);
         }
 
-        public int ExecuteCommandTransaction(string command,System.Data.IsolationLevel IsolationLevel, params object[] parameters)
+        public int ExecuteTransaction(string command,
+            System.Data.IsolationLevel IsolationLevel=System.Data.IsolationLevel.Serializable, params object[] parameters)
         {
-            return this.eContext.ExecuteCommandTransaction(command, IsolationLevel,parameters);
+            return this.eContext.ExecuteTransaction(command, IsolationLevel,parameters);
+        }
+
+        public int ExecuteTransaction(string[] commands,params object[] parameters)
+        {
+            return this.eContext.ExecuteTransaction(commands, parameters);
         }
 
         public  List<T> ExecuteQuery<T>(string command, params object[] parameters)

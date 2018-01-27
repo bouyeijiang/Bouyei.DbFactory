@@ -134,7 +134,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             return items;
         }
 
-        public long BulkCopyWrite<TEntity>(IList<TEntity> collection, int batchSize = 10240) where TEntity : class
+        public long BulkCopy<TEntity>(IList<TEntity> collection, int batchSize = 10240) where TEntity : class
         {
             System.Data.DataTable dt = collection.ConvertTo();
             if (dt.Rows.Count == 0) return 0;
@@ -154,7 +154,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
                 long copiedRows = 0;
                 bulkCopy.SqlRowsCopied += (object sender, SqlRowsCopiedEventArgs e) =>
                 {
-                    copiedRows += e.RowsCopied;
+                    copiedRows = e.RowsCopied;
                 };
                 bulkCopy.WriteToServer(dt);
 
@@ -167,7 +167,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             return this.Database.ExecuteSqlCommand(command, parameters);
         }
 
-        public int ExecuteCommandTransaction(string command,
+        public int ExecuteTransaction(string command,
             System.Data.IsolationLevel IsolationLevel, params object[] parameters)
         {
             if (this.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -183,6 +183,31 @@ namespace Bouyei.DbFactory.DbEntityProvider
                     else dbTrans.Rollback();
 
                     return rt;
+                }
+                catch (Exception ex)
+                {
+                    dbTrans.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public int ExecuteTransaction(string[] commands, params object[] parameters)
+        {
+            using (System.Data.Common.DbTransaction dbTrans = this.Database.Connection.BeginTransaction())
+            {
+                this.Database.UseTransaction(dbTrans);
+                try
+                {
+                    int rows = 0;
+
+                    for (int i = 0; i < commands.Length; ++i)
+                    {
+                        rows += this.Database.ExecuteSqlCommand(commands[i], parameters);
+                    }
+                    dbTrans.Commit();
+
+                    return rows;
                 }
                 catch (Exception ex)
                 {

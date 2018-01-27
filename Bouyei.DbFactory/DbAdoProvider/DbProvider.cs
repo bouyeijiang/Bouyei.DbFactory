@@ -507,12 +507,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        /// <summary>
-        /// Fun<DataTable,bool>回调方法返回false则中断执行直接返回
-        /// </summary>
-        /// <param name="dbParameter"></param>
-        /// <param name="action"></param>
-        /// <returns></returns>
         public ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action)
         {
             using (LockWait lwait = new LockWait(ref lParam))
