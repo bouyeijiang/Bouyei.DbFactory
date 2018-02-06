@@ -166,6 +166,10 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
             }
             InitBulkCopy(tableName, columnNames, batchSize);
             bulkCopy.WriteToServer(iDataReader);
+            if (bulkCopy.Errors.Count > 0)
+            {
+                throw new Exception(string.Format("入库失败条数:{0}信息;{1}", bulkCopy.Errors.Count, bulkCopy.Errors[0].Message));
+            }
         }
 
         public void WriteToServer(string tableName, DataRow[] rows, int batchSize = 10240)
@@ -173,6 +177,10 @@ namespace Bouyei.DbFactory.DbAdoProvider.Plugins
             InitBulkCopy(tableName, batchSize);
 
             bulkCopy.WriteToServer(rows);
+            if (bulkCopy.Errors.Count > 0)
+            {
+                throw new Exception(string.Format("入库失败条数:{0}信息;{1}", bulkCopy.Errors.Count, bulkCopy.Errors[0].Message));
+            }
         }
 
         public void WriteToServer(DataTable dt, DataRowState rowState, int batchSize = 10240)
