@@ -1,5 +1,7 @@
 .net 异构数据库通用访问库，支持db2、sql server、oracle、mysql、acess等多种类型的数据库操作，使用统一的简洁接口调用，并提供db2、sqlserver、oracle的百万级高性能批量入库方法bulkcopy，并提供给entity framework的封装使用模块，接口简洁简单；
 
+Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
+
 ado.net访问数据库例子：
  
 	string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
@@ -22,7 +24,7 @@ ado.net访问数据库例子：
 
             var rt = dbProvider.BulkCopy(new DbExecuteBulkParameter()
             {
-                DstDataTable = dt
+                DataSources= dt
             });
 
 
