@@ -7,7 +7,7 @@ ado.net访问数据库例子：
 	string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
 
 	IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
-  	var adort = dbProvider.Query(new DbExecuteParameter()
+  	var adort = dbProvider.Query(new Parameter()
  	{
   	   CommandText = "select * from [user]"
  	});
@@ -22,9 +22,9 @@ ado.net访问数据库例子：
             dt.Rows.Add(new object[] { "hhhh", 13 });
             dt.TableName = "user";
 
-            var rt = dbProvider.BulkCopy(new DbExecuteBulkParameter()
+            var rt = dbProvider.BulkCopy(new Parameter()
             {
-                DataSources= dt
+                DataSource= dt
             });
 
 
