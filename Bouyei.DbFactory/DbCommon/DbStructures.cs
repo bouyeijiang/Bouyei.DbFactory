@@ -90,14 +90,12 @@ namespace Bouyei.DbFactory
 
         public BulkParameter(DataTable dataSource,
             int BatchSize = 10240,
-            int ExecuteTimeout = 1800,
-            bool IsTransaction = false)
+            int ExecuteTimeout = 1800)
             : base(ExecuteTimeout)
         {
             this.DataSource = dataSource;
             this.TableName = dataSource.TableName;
             this.batchSize = BatchSize;
-            this.IsTransaction = IsTransaction;
         }
 
         public BulkParameter(string tableName, IDataReader iDataReader,
@@ -109,7 +107,6 @@ namespace Bouyei.DbFactory
             this.IDataReader = iDataReader;
             this.TableName = tableName;
             this.batchSize = batchSize;
-            this.IsTransaction = isTransaction;
         }
 
         public string TableName { get; private set; }
@@ -125,11 +122,6 @@ namespace Bouyei.DbFactory
         /// 批量大小,默认10240
         /// </summary>
         public int BatchSize { get { return batchSize; } set { batchSize = value; } }
-
-        /// <summary>
-        /// 是否启用事务
-        /// </summary>
-        public bool IsTransaction { get; set; }
 
         public bool IsAutoDispose { get; set; }
 
@@ -246,6 +238,19 @@ namespace Bouyei.DbFactory
         /// 超时默认值,1800s
         /// </summary>
         public int ExecuteTimeout { get; set; }
+
+        /// <summary>
+        /// 是否使用事务
+        /// </summary>
+        public bool IsTransaction { get; private set; }
+
+        public IsolationLevel IsolationLevel { get; private set; }
+
+        public void SetTransaction(IsolationLevel isolationLevel)
+        {
+            IsTransaction = true;
+            IsolationLevel = isolationLevel;
+        }
 
         public BaseParameter(int ExecuteTimeout=60)
         {

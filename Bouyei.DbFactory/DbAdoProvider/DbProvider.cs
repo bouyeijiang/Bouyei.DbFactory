@@ -129,14 +129,19 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = this.CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = this.CreateCommand(conn, dbParameter,trans))
                     using (DbDataAdapter adapter = this.CreateAdapter())
                     {
                         DataTable dt = new DataTable();
                         adapter.SelectCommand = cmd;
                         adapter.Fill(dt);
+
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
+
                         return new ResultInfo<DataTable, string>(dt, string.Empty);
-                    }                   
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -152,12 +157,17 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataSet ds = new DataSet();
                         adapter.SelectCommand = cmd;
                         adapter.Fill(ds);
+
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
+
                         return ResultInfo<DataSet, string>.Create(ds, string.Empty);
                     }
                 }
@@ -176,11 +186,16 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
+
                         if (reader.HasRows == false)
                             return ResultInfo<int, string>.Create(0, string.Empty);
+
                         bool isContinue = false;
 
                         while (reader.Read())
@@ -208,9 +223,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
+
                         if (reader.HasRows == false)
                             return ResultInfo<int, string>.Create(0, string.Empty);
 
@@ -258,9 +277,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     {
                         int rt = cmd.ExecuteNonQuery();
+
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
 
                         var rValue = GetReturnParameter(cmd);
 
@@ -282,13 +305,17 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     using (DbDataReader dReader = cmd.ExecuteReader())
                     {
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
+
                         int oCnt = dstTable.Rows.Count;
 
                         dstTable.Load(dReader);
-
+ 
                         return ResultInfo<int, string>.Create(dstTable.Rows.Count - oCnt, string.Empty);
                     }
                 }
@@ -401,9 +428,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     {
                         object obj = cmd.ExecuteScalar();
+
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
 
                         var rValue = GetReturnParameter(cmd);
 
@@ -426,7 +457,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     Exception temex = null;
                     int cnt = 0;
-                    using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbParameter.IsTransaction))
+                    using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbParameter))
                     {
                         bulkCopy.Open();
                         bulkCopy.BulkCopiedHandler = dbParameter.BulkCopiedHandler;
@@ -466,9 +497,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         catch (Exception ex)
                         {
                             temex = ex;
-                            if (dbParameter.IsTransaction)
+                            if (dbParameter.IsTransaction && bulkCopy.dbTrans != null)
                             {
-                                if (bulkCopy.dbTrans != null) bulkCopy.dbTrans.Rollback();
+                                bulkCopy.dbTrans.Rollback();
                             }
                         }
                     }
@@ -490,9 +521,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
+                        if (dbParameter.IsTransaction)
+                            trans.Commit();
+
                         if (reader.HasRows == false)
                             return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
 
@@ -514,7 +549,8 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 try
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter))
+                    using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
                     using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataTable dt = new DataTable();
@@ -535,6 +571,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         {
                             dbBuilder.DataAdapter = adapter;
                             int rt = adapter.Update(changedt);
+
+                            if (dbParameter.IsTransaction)
+                                trans.Commit();
+
                             return ResultInfo<int, string>.Create(rt, string.Empty);
                         }
                     }
