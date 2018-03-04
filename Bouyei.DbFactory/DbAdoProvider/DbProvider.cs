@@ -215,7 +215,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
         }
 
         public ResultInfo<int,string> QueryTo<T>(Parameter dbParameter,Func<T,bool> rowAction)
-             where T:new()
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -479,7 +478,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
                                 if (dbParameter.BatchSize > dbParameter.DataSource.Rows.Count)
                                     dbParameter.BatchSize = dbParameter.DataSource.Rows.Count;
 
-                                bulkCopy.DestinationTableName = dbParameter.DataSource.TableName;
                                 bulkCopy.WriteToServer(dbParameter.DataSource);
                                 cnt = dbParameter.DataSource.Rows.Count;
                             }
@@ -514,7 +512,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public ResultInfo<List<T>, string> Query<T>(Parameter dbParameter) where T : new()
+        public ResultInfo<List<T>, string> Query<T>(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -522,7 +520,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (dbParameter.IsTransaction)
@@ -531,7 +529,8 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         if (reader.HasRows == false)
                             return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
 
-                        var items = reader.CreateObjects<T>(dbParameter.IgnoreCase);
+                        List<T> items = reader.DataReaderToList<T>(dbParameter.IgnoreCase);
+
                         return ResultInfo<List<T>, string>.Create(items, string.Empty);
                     }
                 }

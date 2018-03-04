@@ -20,9 +20,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
         ProviderType DbType { get; set; }
         ResultInfo<bool, string> Connect(string connString);
         ResultInfo<DataTable, string> Query(Parameter dbParameter);
-        ResultInfo<List<T>, string> Query<T>(Parameter dbParameter) where T : new();
+        ResultInfo<List<T>, string> Query<T>(Parameter dbParameter);
         ResultInfo<DataSet, string> QueryToSet(Parameter dbParameter);
-        ResultInfo<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction) where T : new();
+        ResultInfo<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction);
         ResultInfo<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader,bool> rowAction);
         ResultInfo<IDataReader, string> QueryToReader(Parameter dbParameter);
         ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action);

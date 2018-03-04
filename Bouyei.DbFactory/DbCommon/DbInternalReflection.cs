@@ -16,9 +16,9 @@ namespace Bouyei.DbFactory.DbUtils
 {
     internal static class DbReflection
     {
-        public static T CreateObject<T>(this DbDataReader reader, bool ignoreCase = false) where T : new()
+        public static T GetObject<T>(this DbDataReader reader, bool ignoreCase = false) 
         {
-            T value = new T();
+            T value = Activator.CreateInstance<T>();
             Type toType = typeof(T);
             PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
         
@@ -65,7 +65,7 @@ namespace Bouyei.DbFactory.DbUtils
         /// <typeparam name="T"></typeparam>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public static List<T> CreateObjects<T>(this DbDataReader reader, bool ignoreCase = false) where T : new()
+        public static List<T> GetObjects<T>(this DbDataReader reader, bool ignoreCase = false) 
         {
             List<T> items = new List<T>(64);
             Type toType = typeof(T);
@@ -74,7 +74,7 @@ namespace Bouyei.DbFactory.DbUtils
 
             while (reader.Read())
             {
-                T value = new T();
+                T value = Activator.CreateInstance<T>();
 
                 foreach (var pi in pinfos)
                 {
@@ -113,6 +113,43 @@ namespace Bouyei.DbFactory.DbUtils
                 items.Add(value);
             }
             return items;
+        }
+
+        public static T GetBaseObject<T>(this IDataReader reader, int index = 0)
+        {
+            object value = reader.GetValue(index);
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+        public static List<T> GetBaseObjects<T>(this IDataReader reader, int index = 0)
+        {
+            var vtype = typeof(T);
+            List<T> values = new List<T>(64);
+
+            while (reader.Read())
+            {
+                object value = reader.GetValue(index);
+                if (vtype.IsEnum)
+                {
+                    values.Add((T)Enum.ToObject(vtype, value));
+                }
+                else
+                {
+                    values.Add((T)Convert.ChangeType(value, vtype));
+                }
+            }
+
+            return values;
+        }
+
+        public static bool IsChangeType<T>()
+        {
+            var type = typeof(T);
+
+            return (type.IsValueType
+                || type.IsClass == false
+                || type.Name == "String"
+                || type.Name == "Object");
         }
 
         private static bool NameEqual(string srcName, string dstName, bool ignoreCase)

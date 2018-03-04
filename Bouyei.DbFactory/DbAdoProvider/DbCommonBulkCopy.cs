@@ -18,7 +18,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         #region public field
                 public BulkCopiedArgs BulkCopiedHandler { get; set; }
 
-                public string DestinationTableName { get; set; }
+                public string DestinationTableName { get;private set; }
 
                 public int BulkCopyTimeout { get; set; }
 
@@ -199,28 +199,29 @@ namespace Bouyei.DbFactory.DbAdoProvider
             if (dbConn.State != ConnectionState.Open) dbConn.Open();
         }
 
-        public void WriteToServer(DataTable dataTable)
+        public void WriteToServer(DataTable sourceTable)
         {
+            DestinationTableName = sourceTable.TableName;
             if (ProviderName == ProviderType.SqlServer)
             {
                 sqlBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                sqlBulkCopy.WriteToServer(dataTable, BatchSize);
+                sqlBulkCopy.WriteToServer(sourceTable, BatchSize);
             }
             else if (ProviderName == ProviderType.DB2)
             {
                 db2BulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                db2BulkCopy.WriteToServer(dataTable,BatchSize);
+                db2BulkCopy.WriteToServer(sourceTable,BatchSize);
             }
             else if (ProviderName == ProviderType.Oracle)
             {
                 oracleBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                oracleBulkCopy.WriteToServer(dataTable, BatchSize);
+                oracleBulkCopy.WriteToServer(sourceTable, BatchSize);
             }
             else if (ProviderName == ProviderType.MySql)
             {
                 DbUtils.DbCsvHelper csv = new DbUtils.DbCsvHelper();
-                string fname = dataTable.TableName + DateTime.Now.Ticks;
-                bool rt = csv.ExportSvcToFile(dataTable, fname);
+                string fname = sourceTable.TableName + DateTime.Now.Ticks;
+                bool rt = csv.ExportSvcToFile(sourceTable, fname);
                 if (rt == false) return;
 
                int rows= mySqlBulkCopy.WriteToServer(new MysqlBulkLoaderInfo()
@@ -228,7 +229,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                     FileName = fname,
                     FieldTerminator = ",",
                     LineTerminator = "\r\n",
-                    TableName = dataTable.TableName,
+                    TableName = sourceTable.TableName,
                     FieldQuotationCharacter = '"',
                     EscapeCharacter = '"',
                 });
@@ -241,22 +242,23 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public void WriteToServer(DataTable dataTable, DataRowState rowState)
+        public void WriteToServer(DataTable sourceTable, DataRowState rowState)
         {
+            DestinationTableName = sourceTable.TableName;
             if (ProviderName == ProviderType.SqlServer)
             {
                 sqlBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                sqlBulkCopy.WriteToServer(dataTable, rowState, BatchSize);
+                sqlBulkCopy.WriteToServer(sourceTable, rowState, BatchSize);
             }
             else if (ProviderName == ProviderType.DB2)
             {
                 db2BulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                db2BulkCopy.WriteToServer(dataTable, rowState);
+                db2BulkCopy.WriteToServer(sourceTable, rowState);
             }
             else if (ProviderName == ProviderType.Oracle)
             {
                 oracleBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                oracleBulkCopy.WriteToServer(dataTable, rowState, BatchSize);
+                oracleBulkCopy.WriteToServer(sourceTable, rowState, BatchSize);
             }
             else
             {
@@ -264,22 +266,23 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public void WriteToServer(IDataReader iDataReader, string dstTableName)
+        public void WriteToServer(IDataReader iDataReader, string sourceTableName)
         {
+            DestinationTableName = sourceTableName;
             if (ProviderName == ProviderType.SqlServer)
             {
                 sqlBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                sqlBulkCopy.WriteToServer(dstTableName, iDataReader, this.BatchSize);
+                sqlBulkCopy.WriteToServer(sourceTableName, iDataReader, this.BatchSize);
             }
             else if (ProviderName == ProviderType.DB2)
             {
                 db2BulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                db2BulkCopy.WriteToServer(dstTableName, iDataReader);
+                db2BulkCopy.WriteToServer(sourceTableName, iDataReader);
             }
             else if (ProviderName == ProviderType.Oracle)
             {
                 oracleBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                oracleBulkCopy.WriteToServer(dstTableName, iDataReader, BatchSize);
+                oracleBulkCopy.WriteToServer(sourceTableName, iDataReader, BatchSize);
             }
             else
             {

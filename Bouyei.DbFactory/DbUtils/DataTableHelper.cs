@@ -17,14 +17,28 @@ namespace Bouyei.DbFactory.DbUtils
     public static class DataTableHelper
     {
         #region public
-        public static T DataReaderTo<T>(this IDataReader dataReader, bool IgnoreCase = false) where T : new()
+        public static T DataReaderTo<T>(this IDataReader dataReader, bool IgnoreCase = false)
         {
-            return DbReflection.CreateObject<T>((DbDataReader)dataReader);
+            if (DbReflection.IsChangeType<T>())
+            {
+                return DbReflection.GetBaseObject<T>(dataReader);
+            }
+            else
+            {
+                return DbReflection.GetObject<T>((DbDataReader)dataReader);
+            }
         }
 
-        public static List<T> DataReaderToList<T>(this IDataReader dataReader, bool IgnoreCase = false) where T : new()
+        public static List<T> DataReaderToList<T>(this IDataReader dataReader, bool IgnoreCase = false)
         {
-            return DbReflection.CreateObjects<T>((DbDataReader)dataReader, IgnoreCase);
+            if (DbReflection.IsChangeType<T>())
+            {
+              return  DbReflection.GetBaseObjects<T>(dataReader);
+            }
+            else
+            {
+                return DbReflection.GetObjects<T>((DbDataReader)dataReader, IgnoreCase);
+            }
         }
 
         /// <summary>
