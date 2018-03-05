@@ -100,6 +100,11 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 connectionConfiguration.DbType);
         }
 
+        public static DbProvider Clone(IDbProvider dbProvider)
+        {
+            return new DbProvider(dbProvider.DbConnectionString, dbProvider.DbType);
+        }
+
         #endregion
 
         #region public
