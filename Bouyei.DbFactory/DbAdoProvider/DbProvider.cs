@@ -87,20 +87,20 @@ namespace Bouyei.DbFactory.DbAdoProvider
             this.DbType = providerType;
         }
 
-        public static DbProvider CreateProvider(string connectionString,
+        public static IDbProvider CreateProvider(string connectionString,
             ProviderType providerType=ProviderType.SqlServer)
         {
             return new DbProvider(connectionString, providerType);
         }
 
-        public static DbProvider CreateProvider(
+        public static IDbProvider CreateProvider(
             ConnectionConfig connectionConfiguration)
         {
             return new DbProvider(connectionConfiguration.ToString(),
                 connectionConfiguration.DbType);
         }
 
-        public static DbProvider Clone(IDbProvider dbProvider)
+        public static IDbProvider Clone(IDbProvider dbProvider)
         {
             return new DbProvider(dbProvider.DbConnectionString, dbProvider.DbType);
         }
