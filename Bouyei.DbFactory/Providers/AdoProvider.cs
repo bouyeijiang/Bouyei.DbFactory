@@ -14,11 +14,23 @@ namespace Bouyei.DbFactory
         {
         }
 
-        public static AdoProvider CreateProvider(string ConnectionString,
+        public static IAdoProvider CreateProvider(string ConnectionString,
             ProviderType providerType=ProviderType.SqlServer, 
             bool IsSingleton = false)
         {
             return new AdoProvider(ConnectionString, providerType, IsSingleton);
+        }
+
+        public static IAdoProvider CreateProvider(
+            ConnectionConfig connectionConfig)
+        {
+            return new AdoProvider(connectionConfig.ToString(),
+                connectionConfig.DbType);
+        }
+
+        public static IAdoProvider Clone(IDbProvider dbProvider)
+        {
+            return new AdoProvider(dbProvider.DbConnectionString, dbProvider.DbType);
         }
     }
 }

@@ -87,24 +87,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
             this.DbType = providerType;
         }
 
-        public static IDbProvider CreateProvider(string connectionString,
-            ProviderType providerType=ProviderType.SqlServer)
-        {
-            return new DbProvider(connectionString, providerType);
-        }
-
-        public static IDbProvider CreateProvider(
-            ConnectionConfig connectionConfig)
-        {
-            return new DbProvider(connectionConfig.ToString(),
-                connectionConfig.DbType);
-        }
-
-        public static IDbProvider Clone(IDbProvider dbProvider)
-        {
-            return new DbProvider(dbProvider.DbConnectionString, dbProvider.DbType);
-        }
-
         #endregion
 
         #region public
