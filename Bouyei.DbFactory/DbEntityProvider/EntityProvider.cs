@@ -13,12 +13,6 @@ namespace Bouyei.DbFactory.DbEntityProvider
     {
         private EntityContext eContext=null;
 
-        public static EntityProvider CreateProvider(string DbConnectionString = "")
-        {
-            return new EntityProvider(DbConnectionString);
-        }
-
-
         public string DbConnectionString { get; set; }
 
         public EntityProvider(string DbConnectionString = "")
