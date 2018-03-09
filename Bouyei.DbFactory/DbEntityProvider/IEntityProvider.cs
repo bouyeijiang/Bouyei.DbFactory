@@ -11,6 +11,8 @@ namespace Bouyei.DbFactory.DbEntityProvider
     {
         void DatabaseCreateOrMigrate();
 
+        string DbConnectionString { get; set; }
+
         IQueryable<TEntity> Query<TEntity>() where TEntity : class;
 
         IQueryable<TEntity> NoTrackQuery<TEntity>() where TEntity : class;

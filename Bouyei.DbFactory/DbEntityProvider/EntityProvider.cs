@@ -13,14 +13,18 @@ namespace Bouyei.DbFactory.DbEntityProvider
     {
         private EntityContext eContext=null;
 
-        public static EntityProvider CreateProvider(string DbConnection = "")
+        public static EntityProvider CreateProvider(string DbConnectionString = "")
         {
-            return new EntityProvider(DbConnection);
+            return new EntityProvider(DbConnectionString);
         }
 
-        public EntityProvider(string DbConnection = "")
+
+        public string DbConnectionString { get; set; }
+
+        public EntityProvider(string DbConnectionString = "")
         {
-            eContext = new EntityContext(DbConnection);
+            this.DbConnectionString = DbConnectionString;
+            eContext = new EntityContext(DbConnectionString);
         }
 
         public void DatabaseCreateOrMigrate()

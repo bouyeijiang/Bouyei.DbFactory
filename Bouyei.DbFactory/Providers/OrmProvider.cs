@@ -11,6 +11,11 @@ namespace Bouyei.DbFactory
             return new OrmProvider(DbConnection);
         }
 
+        public static OrmProvider Clone(IOrmProvider ormProvider)
+        {
+            return new OrmProvider(ormProvider.DbConnectionString);
+        }
+
         public OrmProvider(string DbConnection = null)
             : base(DbConnection)
         { }
