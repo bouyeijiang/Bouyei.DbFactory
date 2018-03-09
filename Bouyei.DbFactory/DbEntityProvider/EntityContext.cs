@@ -128,8 +128,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             if (isSaveChange)
             {
                 int rt = SaveChanges();
-                if (rt > 0) return items;
-                else return null;
+                return rt > 0 ? items : null;
             }
             return items;
         }
@@ -252,7 +251,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             //自定义映射程序集所在位置
             string mappingDLL = ConfigurationManager.AppSettings.Get("mappingDLL");
             if (string.IsNullOrEmpty(mappingDLL))
-                throw new Exception("找不到配置mapping.dll映射文件,如<add key=\"mappingDLL\" value=\"DbMapping.dll\"/>");
+                throw new Exception("找不到数据库实体配置mapping.dll映射文件,如<add key=\"mappingDLL\" value=\"DbMapping.dll\"/>");
 
             string path = AppDomain.CurrentDomain.BaseDirectory + mappingDLL;
 

@@ -94,10 +94,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
         }
 
         public static IDbProvider CreateProvider(
-            ConnectionConfig connectionConfiguration)
+            ConnectionConfig connectionConfig)
         {
-            return new DbProvider(connectionConfiguration.ToString(),
-                connectionConfiguration.DbType);
+            return new DbProvider(connectionConfig.ToString(),
+                connectionConfig.DbType);
         }
 
         public static IDbProvider Clone(IDbProvider dbProvider)
