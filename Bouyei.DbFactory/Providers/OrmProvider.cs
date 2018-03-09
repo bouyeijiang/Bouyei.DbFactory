@@ -6,9 +6,9 @@ namespace Bouyei.DbFactory
 
     public class OrmProvider : EntityProvider,IOrmProvider
     {
-        public static new OrmProvider CreateProvider(string DbConnection = null)
+        public static new OrmProvider CreateProvider(string DbConnectionString = null)
         {
-            return new OrmProvider(DbConnection);
+            return new OrmProvider(DbConnectionString);
         }
 
         public static OrmProvider Clone(IOrmProvider ormProvider)
@@ -16,8 +16,8 @@ namespace Bouyei.DbFactory
             return new OrmProvider(ormProvider.DbConnectionString);
         }
 
-        public OrmProvider(string DbConnection = null)
-            : base(DbConnection)
+        public OrmProvider(string DbConnectionString = null)
+            : base(DbConnectionString)
         { }
     }
 }
