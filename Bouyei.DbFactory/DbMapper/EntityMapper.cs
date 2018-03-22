@@ -12,9 +12,9 @@ using System.Reflection;
 
 namespace Bouyei.DbFactory.DbMapper
 {
-    public class EntityMapper
+    public static class EntityMapper
     {
-        public static ToEntity MapToCreated<FromEntity, ToEntity>(FromEntity from)
+        public static ToEntity MapToCreated<FromEntity, ToEntity>(this FromEntity from)
         {
             ToEntity to = Activator.CreateInstance<ToEntity>();
             var tTo = typeof(ToEntity);
@@ -47,7 +47,7 @@ namespace Bouyei.DbFactory.DbMapper
             return to;
         }
 
-        public static ToEntity MapTo<FromEntity, ToEntity>(FromEntity from, ToEntity to)
+        public static ToEntity MapTo<FromEntity, ToEntity>(this FromEntity from, ToEntity to)
         {
             var tTo = typeof(ToEntity);
             PropertyInfo[] psFrom = typeof(FromEntity).GetProperties(BindingFlags.Instance | BindingFlags.Public);
@@ -79,7 +79,7 @@ namespace Bouyei.DbFactory.DbMapper
             return to;
         }
 
-        public static ToEntity MapTo<FromEntity, ToEntity>(FromEntity from, ToEntity to,
+        public static ToEntity MapTo<FromEntity, ToEntity>(this FromEntity from, ToEntity to,
             FilterType filterType,
             params string[] FilterColumnNames)
         {

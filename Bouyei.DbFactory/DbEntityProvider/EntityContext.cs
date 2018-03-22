@@ -15,8 +15,8 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
     internal class EntityContext : DbContext, IDisposable
     { 
-        public EntityContext(string DbConnection = null)
-            : base(string.Format("Name={0}", string.IsNullOrEmpty(DbConnection) ? "DbConnection" : DbConnection))
+        public EntityContext(string NameOrConnectionString = null)
+            : base(string.Format("Name={0}", string.IsNullOrEmpty(NameOrConnectionString) ? "DbConnection" : NameOrConnectionString))
         {
             this.Configuration.LazyLoadingEnabled = false;
             this.Database.Initialize(false);
@@ -32,7 +32,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public void Reload<TEntity>(TEntity entity) where TEntity : class
         {
-            this.Entry<TEntity>(entity).Reload();
+            Entry(entity).Reload();
         }
 
         #region public
@@ -43,12 +43,12 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public int Count<TEntity>(Expression<Func<TEntity, bool>> predicate)where TEntity:class
         {
-            return this.Set<TEntity>().Count(predicate);
+            return Set<TEntity>().Count(predicate);
         }
 
         public bool Any<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
-            return this.Set<TEntity>().Any(predicate);
+            return Set<TEntity>().Any(predicate);
         }
 
         public IQueryable<TEntity> Query<TEntity>() where TEntity : class
@@ -59,6 +59,11 @@ namespace Bouyei.DbFactory.DbEntityProvider
         public IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
             return DSet<TEntity>().Where(predicate);
+        }
+
+        public IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
+        {
+            return DSet<TEntity>().Where(predicate).AsNoTracking();
         }
 
         public TEntity Update<TEntity>(TEntity entity,bool isSaveChange=false) where TEntity : class
@@ -93,7 +98,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public int Delete<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isSaveChange = false) where TEntity : class
         {
-            var items = this.Set<TEntity>().Where(predicate);
+            var items = Set<TEntity>().Where(predicate);
             int c = 0;
             foreach (var item in items)
             {
@@ -111,7 +116,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public TEntity Insert<TEntity>(TEntity entity, bool isSaveChange=false) where TEntity : class
         {
-            TEntity rentity = this.Set<TEntity>().Add(entity);
+            TEntity rentity = Set<TEntity>().Add(entity);
             this.Entry<TEntity>(entity).State = EntityState.Added;
             if (isSaveChange)
             {
@@ -124,7 +129,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public IEnumerable<TEntity> InsertRange<TEntity>(IEnumerable<TEntity> entities, bool isSaveChange = false) where TEntity : class
         {
-            var items = this.Set<TEntity>().AddRange(entities);
+            var items = Set<TEntity>().AddRange(entities);
             if (isSaveChange)
             {
                 int rt = SaveChanges();
@@ -163,7 +168,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public int ExecuteCommand(string command, params object[] parameters)
         {
-            return this.Database.ExecuteSqlCommand(command, parameters);
+            return Database.ExecuteSqlCommand(command, parameters);
         }
 
         public int ExecuteTransaction(string command,
@@ -216,7 +221,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             }
         }
 
-        public List<T> ExecuteQuery<T>(string command, params object[] parameters)
+        public List<T> Query<T>(string command, params object[] parameters)
         {
             return this.Database.SqlQuery<T>(command, parameters).ToList();
         }
@@ -249,19 +254,17 @@ namespace Bouyei.DbFactory.DbEntityProvider
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //自定义映射程序集所在位置
-            string mappingDLL = ConfigurationManager.AppSettings.Get("mappingDLL");
+            string mappingDLL = ConfigurationManager.AppSettings.Get("assemblyFile");
             if (string.IsNullOrEmpty(mappingDLL))
-                throw new Exception("找不到数据库实体配置mapping.dll映射文件,如<add key=\"mappingDLL\" value=\"DbMapping.dll\"/>");
+                throw new Exception("找不到数据库实体配置assemblyFile节点,如<add key=\"assemblyFile\" value=\"DbMapping.dll\"/>" + mappingDLL);
 
             string path = AppDomain.CurrentDomain.BaseDirectory + mappingDLL;
 
-            if (string.IsNullOrEmpty(path)
-                || System.IO.File.Exists(path) == false)
-                throw new Exception("找不到mappingDLL配置路径:" + path);
-
-            Assembly assem = Assembly.LoadFrom(path);
+            if (string.IsNullOrEmpty(path) || System.IO.File.Exists(path) == false)
+                throw new Exception("找不到数据库表实体映射配置路径:" + path);
+            
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            modelBuilder.Configurations.AddFromAssembly(assem);
+            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -15,7 +15,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public string DbConnectionString { get; set; }
 
-        public EntityProvider(string DbConnectionString = "")
+        public EntityProvider(string DbConnectionString=null)
         {
             this.DbConnectionString = DbConnectionString;
             eContext = new EntityContext(DbConnectionString);
@@ -28,71 +28,66 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
-            return this.eContext.DSet<TEntity>();
+            return eContext.DSet<TEntity>();
         }
 
 		public void Refresh<TEntity>(TEntity entity) where TEntity : class
 		{
-            this.eContext.Reload(entity);
+            eContext.Reload(entity);
 		}
 
         public int Count<TEntity>(Expression<Func<TEntity, bool>> predicate)where TEntity:class
         {
-           return this.eContext.Count(predicate);
+           return eContext.Count(predicate);
         }
 
         public bool Any<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity:class
         {
-            return this.eContext.Any(predicate);
+            return eContext.Any(predicate);
         }
 
         public IQueryable<TEntity> Query<TEntity>() where TEntity : class
         {
-            return this.eContext.Query<TEntity>();
+            return eContext.Query<TEntity>();
         }
         public IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity,bool>> predicate) where TEntity : class
         {
-            return this.eContext.Query(predicate);
+            return eContext.Query(predicate);
         }
 
-        public IQueryable<TEntity> NoTrackQuery<TEntity>() where TEntity:class
+        public IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity,bool>>predicate) where TEntity : class
         {
-            return this.DbSet<TEntity>().AsNoTracking<TEntity>();
-        }
-
-        public IQueryable<TEntity> NoTrackQuery<TEntity>(Expression<Func<TEntity,bool>>predicate) where TEntity : class
-        {
-            return this.NoTrackQuery<TEntity>().Where(predicate);
+            return eContext.QueryNoTracking(predicate);
         }
 
         public TEntity GetById<TEntity>(object id) where TEntity : class
         {
-            return  this.DbSet<TEntity>().Find(id);
+            return  DbSet<TEntity>().Find(id);
         }
 
         public TEntity Insert<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-			return this.eContext.Insert<TEntity>(entity, isSaveChange);
+			return eContext.Insert<TEntity>(entity, isSaveChange);
 		}
 
         public IEnumerable<TEntity> InsertRange<TEntity>(TEntity[] entities, bool isSaveChange = false) where TEntity:class
         {
-           return this.eContext.InsertRange<TEntity>(entities, isSaveChange);
+           return eContext.InsertRange<TEntity>(entities, isSaveChange);
         }
 
         public long BulkCopy<TEntity>(IList<TEntity> buffer,int batchSize=10240) where TEntity : class
         {
-            return this.eContext.BulkCopy<TEntity>(buffer,batchSize);
+            return eContext.BulkCopy<TEntity>(buffer,batchSize);
         }
 
         public void Update<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-            this.eContext.Update(entity, isSaveChange);
+            eContext.Update(entity, isSaveChange);
         }
 
         public void Delete<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-            this.eContext.Delete(entity, isSaveChange);
+            eContext.Delete(entity, isSaveChange);
         }
 
         public IEnumerable<TEntity> Delete<TEntity>(Func<TEntity, bool> predicate, bool isSaveChange = false) where TEntity : class
@@ -100,7 +95,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             var items = this.eContext.DSet<TEntity>().Where(predicate);
             foreach (var item in items)
             {
-                this.eContext.Delete(item,isSaveChange);
+                eContext.Delete(item,isSaveChange);
             }
 
             return items;
@@ -108,23 +103,23 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public int ExecuteCommand(string command, params object[] parameters)
         {
-           return this.eContext.ExecuteCommand(command, parameters);
+           return eContext.ExecuteCommand(command, parameters);
         }
 
         public int ExecuteTransaction(string command,
             System.Data.IsolationLevel IsolationLevel=System.Data.IsolationLevel.Serializable, params object[] parameters)
         {
-            return this.eContext.ExecuteTransaction(command, IsolationLevel,parameters);
+            return eContext.ExecuteTransaction(command, IsolationLevel,parameters);
         }
 
         public int ExecuteTransaction(string[] commands,params object[] parameters)
         {
-            return this.eContext.ExecuteTransaction(commands, parameters);
+            return eContext.ExecuteTransaction(commands, parameters);
         }
 
-        public  List<T> ExecuteQuery<T>(string command, params object[] parameters)
+        public  List<T> Query<T>(string command, params object[] parameters)
         {
-            return this.eContext.ExecuteQuery<T>(command, parameters);
+            return eContext.Query<T>(command, parameters);
         }
 
         public int SaveChanges()

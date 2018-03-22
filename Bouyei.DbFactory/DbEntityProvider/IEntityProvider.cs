@@ -15,9 +15,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         IQueryable<TEntity> Query<TEntity>() where TEntity : class;
 
-        IQueryable<TEntity> NoTrackQuery<TEntity>() where TEntity : class;
-
-        IQueryable<TEntity> NoTrackQuery<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
+        IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
 
         IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
 
@@ -50,7 +48,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         int ExecuteTransaction(string[] commands, params object[] parameters);
 
-        List<T> ExecuteQuery<T>(string command, params object[] parameters);
+        List<T> Query<T>(string command, params object[] parameters);
 
         int SaveChanges();
 

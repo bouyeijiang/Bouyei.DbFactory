@@ -6,7 +6,7 @@ namespace Bouyei.DbFactory
 
     public class OrmProvider : EntityProvider,IOrmProvider
     {
-        public static new IOrmProvider CreateProvider(string DbConnectionString = null)
+        public static IOrmProvider CreateProvider(string DbConnectionString = null)
         {
             return new OrmProvider(DbConnectionString);
         }
