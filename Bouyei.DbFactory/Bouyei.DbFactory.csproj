@@ -196,7 +196,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DbSqlProvider\SqlExpression\" />
+    <Folder Include="DbSqlProvider\SqlExtensions\" />
+    <Folder Include="DbSqlProvider\SqlFunctions\" />
+    <Folder Include="DbSqlProvider\SqlKeywords\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="libs\IBM.Data.DB2.dll" />
     <Content Include="libs\Microsoft.Synchronization.Data.dll" />

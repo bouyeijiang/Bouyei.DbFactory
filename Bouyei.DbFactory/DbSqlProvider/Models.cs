@@ -39,6 +39,15 @@ namespace Bouyei.DbFactory.DbSqlProvider
         Or
     }
 
+    public enum SqlType
+    {
+        Normal = 0,
+        SqlServer = 1,
+        Oracle = 2,
+        Mysql = 4,
+        Db2 = 8
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public class KeyValue
     {
