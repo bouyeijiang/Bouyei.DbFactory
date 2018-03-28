@@ -1,0 +1,184 @@
+﻿/*-------------------------------------------------------------
+ *   auth: bouyei
+ *   date: 2016/7/12 9:53:15
+ *contact: 453840293@qq.com
+ *profile: www.openthinking.cn
+ *    Ltd: Microsoft
+ *   guid: 3cd366b1-356b-4a36-bf5c-aa0decc4bdec
+---------------------------------------------------------------*/
+using System;
+using System.Data.OracleClient;
+using System.Data;
+using System.Data.Common;
+
+namespace Bouyei.DbFactoryCore.DbAdoProvider
+{
+    using System.Data.SqlClient;
+    using IBM.Data.DB2.Core;
+    using MySql.Data.MySqlClient;
+    using Microsoft.Data.Sqlite;
+
+    public class DbCommonBuilder
+    {
+        protected DbProviderFactory dbProviderFactory  = null;
+
+        protected DbConnection dbConn = null;
+        protected DbDataAdapter dbDataAdapter = null;
+        protected DbCommand dbCommand = null;
+        protected DbTransaction dbTransaction = null;
+        protected DbCommonBulkCopy dbBulkCopy = null;
+        protected DbCommandBuilder dbCommandBuilder = null;
+        protected ProviderType DbProviderType { get; private set; }
+
+        protected bool IsSingleton { get; private set; }
+
+        protected string ConnectionString { get; private set; }
+
+  
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="dbProviderType"></param>
+        /// <param name="IsSingleton"></param>
+        protected DbCommonBuilder(ProviderType dbProviderType,
+             bool IsSingleton)
+        {
+            this.IsSingleton = IsSingleton;
+            this.DbProviderType = dbProviderType;
+            
+            dbProviderFactory =  GetFactoryByProviderType(dbProviderType);
+          
+            if (dbProviderFactory == null)
+                throw new Exception("不提供支持该" + dbProviderType.ToString() + "类型的实例");
+        }
+
+        protected DbConnection CreateConnection(string ConnectionString)
+        {
+            if (IsSingleton)
+            {
+                if (dbConn == null)
+                    dbConn = dbProviderFactory.CreateConnection();
+            }
+            else
+            {
+                if (dbConn != null) dbConn.Dispose();
+                dbConn = dbProviderFactory.CreateConnection();
+            }
+            if (dbConn.ConnectionString != ConnectionString)
+            {
+                if (dbConn.State != ConnectionState.Closed) dbConn.Close();
+                dbConn.ConnectionString = (this.ConnectionString = ConnectionString);
+            }
+
+            if (dbConn.State != ConnectionState.Open)
+                dbConn.Open();
+
+            return dbConn;
+        }
+
+        protected DbDataAdapter CreateAdapter()
+        {
+            if (IsSingleton)
+            {
+                if (dbDataAdapter == null)
+                    dbDataAdapter = dbProviderFactory.CreateDataAdapter();
+            }
+            else
+            {
+                if (dbDataAdapter != null) dbDataAdapter.Dispose();
+                dbDataAdapter = dbProviderFactory.CreateDataAdapter();
+            }
+            return dbDataAdapter;
+        }
+
+        protected DbCommandBuilder CreateCommandBuilder()
+        {
+            if (IsSingleton)
+            {
+                if (dbCommandBuilder == null)
+                    dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
+            }
+            else
+            {
+                if (dbCommandBuilder != null) dbCommandBuilder.Dispose();
+                dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
+            }
+            return dbCommandBuilder;
+        }
+
+        protected DbCommand CreateCommand(DbConnection dbConn, Parameter dbParameter, DbTransaction dbTrans = null)
+        {
+            if (IsSingleton)
+            {
+                if (dbCommand == null)
+                    dbCommand = dbProviderFactory.CreateCommand();
+            }
+            else
+            {
+                if (dbCommand != null) dbCommand.Dispose();
+                dbCommand = dbProviderFactory.CreateCommand();
+            }
+
+            dbCommand.Connection = dbConn;
+
+            if (dbTrans != null) dbCommand.Transaction = dbTrans;
+
+            if (dbParameter == null) return dbCommand;
+
+            if (dbParameter.IsStoredProcedure)
+                dbCommand.CommandType = CommandType.StoredProcedure;
+
+            dbCommand.CommandText = dbParameter.CommandText;
+            dbCommand.CommandTimeout = dbParameter.ExecuteTimeout;
+
+            if (dbParameter.dbProviderParameters != null)
+            {
+                foreach (CmdParameter param in dbParameter.dbProviderParameters)
+                {
+                    dbCommand.Parameters.Add((DbParameter)param);
+                }
+            }
+
+            return dbCommand;
+        }
+
+        protected DbTransaction BeginTransaction(DbConnection dbConn, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
+        {
+            dbTransaction = dbConn.BeginTransaction(isolationLevel);
+            return dbTransaction;
+        }
+ 
+        protected DbCommonBulkCopy CreateBulkCopy(string ConnectionString,BulkParameter parameter)
+        {
+            if (dbBulkCopy != null) dbBulkCopy.Dispose();
+
+            if (parameter.IsTransaction)
+                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString, CreateConnection(ConnectionString),
+                    dbBulkCopyOption: (BulkCopyOptions)parameter.IsolationLevel, isTransaction: parameter.IsTransaction);
+            else
+                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString);
+
+            return dbBulkCopy;
+        }
+
+        /// <summary>
+        /// 创建数据库类型实例
+        /// </summary>
+        /// <param name="providerType"></param>
+        /// <returns></returns>
+        private DbProviderFactory GetFactoryByProviderType(ProviderType providerType)
+        {
+            DbProviderFactory dbFactory = null;
+            switch (providerType)
+            {
+                case ProviderType.DB2: dbFactory = DB2Factory.Instance; break;
+                case ProviderType.MySql: dbFactory = MySqlClientFactory.Instance; break;
+                case ProviderType.SQLite: dbFactory = SqlClientFactory.Instance; break;
+                case ProviderType.SqlServer: dbFactory = SqlClientFactory.Instance; break;
+                case ProviderType.Oracle:dbFactory = OracleClientFactory.Instance;break;
+                default: break;
+            }
+            return dbFactory;
+        }
+    }
+}
