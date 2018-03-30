@@ -10,12 +10,13 @@ namespace DotNetCoreDemo
         static void Main(string[] args)
         {
             string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
-            //IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
-            //var rt = adoProvider.Query(new Parameter() {
-            //     CommandText= "select * from MemUser"
+            IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
+            //var rt = adoProvider.Query(new Parameter()
+            //{
+            //    CommandText = "select * from MemUser"
             //});
 
-            //foreach(DataRow dr in rt.Result.Rows)
+            //foreach (DataRow dr in rt.Result.Rows)
             //{
             //    Console.WriteLine(string.Join(",", dr.ItemArray));
             //}

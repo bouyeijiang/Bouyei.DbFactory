@@ -19,9 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bouyei.DbMapping", "DotNet\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bouyei.DbFactoryCore", "DotNetCore\Bouyei.DbFactoryCore\Bouyei.DbFactoryCore.csproj", "{38605039-3EC3-441E-8148-B3547BFEDA5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCoreDemo", "DotNetCore\DotNetCoreDemo\DotNetCoreDemo.csproj", "{4F2CA149-6C4A-41A7-8B09-E48AA7D9C181}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCoreDemo", "DotNetCore\DotNetCoreDemo\DotNetCoreDemo.csproj", "{4F2CA149-6C4A-41A7-8B09-E48AA7D9C181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbEntity", "DotNetCore\DbEntity\DbEntity.csproj", "{8AFFCAA7-BC36-44CE-BAD7-E2F0347AD78A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbEntity", "DotNetCore\DbEntity\DbEntity.csproj", "{8AFFCAA7-BC36-44CE-BAD7-E2F0347AD78A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ACD6CC98-B5E2-4EF0-B536-25C363A6D223}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

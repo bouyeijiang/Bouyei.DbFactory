@@ -6140,11 +6140,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+      "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
       "projectName": "DbEntity",
-      "projectPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+      "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
       "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
-      "outputPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
+      "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6163,8 +6163,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-              "projectPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+            "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+              "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
             }
           }
         }

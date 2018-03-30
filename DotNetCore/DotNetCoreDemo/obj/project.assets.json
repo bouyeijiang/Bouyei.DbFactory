@@ -6159,11 +6159,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+      "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
       "projectName": "DotNetCoreDemo",
-      "projectPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+      "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
       "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
-      "outputPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
+      "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6182,11 +6182,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-              "projectPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+            "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+              "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
             },
-            "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
-              "projectPath": "E:\\Project\\Bouyei.DbFactory\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
+            "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+              "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
             }
           }
         }
