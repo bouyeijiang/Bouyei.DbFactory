@@ -13,12 +13,7 @@ using System.Data.Common;
 
 namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
-    using System.Data.SqlClient;
-    using IBM.Data.DB2.Core;
-    using MySql.Data.MySqlClient;
-    using Microsoft.Data.Sqlite;
-
-    public class DbCommonBuilder
+    public class DbCommonBuilder:DbAdapterProvider
     {
         protected DbProviderFactory dbProviderFactory  = null;
 
@@ -42,11 +37,12 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         /// <param name="IsSingleton"></param>
         protected DbCommonBuilder(ProviderType dbProviderType,
              bool IsSingleton)
+            :base(dbProviderType)
         {
             this.IsSingleton = IsSingleton;
             this.DbProviderType = dbProviderType;
             
-            dbProviderFactory =  GetFactoryByProviderType(dbProviderType);
+            dbProviderFactory =  GetAdapterFactory();
           
             if (dbProviderFactory == null)
                 throw new Exception("不提供支持该" + dbProviderType.ToString() + "类型的实例");
@@ -159,26 +155,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString);
 
             return dbBulkCopy;
-        }
-
-        /// <summary>
-        /// 创建数据库类型实例
-        /// </summary>
-        /// <param name="providerType"></param>
-        /// <returns></returns>
-        private DbProviderFactory GetFactoryByProviderType(ProviderType providerType)
-        {
-            DbProviderFactory dbFactory = null;
-            switch (providerType)
-            {
-                case ProviderType.DB2: dbFactory = DB2Factory.Instance; break;
-                case ProviderType.MySql: dbFactory = MySqlClientFactory.Instance; break;
-                case ProviderType.SQLite: dbFactory = SqlClientFactory.Instance; break;
-                case ProviderType.SqlServer: dbFactory = SqlClientFactory.Instance; break;
-                case ProviderType.Oracle:dbFactory = OracleClientFactory.Instance;break;
-                default: break;
-            }
-            return dbFactory;
         }
     }
 }

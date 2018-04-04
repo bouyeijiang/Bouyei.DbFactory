@@ -18,7 +18,7 @@ namespace Bouyei.DbFactoryWebDemo.Controllers
 
         public ActionResult Index()
         {
-            bool rtb = dbProvider.NoTrackQuery<User>(x => x.Id == 1).Any();
+            bool rtb = dbProvider.QueryNoTracking<User>(x => x.Id == 1).Any();
             return View();
         }
 

@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
-    public class DbCommonBuilder
+    public class DbCommonBuilder:DbAdapterProvider
     {
         protected DbProviderFactory dbProviderFactory  = null;
 
@@ -34,16 +34,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
         //默认预设的工厂提供动态实例，可以直接在app.config配置
         private static Dictionary<ProviderType, AssemblyFactoryInfo> AssemblyCache
             = new Dictionary<ProviderType, AssemblyFactoryInfo>();
-        //{
-        //{ProviderType.DB2,"IBM.Data.DB2.DB2Factory,IBM.Data.DB2, Culture=neutral,Version=9.7.7.4,PublicKeyToken=7c307b91aa13d208"},
-        //{ProviderType.SQLite,"Devart.Data.SQLite.SQLiteProviderFactory, Devart.Data.SQLite, Culture=neutral, Version=5.2.244.0, PublicKeyToken=09af7300eec23701"},
-        //{ProviderType.Oracle,"Oracle.DataAccess.Client.OracleClientFactory, Oracle.DataAccess, Culture=neutral, Version=4.121.2.0,PublicKeyToken=89b483f429c47342"},//Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342
-        //{ProviderType.MySql,"MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data.MySqlClient, Culture=neutral, Version=5.1.7.0, PublicKeyToken=c5687fc88969c44d"},
-        //{ProviderType.MsOracle,"System.Data.OracleClient.OracleClientFactory,System.Data.OracleClient, Culture=neutral,Version=4.0.0.0, PublicKeyToken=b77a5c561934e089"},
-        //{ProviderType.OleDb,"System.Data.OleDb.Ole, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c"},
-        //{ProviderType.SqlServer,"System.Data.SqlClient.SqlClientFactory, System.Data, Culture=neutral, Version=4.0.0.0, PublicKeyToken=b77a5c561934e089"},
-        //{ProviderType.Odbc,"System.Data.Odbc.OdbcFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"}
-        //};
 
         /// <summary>
         /// 构造
@@ -51,12 +41,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
         /// <param name="dbProviderType"></param>
         /// <param name="IsSingleton"></param>
         protected DbCommonBuilder(ProviderType dbProviderType,
-             bool IsSingleton)
+             bool IsSingleton):
+            base(dbProviderType)
         {
             this.IsSingleton = IsSingleton;
             this.DbProviderType = dbProviderType;
 
-            string invariantName = GetInvariantName(dbProviderType);
+            string invariantName = GetAdapterName(dbProviderType);
 
             dbProviderFactory = GetDbFactory(invariantName);
 
@@ -236,12 +227,14 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 return DbProviderFactories.GetFactory(invariantName);
             else
             {
+                return GetAdapterFactory();
+
                 AssemblyFactoryInfo assemInfo = null;
                 AssemblyCache.TryGetValue(DbProviderType, out assemInfo);
                 if (assemInfo == null)
                 {
                     assemInfo = GetDynamicDllProviderInfo(invariantName);
-                    assemInfo.FactoryName = GetFactoryName(DbProviderType);
+                    assemInfo.FactoryName = GetAdapterName(DbProviderType);
                     AssemblyCache.Add(DbProviderType, assemInfo);
                 }
 
@@ -258,58 +251,34 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        private string GetInvariantName(ProviderType providerType)
-        {
-            string invariantName = "System.Data.SqlClient";
-            switch (providerType)
-            {
-                case ProviderType.DB2: invariantName = "IBM.Data.DB2"; break;
-                case ProviderType.MsOracle: invariantName = "System.Data.OracleClient"; break;
-                case ProviderType.Oracle: invariantName = "Oracle.DataAccess"; break;
-                case ProviderType.MySql: invariantName = "MySql.Data.MySqlClient"; break;
-                case ProviderType.SQLite: invariantName = "System.Data.SQLite"; break;
-                case ProviderType.OleDb: invariantName = "System.Data.OleDb"; break;
-                case ProviderType.Odbc: invariantName = "System.Data.Odbc"; break;
-                case ProviderType.SqlServer:
-                default: break;
-            }
-            return invariantName;
-        }
+        //private string GetFactoryName(ProviderType providerType)
+        //{
+        //    string factoryName = "System.Data.SqlClient.SqlClientFactory";
 
-        private string GetFactoryName(ProviderType providerType)
-        {
-            string factoryName = "System.Data.SqlClient.SqlClientFactory";
-
-            switch (providerType)
-            {
-                case ProviderType.DB2:
-                    factoryName = "IBM.Data.DB2.DB2Factory";
-                    break;
-                case ProviderType.Oracle:
-                    factoryName = "Oracle.DataAccess.Client.OracleClientFactory";
-                    break;
-                case ProviderType.MySql:
-                    factoryName = "MySql.Data.MySqlClient.MySqlClientFactory";
-                    break;
-                case ProviderType.SQLite:
-                    factoryName = "Devart.Data.SQLite.SQLiteProviderFactory";
-                    break;
-                case ProviderType.OleDb:
-                    factoryName = "System.Data.OleDb.Ole";
-                    break;
-                case ProviderType.Odbc:
-                    factoryName = "System.Data.Odbc.OdbcFactory";
-                    break;
-                case ProviderType.SqlServer:
-                    factoryName = "System.Data.SqlClient.SqlClientFactory";
-                    break;
-                case ProviderType.MsOracle:
-                    factoryName = "System.Data.OracleClient.OracleClientFactory";
-                    break;
-                default: break;
-            }
-            return factoryName;
-        }
+        //    switch (providerType)
+        //    {
+        //        case ProviderType.DB2:
+        //            factoryName = "IBM.Data.DB2.DB2Factory"; break;
+        //        case ProviderType.Oracle:
+        //            factoryName = "Oracle.DataAccess.Client.OracleClientFactory"; break;
+        //        case ProviderType.MySql:
+        //            factoryName = "MySql.Data.MySqlClient.MySqlClientFactory"; break;
+        //        case ProviderType.SQLite:
+        //            factoryName = "Devart.Data.SQLite.SQLiteProviderFactory"; break;
+        //        case ProviderType.OleDb:
+        //            factoryName = "System.Data.OleDb.Ole"; break;
+        //        case ProviderType.Odbc:
+        //            factoryName = "System.Data.Odbc.OdbcFactory"; break;
+        //        case ProviderType.SqlServer:
+        //            factoryName = "System.Data.SqlClient.SqlClientFactory"; break;
+        //        case ProviderType.MsOracle:
+        //            factoryName = "System.Data.OracleClient.OracleClientFactory"; break;
+        //        case ProviderType.PostgreSQL:
+        //            factoryName = "Npgsql.NpgsqlFactory";break;
+        //        default: break;
+        //    }
+        //    return factoryName;
+        //}
 
         private bool ExistsDbProviderFactories(string invariantName)
         {

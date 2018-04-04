@@ -20,7 +20,8 @@ namespace Bouyei.DbFactoryCore
         DB2 = 0x01,
         Oracle = 0x04,
         MySql = 0x08,
-        SQLite = 0x10
+        SQLite = 0x10,
+        PostgreSQL = 0x80
     }
 
     public enum SyncDirectionType

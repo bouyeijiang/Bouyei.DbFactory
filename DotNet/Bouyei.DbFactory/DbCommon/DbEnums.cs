@@ -24,7 +24,8 @@ namespace Bouyei.DbFactory
         MySql = 0x08,
         SQLite = 0x10,
         OleDb = 0x20,
-        Odbc = 0x40
+        Odbc = 0x40,
+        PostgreSQL=0x80
     }
 
     public enum SyncDirectionType

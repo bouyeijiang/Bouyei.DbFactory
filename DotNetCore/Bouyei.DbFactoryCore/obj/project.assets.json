@@ -686,6 +686,18 @@
           "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
+      "Npgsql/3.2.7": {
+        "type": "package",
+        "dependencies": {
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Npgsql.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Npgsql.dll": {}
+        }
+      },
       "Remotion.Linq/2.1.1": {
         "type": "package",
         "dependencies": {
@@ -1720,7 +1732,7 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "lib/netstandard1.0/_._": {}
+          "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll": {}
@@ -2870,6 +2882,23 @@
         "newtonsoft.json.10.0.1.nupkg.sha512",
         "newtonsoft.json.nuspec",
         "tools/install.ps1"
+      ]
+    },
+    "Npgsql/3.2.7": {
+      "sha512": "CxSXzWn/MNbHX8L1xfQSzrZfJEA2Yt5cvT27Az5abmvbqtUY1ab6xAkmBj5FfLyKCIYEnmSrxn1IY1+Jy13oFA==",
+      "type": "package",
+      "path": "npgsql/3.2.7",
+      "files": [
+        "lib/net45/Npgsql.dll",
+        "lib/net45/Npgsql.xml",
+        "lib/net451/Npgsql.dll",
+        "lib/net451/Npgsql.xml",
+        "lib/netstandard1.3/Npgsql.dll",
+        "lib/netstandard1.3/Npgsql.xml",
+        "lib/netstandard2.0/Npgsql.dll",
+        "lib/netstandard2.0/Npgsql.xml",
+        "npgsql.3.2.7.nupkg.sha512",
+        "npgsql.nuspec"
       ]
     },
     "Remotion.Linq/2.1.1": {
@@ -6172,7 +6201,8 @@
       "Microsoft.NETCore.App >= 2.0.0",
       "Mono.Data.OracleClientCore >= 1.0.0",
       "MySql.Data >= 6.10.6",
-      "MySql.Data.EntityFrameworkCore >= 6.10.6"
+      "MySql.Data.EntityFrameworkCore >= 6.10.6",
+      "Npgsql >= 3.2.7"
     ]
   },
   "packageFolders": {
@@ -6257,6 +6287,10 @@
           "MySql.Data.EntityFrameworkCore": {
             "target": "Package",
             "version": "[6.10.6, )"
+          },
+          "Npgsql": {
+            "target": "Package",
+            "version": "[3.2.7, )"
           }
         },
         "imports": [
