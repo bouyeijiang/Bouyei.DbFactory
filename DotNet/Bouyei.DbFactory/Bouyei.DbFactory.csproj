@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbAdoProvider\DbAdapterProvider.cs" />
+    <Compile Include="DbAdoProvider\Plugins\NpgBulk.cs" />
     <Compile Include="DbCommon\DbInternalCommon.cs" />
     <Compile Include="DbCommon\DbInternalReflection.cs" />
     <Compile Include="DbCommon\DbEnums.cs" />

@@ -41,6 +41,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         Db2Bulk db2BulkCopy = null;
         OracleBulk oracleBulkCopy = null;
         MysqlBulk mySqlBulkCopy = null;
+        NpgBulk npgBulkCopy = null;
 
         ~DbCommonBulkCopy()
         {
@@ -61,6 +62,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 else if (ProviderName == ProviderType.DB2) db2BulkCopy.Dispose();
                 else if (ProviderName == ProviderType.Oracle) oracleBulkCopy.Dispose();
                 else if (ProviderName == ProviderType.MySql) mySqlBulkCopy.Dispose();
+                else if (ProviderName == ProviderType.PostgreSQL) npgBulkCopy.Dispose();
             }
         }
 
@@ -106,6 +108,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
             else if (ProviderName == ProviderType.MySql)
             {
                 mySqlBulkCopy = new MysqlBulk(ConnectionString, BulkCopyTimeout);
+            }
+            else if (ProviderName == ProviderType.PostgreSQL)
+            {
+                npgBulkCopy = new NpgBulk(ConnectionString, bulkcopyTimeout);
             }
         }
 
@@ -182,6 +188,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 }
                 mySqlBulkCopy = new MysqlBulk(ConnectionString, BulkCopyTimeout);
             }
+            else if (ProviderName == ProviderType.PostgreSQL)
+            {
+                npgBulkCopy = new NpgBulk(ConnectionString, bulkcopyTimeout);
+            }
         }
 
         public void Close()
@@ -235,6 +245,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 });
 
                 if (rows == 0) throw new Exception("导入空数据...");
+            }
+            else if (ProviderName == ProviderType.PostgreSQL)
+            {
+                npgBulkCopy.WriteToServer(sourceTable);
             }
             else
             {

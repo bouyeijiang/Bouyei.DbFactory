@@ -7,10 +7,6 @@
  *   guid: fd219fea-b1b9-48b2-b864-2f26d24f678e
 ---------------------------------------------------------------*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 
 namespace Bouyei.DbFactory.DbAdoProvider.Plugins

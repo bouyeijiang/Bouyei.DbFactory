@@ -22,6 +22,7 @@
         <dependency id="Mono.Data.OracleClientCore" version="1.0.0" exclude="Build,Analyzers" />
         <dependency id="MySql.Data" version="6.10.6" exclude="Build,Analyzers" />
         <dependency id="MySql.Data.EntityFrameworkCore" version="6.10.6" exclude="Build,Analyzers" />
+        <dependency id="Npgsql" version="3.2.7" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <contentFiles>
@@ -41,7 +42,7 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.0\Bouyei.DbFactoryCore.dll" />
+    <file src="E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.0\Bouyei.DbFactoryCore.dll" />
     <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\app.config.transform" target="content\app.config.transform" />
     <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\app.config.transform" target="contentFiles\any\netcoreapp2.0\app.config.transform" />
     <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlCommand.xml" target="content\MySqlCommand.xml" />
