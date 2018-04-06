@@ -48,6 +48,16 @@ namespace DotNetCoreDemo
             Console.ReadKey();
         }
 
+        //  static string ToString<T>(Predicate<T> predicate)
+        //{
+        //    return predicate.ToString();
+        //}
+
+        static string ToString<T>(System.Linq.Expressions.Expression<T> expression)
+        {
+            return expression.ToString();
+        }
+
        public class Info
         {
             public int id { get; set; }

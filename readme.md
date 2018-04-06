@@ -14,7 +14,7 @@
 		Console.WriteLine(string.Join(",", dr.ItemArray));
 	}
 
-#基于EF的ORM需要再配置文件加相应实体映射dlll路径，详细看demo代码例子
+#基于EF的ORM需要再配置文件加相应实体映射dll路径，详细看demo代码例子
 
 	IOrmProvider ormProvider = OrmProvider.CreateProvider(ProviderType.SqlServer, connectionString);
 

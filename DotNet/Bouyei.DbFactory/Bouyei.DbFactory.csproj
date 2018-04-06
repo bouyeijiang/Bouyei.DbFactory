@@ -151,6 +151,16 @@
     <Compile Include="DbCommon\DbInternalReflection.cs" />
     <Compile Include="DbCommon\DbEnums.cs" />
     <Compile Include="DbCommon\DbStructures.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Delete.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\From.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\In.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Insert.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Select.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Set.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\SqlBase.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Update.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Values.cs" />
+    <Compile Include="DbSqlProvider\SqlExpression\Where.cs" />
     <Compile Include="DbUtils\DataTableHelper.cs" />
     <Compile Include="DbAdoProvider\Entities\Structures.cs" />
     <Compile Include="DbAdoProvider\Entities\Enums.cs" />
@@ -191,6 +201,7 @@
     <Compile Include="Providers\IAdoProvider.cs" />
     <Compile Include="Providers\IDbSyncProvider.cs" />
     <Compile Include="Providers\IOrmProvider.cs" />
+    <Compile Include="Providers\ISqlProvider.cs" />
     <Compile Include="Providers\OrmProvider.cs" />
     <Compile Include="DbEntityProvider\EntityContext.cs" />
     <Compile Include="DbEntityProvider\EntityInitializer.cs" />
@@ -206,6 +217,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DbUtils\DbCsvHelper.cs" />
     <Compile Include="DbBaseSyncProvider\SqlBaseSyncProvider.cs" />
+    <Compile Include="Providers\SqlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -216,7 +228,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DbSqlProvider\SqlExpression\" />
     <Folder Include="DbSqlProvider\SqlExtensions\" />
     <Folder Include="DbSqlProvider\SqlFunctions\" />
     <Folder Include="DbSqlProvider\SqlKeywords\" />
