@@ -1,4 +1,4 @@
-####1、使用例子
+#1、Ado使用例子
  
 	string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
 
@@ -25,3 +25,26 @@
 		Console.WriteLine(item.uName);
 	}
 	Console.ReadKey();
+
+#sql表达式生成例子
+			//生成简单查询脚本
+            ISqlProvider sqlProvider = SqlProvider.CreateProvider();
+
+            //查询
+           var sql= sqlProvider.Select<User>()
+                .From<User>().Where<User>(x => x.Id == 1).SqlString;
+
+            //修改
+            sql = sqlProvider.Update<User>()
+                .Set<User>(new User() { Name = "bouyei", UserName = "hkj" })
+                .Where<User>(x => x.Id == 1).SqlString;
+
+            //删除
+            sql = sqlProvider.Delete()
+                .From<User>().Where<User>(x => x.Name == "bouyei").SqlString;
+
+            //插入
+            sql = sqlProvider.Insert<User>()
+                .Values<User>(new User[] {
+                new User() { Name ="hello", UserName="aileenyin.com" }
+                ,new User() { Name="bouyei",UserName="jiang"} }).SqlString;

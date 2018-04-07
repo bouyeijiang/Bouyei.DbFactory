@@ -1,5 +1,5 @@
 ﻿/*-------------------------------------------------------------
- *project:Bouyei.DbFactory.DbCommon
+ *project:Bouyei.DbFactoryCore.DbCommon
  *   auth: bouyei
  *   date: 2017/10/30 11:22:05
  *contact: 453840293@qq.com

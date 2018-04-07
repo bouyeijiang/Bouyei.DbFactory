@@ -13,8 +13,6 @@ using System.Data.Common;
 namespace Bouyei.DbFactoryDemo
 {
     using Bouyei.DbFactory.DbAdoProvider;
-    using Bouyei.DbFactory.DbSqlProvider;
-    using Bouyei.DbFactory.DbSqlProvider.Extensions;
     using Bouyei.DbFactory.DbMapper;
     using Bouyei.DbEntities;
 
@@ -23,15 +21,26 @@ namespace Bouyei.DbFactoryDemo
         static void Main(string[] args)
         {
             //生成简单查询脚本
-            //var sqlProvider = SqlProvider.CreateProvider();
-            //var sql = sqlProvider.Select("username", "realname", "age")
-            //    .From("sys_user").Where(new KeyValue()
-            //    {
-            //        Name = "username",
-            //        Value = "bouyei"
-            //    }).SqlString;
+            ISqlProvider sqlProvider = SqlProvider.CreateProvider();
 
-            ////结果:Select username,realname,age From sys_user Where username='bouyei' 
+            //查询
+           var sql= sqlProvider.Select<User>()
+                .From<User>().Where<User>(x => x.Id == 1).SqlString;
+
+            //修改
+            sql = sqlProvider.Update<User>()
+                .Set<User>(new User() { Name = "bouyei", UserName = "hkj" })
+                .Where<User>(x => x.Id == 1).SqlString;
+
+            //删除
+            sql = sqlProvider.Delete()
+                .From<User>().Where<User>(x => x.Name == "bouyei").SqlString;
+
+            //插入
+            sql = sqlProvider.Insert<User>()
+                .Values<User>(new User[] {
+                new User() { Name ="hello", UserName="aileenyin.com" }
+                ,new User() { Name="bouyei",UserName="jiang"} }).SqlString;
 
             //////ado.net 使用例子
             //string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;

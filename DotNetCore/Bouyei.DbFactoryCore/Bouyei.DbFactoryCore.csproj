@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>bouyei</Description>
+    <Description>Multiple database universal access interface</Description>
     <Copyright>bouyei</Copyright>
     <PackageLicenseUrl>http://openthinking.cn</PackageLicenseUrl>
     <PackageIconUrl>http://openthinking.cn</PackageIconUrl>
-    <PackageReleaseNotes>first version</PackageReleaseNotes>
+    <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

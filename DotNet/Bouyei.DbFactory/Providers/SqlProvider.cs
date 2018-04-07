@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bouyei.DbFactory.Providers
+namespace Bouyei.DbFactory
 {
+    using DbSqlProvider.SqlKeywords;
+
     public class SqlProvider : ISqlProvider
     {
-       public ProviderType ProviderType { get; private set; }
+       public ProviderType ProviderType { get;  set; }
 
         public SqlProvider(ProviderType providerType=ProviderType.SqlServer)
         {
@@ -18,6 +20,58 @@ namespace Bouyei.DbFactory.Providers
         public static ISqlProvider CreateProvider(ProviderType providerType = ProviderType.SqlServer)
         {
             return new SqlProvider(providerType);
+        }
+
+        public Select Select(params string[] columns)
+        {
+            Select _select = new Select(columns);
+            _select.SqlString = _select.ToString();
+            return _select;
+        }
+
+        public Select Select<T>() where T : class
+        {
+            Select _select = new Select();
+            _select.SqlString = _select.ToString<T>();
+            return _select;
+        }
+
+        public Insert Insert<T>() where T : class
+        {
+            Insert  insert = new Insert(string.Empty);
+            insert.SqlString = insert.ToString<T>();
+
+            return insert;
+        }
+
+        public Insert Insert(string tableName,string[] columnNames)
+        {
+            Insert insert = new Insert(tableName);
+            insert.SqlString = insert.ToString(columnNames);
+
+            return insert;
+        }
+
+        public Update Update(string tableName)
+        {
+            Update up = new Update();
+            up.SqlString = up.ToString(tableName);
+            return up;
+        }
+
+        public Update Update<T>() where T:class
+        {
+            Update up = new Update();
+            up.SqlString = up.ToString<T>();
+            return up;
+        }
+
+        public Delete Delete()
+        {
+            Delete delete = new Delete();
+            delete.SqlString = delete.ToString();
+
+            return delete;
         }
     }
 }

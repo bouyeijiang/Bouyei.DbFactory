@@ -21,6 +21,8 @@ namespace DotNetCoreDemo
             //    Console.WriteLine(string.Join(",", dr.ItemArray));
             //}
 
+             
+
             DataTable dt = new DataTable();
             dt.TableName = "std_user";
             dt.Columns.Add("id", typeof(int));
