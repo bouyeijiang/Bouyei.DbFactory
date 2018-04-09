@@ -146,7 +146,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbAdoProvider\DbAdapterProvider.cs" />
+    <Compile Include="DbAdoProvider\Plugins\Db2Factory.cs" />
+    <Compile Include="DbAdoProvider\Plugins\MysqlFactory.cs" />
     <Compile Include="DbAdoProvider\Plugins\NpgBulk.cs" />
+    <Compile Include="DbAdoProvider\Plugins\NpgFactory.cs" />
+    <Compile Include="DbAdoProvider\Plugins\OracleFactory.cs" />
+    <Compile Include="DbAdoProvider\Plugins\SqlFactory.cs" />
+    <Compile Include="DbAdoProvider\Plugins\SqliteFactory.cs" />
     <Compile Include="DbCommon\DbInternalCommon.cs" />
     <Compile Include="DbCommon\DbInternalReflection.cs" />
     <Compile Include="DbCommon\DbEnums.cs" />

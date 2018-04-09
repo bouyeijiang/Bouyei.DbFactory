@@ -3,6 +3,8 @@ using System.Data.Common;
 
 namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
+    using Plugins;
+
     public class DbAdapterProvider
     {
         ProviderType providerType;
@@ -16,17 +18,17 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             switch (providerType)
             {
                 case ProviderType.SqlServer:
-                    return System.Data.SqlClient.SqlClientFactory.Instance;
+                    return new SqlFactory().GetFactory();
                 case ProviderType.Oracle:
-                    return System.Data.OracleClient.OracleClientFactory.Instance;
+                    return new OracleFactory().GetFactory();
                 case ProviderType.MySql:
-                    return MySql.Data.MySqlClient.MySqlClientFactory.Instance;
+                    return new MysqlFactory().GetFactory();
                 case ProviderType.SQLite:
-                    return Microsoft.Data.Sqlite.SqliteFactory.Instance;
+                    return new SqliteFactory().GetFactory();
                 case ProviderType.PostgreSQL:
-                    return Npgsql.NpgsqlFactory.Instance;
+                    return new NpgFactory().GetFactory();
                 case ProviderType.DB2:
-                    return IBM.Data.DB2.Core.DB2Factory.Instance;
+                    return new Db2Factory().GetFactory();
                 default: return null;
             }
         }

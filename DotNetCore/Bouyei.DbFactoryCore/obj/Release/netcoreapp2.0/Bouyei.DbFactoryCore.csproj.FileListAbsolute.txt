@@ -208,7 +208,6 @@ E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Release\netcorea
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Release\netcoreapp2.0\Bouyei.DbFactoryCore.deps.json
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Release\netcoreapp2.0\Bouyei.DbFactoryCore.dll
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Release\netcoreapp2.0\Bouyei.DbFactoryCore.pdb
-E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Release\netcoreapp2.0\Bouyei.DbFactoryCore.csprojResolveAssemblyReference.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Release\netcoreapp2.0\Bouyei.DbFactoryCore.csproj.CoreCompileInputs.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Release\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfoInputs.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Release\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfo.cs
