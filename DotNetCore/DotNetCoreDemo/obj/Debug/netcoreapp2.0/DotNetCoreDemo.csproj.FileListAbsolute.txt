@@ -223,7 +223,6 @@ E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.0\Bo
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.0\DbEntity.dll
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.pdb
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.0\DbEntity.pdb
-E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.csprojResolveAssemblyReference.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.Properties.Resources.resources
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.csproj.GenerateResource.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.csproj.CoreCompileInputs.cache
@@ -232,3 +231,4 @@ E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\Do
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.csproj.CopyComplete
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.dll
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.pdb
+E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.0\DotNetCoreDemo.csprojAssemblyReference.cache

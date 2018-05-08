@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v2.0": {
       "DbEntity/1.0.0": {
         "dependencies": {
-          "Bouyei.DbFactoryCore": "1.0.0"
+          "Bouyei.DbFactoryCore": "1.0.2"
         },
         "runtime": {
           "DbEntity.dll": {}
@@ -1003,7 +1003,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "Bouyei.DbFactoryCore/1.0.0": {
+      "Bouyei.DbFactoryCore/1.0.2": {
         "dependencies": {
           "IBM.Data.DB2.Core": "1.2.2.100",
           "Microsoft.Data.Sqlite": "2.0.1",
@@ -1770,7 +1770,7 @@
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
     },
-    "Bouyei.DbFactoryCore/1.0.0": {
+    "Bouyei.DbFactoryCore/1.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

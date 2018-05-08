@@ -12,6 +12,7 @@ using System.Data.Entity;
 namespace Bouyei.DbFactory.DbEntityProvider
 {
     using DbUtils;
+    //using System.Data.Entity.ModelConfiguration;
 
     internal class EntityContext : DbContext, IDisposable
     { 
@@ -264,8 +265,33 @@ namespace Bouyei.DbFactory.DbEntityProvider
                 throw new Exception("找不到数据库表实体映射配置路径:" + path);
             
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
+
+            //modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
+
+            var regTypes = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(type => !String.IsNullOrEmpty(type.Namespace)
+                 && type.BaseType != null
+                 && type.BaseType.IsGenericType
+                 && type.IsClass
+                 &&typeof(DbEntity).IsAssignableFrom(type));
+
+            foreach (var type in regTypes)
+            {
+                dynamic configurationInstance = Activator.CreateInstance(type);
+                modelBuilder.Configurations.Add(configurationInstance);
+            }
+
             base.OnModelCreating(modelBuilder);
         }
+    }
+
+    public interface IDbEntity
+    {
+
+    }
+
+    public class DbEntity : IDbEntity
+    {
+
     }
 }

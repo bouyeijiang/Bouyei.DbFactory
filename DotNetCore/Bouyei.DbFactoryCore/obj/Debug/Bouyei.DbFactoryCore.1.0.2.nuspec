@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Bouyei.DbFactoryCore</id>
+    <version>1.0.2</version>
+    <authors>Bouyei.DbFactoryCore</authors>
+    <owners>Bouyei.DbFactoryCore</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://openthinking.cn/</licenseUrl>
+    <iconUrl>http://openthinking.cn/</iconUrl>
+    <description>Multiple database universal access interface</description>
+    <releaseNotes>open source no limit</releaseNotes>
+    <copyright>bouyei</copyright>
+    <dependencies>
+      <group targetFramework=".NETCoreApp2.0">
+        <dependency id="IBM.Data.DB2.Core" version="1.2.2.100" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Data.Sqlite" version="2.0.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="2.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="2.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="2.0.1" exclude="Build,Analyzers" />
+        <dependency id="Mono.Data.OracleClientCore" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data" version="6.10.6" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data.EntityFrameworkCore" version="6.10.6" exclude="Build,Analyzers" />
+        <dependency id="Npgsql" version="3.2.7" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <contentFiles>
+      <files include="any/netcoreapp2.0/app.config.transform" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlCommand.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlCommandBuilder.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlConnection.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlConnectionStringBuilder.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlDataAdapter.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlDataReader.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlException.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlHelper.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlParameter.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlParameterCollection.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/MySqlTransaction.xml" buildAction="Content" />
+      <files include="any/netcoreapp2.0/web.config.transform" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.0\Bouyei.DbFactoryCore.dll" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\app.config.transform" target="content\app.config.transform" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\app.config.transform" target="contentFiles\any\netcoreapp2.0\app.config.transform" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlCommand.xml" target="content\MySqlCommand.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlCommand.xml" target="contentFiles\any\netcoreapp2.0\MySqlCommand.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlCommandBuilder.xml" target="content\MySqlCommandBuilder.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlCommandBuilder.xml" target="contentFiles\any\netcoreapp2.0\MySqlCommandBuilder.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlConnection.xml" target="content\MySqlConnection.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlConnection.xml" target="contentFiles\any\netcoreapp2.0\MySqlConnection.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlConnectionStringBuilder.xml" target="content\MySqlConnectionStringBuilder.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlConnectionStringBuilder.xml" target="contentFiles\any\netcoreapp2.0\MySqlConnectionStringBuilder.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlDataAdapter.xml" target="content\MySqlDataAdapter.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlDataAdapter.xml" target="contentFiles\any\netcoreapp2.0\MySqlDataAdapter.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlDataReader.xml" target="content\MySqlDataReader.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlDataReader.xml" target="contentFiles\any\netcoreapp2.0\MySqlDataReader.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlException.xml" target="content\MySqlException.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlException.xml" target="contentFiles\any\netcoreapp2.0\MySqlException.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlHelper.xml" target="content\MySqlHelper.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlHelper.xml" target="contentFiles\any\netcoreapp2.0\MySqlHelper.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlParameter.xml" target="content\MySqlParameter.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlParameter.xml" target="contentFiles\any\netcoreapp2.0\MySqlParameter.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlParameterCollection.xml" target="content\MySqlParameterCollection.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlParameterCollection.xml" target="contentFiles\any\netcoreapp2.0\MySqlParameterCollection.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlTransaction.xml" target="content\MySqlTransaction.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\docs\MySqlTransaction.xml" target="contentFiles\any\netcoreapp2.0\MySqlTransaction.xml" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\web.config.transform" target="content\web.config.transform" />
+    <file src="G:\Users\45384\.nuget\packages\mysql.data\6.10.6\contentFiles\any\netcoreapp2.0\web.config.transform" target="contentFiles\any\netcoreapp2.0\web.config.transform" />
+  </files>
+</package>

@@ -7,7 +7,7 @@ namespace DbEntity
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("MemUser")]
-    public class User : IDbEntity
+    public class User : DbEntity
     {
         [Key]
         public Int64 uNo { get; set; }

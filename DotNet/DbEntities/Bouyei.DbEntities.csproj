@@ -92,5 +92,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bouyei.DbFactory\Bouyei.DbFactory.csproj">
+      <Project>{e7e05c1e-9623-4180-9ea1-ab851f6213d3}</Project>
+      <Name>Bouyei.DbFactory</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

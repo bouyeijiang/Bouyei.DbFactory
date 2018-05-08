@@ -1,6 +1,5 @@
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.deps.json
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll
-E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.csprojResolveAssemblyReference.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.csproj.CoreCompileInputs.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfoInputs.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfo.cs
@@ -214,3 +213,4 @@ E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj
 E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfo.cs
 E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll
 E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.pdb
+E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.csprojAssemblyReference.cache

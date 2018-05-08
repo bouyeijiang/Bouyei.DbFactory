@@ -283,10 +283,10 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
             string path = JsonConfiguration.Configuration["EntityMapping"];
 
             var eItems = Assembly.LoadFrom(path).GetTypes()
-            .Where(type => !string.IsNullOrWhiteSpace(type.Namespace))
-            .Where(type => type.GetTypeInfo().IsClass)
-            .Where(type => type.GetTypeInfo().BaseType != null)
-            .Where(type => typeof(IDbEntity).IsAssignableFrom(type));
+            .Where(type => !string.IsNullOrWhiteSpace(type.Namespace)
+            && type.GetTypeInfo().IsClass
+            && type.GetTypeInfo().BaseType != null
+            && typeof(DbEntity).IsAssignableFrom(type));
 
             foreach (var item in eItems)
             {
@@ -316,6 +316,11 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     }
 
     public interface IDbEntity
+    {
+
+    }
+
+    public class DbEntity:IDbEntity
     {
 
     }
