@@ -37,10 +37,10 @@ namespace Bouyei.DbFactory.DbEntityProvider
         }
 
         #region public
-        public DbSet<TEntity> DSet<TEntity>() where TEntity : class
-        {
-            return this.Set<TEntity>();
-        }
+        //public DbSet<TEntity> DSet<TEntity>() where TEntity : class
+        //{
+        //    return this.Set<TEntity>();
+        //}
 
         public int Count<TEntity>(Expression<Func<TEntity, bool>> predicate)where TEntity:class
         {
@@ -54,24 +54,24 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         public IQueryable<TEntity> Query<TEntity>() where TEntity : class
         {
-            return DSet<TEntity>().AsQueryable();
+            return Set<TEntity>().AsQueryable();
         }
 
         public IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
-            return DSet<TEntity>().Where(predicate);
+            return Set<TEntity>().Where(predicate);
         }
 
         public IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
-            return DSet<TEntity>().Where(predicate).AsNoTracking();
+            return Set<TEntity>().Where(predicate).AsNoTracking();
         }
 
         public TEntity Update<TEntity>(TEntity entity,bool isSaveChange=false) where TEntity : class
         {
             if (EnsureChange<TEntity>(entity) > 0)
             {
-                DSet<TEntity>().Attach(entity);
+                Set<TEntity>().Attach(entity);
                 this.Entry<TEntity>(entity).State = EntityState.Modified;
                 if (isSaveChange)
                 {
@@ -86,7 +86,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
         public TEntity Delete<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
             this.Set<TEntity>().Attach(entity);
-            DSet<TEntity>().Remove(entity);
+            Set<TEntity>().Remove(entity);
             this.Entry<TEntity>(entity).State = EntityState.Deleted;
             if (isSaveChange)
             {

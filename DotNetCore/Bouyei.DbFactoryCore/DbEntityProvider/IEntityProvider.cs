@@ -20,7 +20,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
 
-        DbSet<TEntity> DbSet<TEntity>() where TEntity : class;
+        //DbSet<TEntity> DbSet<TEntity>() where TEntity : class;
 
         int Count<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
 

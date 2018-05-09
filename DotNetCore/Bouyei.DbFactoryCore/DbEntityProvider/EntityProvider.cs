@@ -26,11 +26,6 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
             eContext.DbMigrate();
         }
 
-        public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
-        {
-            return eContext.DSet<TEntity>();
-        }
-
 		public void Refresh<TEntity>(TEntity entity) where TEntity : class
 		{
             eContext.Reload(entity);
@@ -62,7 +57,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         public TEntity GetById<TEntity>(object id) where TEntity : class
         {
-            return  DbSet<TEntity>().Find(id);
+            return  eContext.Find<TEntity>(id);
         }
 
         public TEntity Insert<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
@@ -92,7 +87,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         public IEnumerable<TEntity> Delete<TEntity>(Func<TEntity, bool> predicate, bool isSaveChange = false) where TEntity : class
         {
-            var items = this.eContext.DSet<TEntity>().Where(predicate);
+            var items = this.eContext.Set<TEntity>().Where(predicate);
             foreach (var item in items)
             {
                 eContext.Delete(item,isSaveChange);
