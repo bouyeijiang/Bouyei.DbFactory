@@ -1,18 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Bouyei.DbFactory.DbEntityProvider;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Bouyei.DbEntities
 {
     [Table("user")]
-    public class User:DbEntity
+    public class User:DbEntity<User>
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int id { get; set; }
 
-        public string Name { get; set; }
+        public string name { get; set; }
 
-        public string UserName { get; set; }
+        public int age { get; set; }
     }
 }

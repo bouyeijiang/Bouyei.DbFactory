@@ -12,6 +12,8 @@ using System.Data.Entity;
 namespace Bouyei.DbFactory.DbEntityProvider
 {
     using DbUtils;
+    using System.Data.Entity.ModelConfiguration;
+
     //using System.Data.Entity.ModelConfiguration;
 
     internal class EntityContext : DbContext, IDisposable
@@ -268,17 +270,16 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
             //modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
 
-            var regTypes = Assembly.GetExecutingAssembly().GetTypes()
+            var regTypes = Assembly.LoadFrom(mappingDLL).GetTypes()
                 .Where(type => !String.IsNullOrEmpty(type.Namespace)
-                 && type.BaseType != null
-                 && type.BaseType.IsGenericType
-                 && type.IsClass
-                 &&typeof(DbEntity).IsAssignableFrom(type));
+                 && type.GetTypeInfo().IsClass
+                 && type.GetTypeInfo().BaseType != null
+               && type.BaseType.GetGenericTypeDefinition() == typeof(DbEntity<>));
 
             foreach (var type in regTypes)
             {
-                dynamic configurationInstance = Activator.CreateInstance(type);
-                modelBuilder.Configurations.Add(configurationInstance);
+                dynamic typeInstance = Activator.CreateInstance(type);
+                modelBuilder.Configurations.Add(typeInstance);
             }
 
             base.OnModelCreating(modelBuilder);
@@ -290,7 +291,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
     }
 
-    public class DbEntity : IDbEntity
+    public class DbEntity<T> : EntityTypeConfiguration<T>, IDbEntity where T : class
     {
 
     }

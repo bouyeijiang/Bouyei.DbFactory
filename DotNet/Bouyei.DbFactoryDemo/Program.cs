@@ -25,25 +25,25 @@ namespace Bouyei.DbFactoryDemo
 
             //查询
            var sql= sqlProvider.Select<User>()
-                .From<User>().Where<User>(x => x.Id == 1).SqlString;
+                .From<User>().Where<User>(x => x.id == 1).SqlString;
 
             //修改
             sql = sqlProvider.Update<User>()
-                .Set<User>(new User() { Name = "bouyei", UserName = "hkj" })
-                .Where<User>(x => x.Id == 1).SqlString;
+                .Set<User>(new User() { name = "bouyei"})
+                .Where<User>(x => x.id == 1).SqlString;
 
             //删除
             sql = sqlProvider.Delete()
-                .From<User>().Where<User>(x => x.Name == "bouyei").SqlString;
+                .From<User>().Where<User>(x => x.name == "bouyei").SqlString;
 
             //插入
             sql = sqlProvider.Insert<User>()
                 .Values<User>(new User[] {
-                new User() { Name ="hello", UserName="aileenyin.com" }
-                ,new User() { Name="bouyei",UserName="jiang"} }).SqlString;
+                new User() { name ="hello", age=12 }
+                ,new User() { name="bouyei",age=23} }).SqlString;
 
             //////ado.net 使用例子
-            //string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+             string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
             //AdoDemo(connectionString);
 
             ////orm
@@ -53,7 +53,8 @@ namespace Bouyei.DbFactoryDemo
             //SyncProviderDemo syncProvider = new SyncProviderDemo();
             //syncProvider.Execute();
 
-            AdoDemo("");
+            //AdoDemo("");
+            OrmDemo(connectionString);
         }
 
         private static void AdoDemo(string connectionString)
