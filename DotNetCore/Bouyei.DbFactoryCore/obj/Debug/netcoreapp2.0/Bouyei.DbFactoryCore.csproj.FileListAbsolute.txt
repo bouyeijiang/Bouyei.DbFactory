@@ -213,4 +213,3 @@ E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj
 E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfo.cs
 E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll
 E:\Project\Bouyei.DbFactory\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.pdb
-E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.csprojAssemblyReference.cache
