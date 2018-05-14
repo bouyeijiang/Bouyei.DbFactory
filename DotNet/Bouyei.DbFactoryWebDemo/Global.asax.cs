@@ -9,7 +9,6 @@ using System.Web.Routing;
 namespace Bouyei.DbFactoryWebDemo
 {
     using Bouyei.DbFactory;
-    using DbEntities;
 
     public class MvcApplication : System.Web.HttpApplication
     {
