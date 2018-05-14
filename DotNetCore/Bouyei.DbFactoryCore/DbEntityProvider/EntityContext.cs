@@ -282,7 +282,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         {
             string path = JsonConfiguration.Configuration["EntityMapping"];
 
-            var eItems = Assembly.LoadFrom(path).GetTypes()
+            var eItems = Assembly.LoadFile(path).GetTypes()
             .Where(type => !string.IsNullOrWhiteSpace(type.Namespace)
             && type.GetTypeInfo().IsClass
             && type.GetTypeInfo().BaseType != null

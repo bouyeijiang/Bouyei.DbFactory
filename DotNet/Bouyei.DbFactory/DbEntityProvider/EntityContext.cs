@@ -270,7 +270,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
             //modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
 
-            var regTypes = Assembly.LoadFrom(mappingDLL).GetTypes()
+            var regTypes = Assembly.LoadFile(path).GetTypes()
                 .Where(type => !String.IsNullOrEmpty(type.Namespace)
                  && type.GetTypeInfo().IsClass
                  && type.GetTypeInfo().BaseType != null
