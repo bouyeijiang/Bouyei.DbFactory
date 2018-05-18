@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
-    using Plugins;
+    using Factories;
 
     public class DbAdapterProvider
     {

@@ -11,7 +11,7 @@ using System.Data;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
-    using Plugins;
+    using Factories;
 
     public class DbCommonBulkCopy : IDbBulkCopy
     {
@@ -37,11 +37,12 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 public IDbConnection dbConn { get; private set; }
         #endregion
 
-        SqlBulk sqlBulkCopy = null;
-        Db2Bulk db2BulkCopy = null;
-        OracleBulk oracleBulkCopy = null;
-        MysqlBulk mySqlBulkCopy = null;
-        NpgBulk npgBulkCopy = null;
+       // SqlBulk sqlBulkCopy = null;
+        //Db2Bulk db2BulkCopy = null;
+        //OracleBulk oracleBulkCopy = null;
+        //MysqlBulk mySqlBulkCopy = null;
+        //NpgBulk npgBulkCopy = null;
+        IFactory factory = null;
 
         ~DbCommonBulkCopy()
         {
@@ -58,11 +59,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         {
             if (disposing)
             {
-                if (ProviderName == ProviderType.SqlServer) sqlBulkCopy.Dispose();
-                else if (ProviderName == ProviderType.DB2) db2BulkCopy.Dispose();
-                else if (ProviderName == ProviderType.Oracle) oracleBulkCopy.Dispose();
-                else if (ProviderName == ProviderType.MySql) mySqlBulkCopy.Dispose();
-                else if (ProviderName == ProviderType.PostgreSQL) npgBulkCopy.Dispose();
+                factory.Dispose();
             }
         }
 
@@ -83,35 +80,35 @@ namespace Bouyei.DbFactory.DbAdoProvider
             this.BatchSize = batchSize;
             this.BulkCopyTimeout = bulkcopyTimeout;
             this.DbBulkCopyOption = dbBulkCopyOption;
-
+          
             if (ProviderName == ProviderType.SqlServer)
             {
-                if (sqlBulkCopy == null || this.ConnectionString != ConnectionString)
+                if (factory == null || this.ConnectionString != ConnectionString)
                 {
-                    sqlBulkCopy = new SqlBulk(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
+                    factory = new SqlFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
                 }
             }
             else if (ProviderName == ProviderType.DB2)
             {
-                if (db2BulkCopy == null || this.ConnectionString != ConnectionString)
+                if (factory == null || this.ConnectionString != ConnectionString)
                 {
-                    db2BulkCopy = new Db2Bulk(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
+                    factory = new Db2Factory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
                 }
             }
             else if (ProviderName == ProviderType.Oracle)
             {
-                if (oracleBulkCopy == null || this.ConnectionString != ConnectionString)
+                if (factory == null || this.ConnectionString != ConnectionString)
                 {
-                    oracleBulkCopy = new OracleBulk(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
+                    factory = new OracleFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
                 }
             }
             else if (ProviderName == ProviderType.MySql)
             {
-                mySqlBulkCopy = new MysqlBulk(ConnectionString, BulkCopyTimeout);
+                factory = new MysqlFactory(ConnectionString, BulkCopyTimeout);
             }
             else if (ProviderName == ProviderType.PostgreSQL)
             {
-                npgBulkCopy = new NpgBulk(ConnectionString, bulkcopyTimeout);
+                factory = new NpgFactory(ConnectionString, bulkcopyTimeout);
             }
         }
 
@@ -132,10 +129,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
             if (ProviderName == ProviderType.SqlServer)
             {
-                if (sqlBulkCopy != null || this.ConnectionString != connectionString)
+                if (factory != null || this.ConnectionString != connectionString)
                 {
-                    if (sqlBulkCopy != null)
-                        sqlBulkCopy.Dispose();
+                    if (factory != null)
+                        factory.Dispose();
                 }
                 if (dbConn.State != ConnectionState.Open) dbConn.Open();
 
@@ -144,14 +141,14 @@ namespace Bouyei.DbFactory.DbAdoProvider
                     dbTrans = dbConn.BeginTransaction();
                     DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction; 
                 }
-                sqlBulkCopy = new SqlBulk(dbConn, dbTrans, BulkCopyTimeout, DbBulkCopyOption);
+                factory = new SqlFactory(dbConn, dbTrans, BulkCopyTimeout, DbBulkCopyOption);
             }
             else if (ProviderName == ProviderType.DB2)
             {
-                if (db2BulkCopy != null || this.ConnectionString != connectionString)
+                if (factory != null || this.ConnectionString != connectionString)
                 {
-                    if (db2BulkCopy != null)
-                        db2BulkCopy.Dispose();
+                    if (factory != null)
+                        factory.Dispose();
                 }
 
                 if (dbConn.State != ConnectionState.Open) dbConn.Open();
@@ -160,14 +157,14 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 {
                     DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
                 }
-                db2BulkCopy = new Db2Bulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
+                factory = new Db2Factory(dbConn, BulkCopyTimeout, DbBulkCopyOption);
             }
             else if (ProviderName == ProviderType.Oracle)
             {
-                if (oracleBulkCopy != null || this.ConnectionString != connectionString)
+                if (factory != null || this.ConnectionString != connectionString)
                 {
-                    if (oracleBulkCopy != null)
-                        oracleBulkCopy.Dispose();
+                    if (factory != null)
+                        factory.Dispose();
                 }
 
                 if (dbConn.State != ConnectionState.Open) dbConn.Open();
@@ -177,29 +174,21 @@ namespace Bouyei.DbFactory.DbAdoProvider
                     DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
                 }
 
-                oracleBulkCopy = new OracleBulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
+                factory = new OracleFactory(dbConn, BulkCopyTimeout, DbBulkCopyOption);
             }
             else if (ProviderName == ProviderType.MySql)
             {
-                if(mySqlBulkCopy!=null || this.ConnectionString != connectionString)
+                if(factory != null || this.ConnectionString != connectionString)
                 {
-                    if (mySqlBulkCopy != null)
-                        mySqlBulkCopy.Dispose();
+                    if (factory != null)
+                        factory.Dispose();
                 }
-                mySqlBulkCopy = new MysqlBulk(ConnectionString, BulkCopyTimeout);
+                factory = new MysqlFactory(ConnectionString, BulkCopyTimeout);
             }
             else if (ProviderName == ProviderType.PostgreSQL)
             {
-                npgBulkCopy = new NpgBulk(ConnectionString, bulkcopyTimeout);
+                factory = new NpgFactory(ConnectionString, bulkcopyTimeout);
             }
-        }
-
-        public void Close()
-        {
-            if (ProviderName == ProviderType.DB2) db2BulkCopy.Close();
-            else if (ProviderName == ProviderType.SqlServer) sqlBulkCopy.Close();
-            else if (ProviderName == ProviderType.Oracle) oracleBulkCopy.Close();
-            else if (ProviderName == ProviderType.MySql) mySqlBulkCopy.Close();
         }
 
         public void Open()
@@ -212,96 +201,14 @@ namespace Bouyei.DbFactory.DbAdoProvider
         public void WriteToServer(DataTable sourceTable)
         {
             DestinationTableName = sourceTable.TableName;
-            if (ProviderName == ProviderType.SqlServer)
-            {
-                sqlBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                sqlBulkCopy.WriteToServer(sourceTable, BatchSize);
-            }
-            else if (ProviderName == ProviderType.DB2)
-            {
-                db2BulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                db2BulkCopy.WriteToServer(sourceTable,BatchSize);
-            }
-            else if (ProviderName == ProviderType.Oracle)
-            {
-                oracleBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                oracleBulkCopy.WriteToServer(sourceTable, BatchSize);
-            }
-            else if (ProviderName == ProviderType.MySql)
-            {
-                DbUtils.DbCsvHelper csv = new DbUtils.DbCsvHelper();
-                string fname = sourceTable.TableName + DateTime.Now.Ticks;
-                bool rt = csv.ExportSvcToFile(sourceTable, fname);
-                if (rt == false) return;
-
-               int rows= mySqlBulkCopy.WriteToServer(new MysqlBulkLoaderInfo()
-                {
-                    FileName = fname,
-                    FieldTerminator = ",",
-                    LineTerminator = "\r\n",
-                    TableName = sourceTable.TableName,
-                    FieldQuotationCharacter = '"',
-                    EscapeCharacter = '"',
-                });
-
-                if (rows == 0) throw new Exception("导入空数据...");
-            }
-            else if (ProviderName == ProviderType.PostgreSQL)
-            {
-                npgBulkCopy.WriteToServer(sourceTable);
-            }
-            else
-            {
-                throw new Exception("暂时不支持" + ProviderName.ToString() + "的批量方法...");
-            }
-        }
-
-        public void WriteToServer(DataTable sourceTable, DataRowState rowState)
-        {
-            DestinationTableName = sourceTable.TableName;
-            if (ProviderName == ProviderType.SqlServer)
-            {
-                sqlBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                sqlBulkCopy.WriteToServer(sourceTable, rowState, BatchSize);
-            }
-            else if (ProviderName == ProviderType.DB2)
-            {
-                db2BulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                db2BulkCopy.WriteToServer(sourceTable, rowState);
-            }
-            else if (ProviderName == ProviderType.Oracle)
-            {
-                oracleBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                oracleBulkCopy.WriteToServer(sourceTable, rowState, BatchSize);
-            }
-            else
-            {
-                throw new Exception("暂时不支持" + ProviderName.ToString() + "的批量方法...");
-            }
+            factory.WriteToServer(sourceTable,BatchSize);
         }
 
         public void WriteToServer(IDataReader iDataReader, string sourceTableName)
         {
             DestinationTableName = sourceTableName;
-            if (ProviderName == ProviderType.SqlServer)
-            {
-                sqlBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                sqlBulkCopy.WriteToServer(sourceTableName, iDataReader, this.BatchSize);
-            }
-            else if (ProviderName == ProviderType.DB2)
-            {
-                db2BulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                db2BulkCopy.WriteToServer(sourceTableName, iDataReader);
-            }
-            else if (ProviderName == ProviderType.Oracle)
-            {
-                oracleBulkCopy.BulkCopiedHandler = BulkCopiedHandler;
-                oracleBulkCopy.WriteToServer(sourceTableName, iDataReader, BatchSize);
-            }
-            else
-            {
-                throw new Exception("暂时不支持" + ProviderName.ToString() + "的批量方法...");
-            }
+
+            factory.WriteToServer(iDataReader,sourceTableName,BatchSize);
         }
     }
 }

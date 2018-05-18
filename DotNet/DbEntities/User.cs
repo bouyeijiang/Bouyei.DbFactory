@@ -5,7 +5,7 @@ using Bouyei.DbFactory.DbEntityProvider;
 namespace Bouyei.DbEntities
 {
     [Table("user")]
-    public class User:DbEntity<User>
+    public class User: DbEntity<User>
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,5 +14,7 @@ namespace Bouyei.DbEntities
         public string name { get; set; }
 
         public int age { get; set; }
+
+        public int no { get; set; }
     }
 }

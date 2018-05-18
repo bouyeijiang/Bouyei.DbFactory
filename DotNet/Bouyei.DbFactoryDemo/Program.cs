@@ -86,7 +86,7 @@ namespace Bouyei.DbFactoryDemo
         private static void OrmDemo(string connectionString)
         {
             //entity framework 使用例子
-            IOrmProvider ormProvider = OrmProvider.CreateProvider("DbConnection");
+            IOrmProvider ormProvider = OrmProvider.CreateProvider();
             try
             {
                 User item = ormProvider.GetById<User>(1);
@@ -95,7 +95,7 @@ namespace Bouyei.DbFactoryDemo
                     UserName = "http://aileenyin.com/"
                 };
 
-                var query = ormProvider.Query<User>().FirstOrDefault();
+                var query = ormProvider.QueryNoTracking<User>(x => true).FirstOrDefault();
 
                 //使用mapper修改对象
                 EntityMapper.MapTo<UserDto, User>(ud, item);

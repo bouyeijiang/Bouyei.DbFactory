@@ -10,7 +10,7 @@ namespace Bouyei.DbFactoryWebDemo.Controllers
 {
     public class HomeController : Controller
     {
-        private IOrmProvider dbProvider = null;
+        private static IOrmProvider dbProvider = null;
         public HomeController()
         {
             dbProvider = Manager.dbProvider;
@@ -18,7 +18,7 @@ namespace Bouyei.DbFactoryWebDemo.Controllers
 
         public ActionResult Index()
         {
-            bool rtb = dbProvider.QueryNoTracking<User>(x => x.id == 1).Any();
+            bool rtb = dbProvider.Query<User>(x => x.id == 1).Any();
             return View();
         }
 

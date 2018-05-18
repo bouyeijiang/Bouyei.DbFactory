@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
-    using Plugins;
+    using Factories;
 
     public class DbAdapterProvider
     {
@@ -19,16 +19,12 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             {
                 case ProviderType.SqlServer:
                     return new SqlFactory().GetFactory();
-                case ProviderType.Oracle:
-                    return new OracleFactory().GetFactory();
                 case ProviderType.MySql:
                     return new MysqlFactory().GetFactory();
                 case ProviderType.SQLite:
                     return new SqliteFactory().GetFactory();
                 case ProviderType.PostgreSQL:
                     return new NpgFactory().GetFactory();
-                case ProviderType.DB2:
-                    return new Db2Factory().GetFactory();
                 default: return null;
             }
         }

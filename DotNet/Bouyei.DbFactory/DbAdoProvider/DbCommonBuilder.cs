@@ -167,18 +167,18 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         SourceVersion = dbProviderParameter.SourceVersion,
                         SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
                     };
-                case ProviderType.DB2:
-                    return new IBM.Data.DB2.DB2Parameter()
-                    {
-                        DbType = dbProviderParameter.DbType,
-                        ParameterName = dbProviderParameter.ParameterName,
-                        Value = dbProviderParameter.Value,
-                        Size = dbProviderParameter.Size,
-                        Direction = dbProviderParameter.Direction,
-                        SourceColumn = dbProviderParameter.SourceColumn,
-                        SourceVersion = dbProviderParameter.SourceVersion,
-                        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
-                    };
+                //case ProviderType.DB2:
+                //    return new IBM.Data.DB2.DB2Parameter()
+                //    {
+                //        DbType = dbProviderParameter.DbType,
+                //        ParameterName = dbProviderParameter.ParameterName,
+                //        Value = dbProviderParameter.Value,
+                //        Size = dbProviderParameter.Size,
+                //        Direction = dbProviderParameter.Direction,
+                //        SourceColumn = dbProviderParameter.SourceColumn,
+                //        SourceVersion = dbProviderParameter.SourceVersion,
+                //        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
+                //    };
                 case ProviderType.Oracle:
                     return new Oracle.DataAccess.Client.OracleParameter()
                     {

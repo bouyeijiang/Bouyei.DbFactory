@@ -1759,7 +1759,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "Bouyei.DbFactoryCore/1.0.4": {
+      "Bouyei.DbFactoryCore/1.0.5": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
@@ -1785,7 +1785,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
-          "Bouyei.DbFactoryCore": "1.0.4"
+          "Bouyei.DbFactoryCore": "1.0.5"
         },
         "compile": {
           "bin/placeholder/DbEntity.dll": {}
@@ -6164,7 +6164,7 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
-    "Bouyei.DbFactoryCore/1.0.4": {
+    "Bouyei.DbFactoryCore/1.0.5": {
       "type": "project",
       "path": "../Bouyei.DbFactoryCore/Bouyei.DbFactoryCore.csproj",
       "msbuildProject": "../Bouyei.DbFactoryCore/Bouyei.DbFactoryCore.csproj"
@@ -6177,7 +6177,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "Bouyei.DbFactoryCore >= 1.0.4",
+      "Bouyei.DbFactoryCore >= 1.0.5",
       "DbEntity >= 1.0.0",
       "Microsoft.NETCore.App >= 2.0.0"
     ]

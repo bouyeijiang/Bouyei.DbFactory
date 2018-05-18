@@ -23,6 +23,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
         {
             this.Configuration.LazyLoadingEnabled = false;
             this.Database.Initialize(false);
+           
         }
 
         public void CreateOrMigrateDb()
@@ -39,9 +40,10 @@ namespace Bouyei.DbFactory.DbEntityProvider
         }
 
         #region public
-        //public DbSet<TEntity> DSet<TEntity>() where TEntity : class
+
+        //public DbSet<TEntity> Sets<TEntity>() where TEntity : class
         //{
-        //    return this.Set<TEntity>();
+        //    return Set<TEntity>();
         //}
 
         public int Count<TEntity>(Expression<Func<TEntity, bool>> predicate)where TEntity:class
@@ -268,13 +270,13 @@ namespace Bouyei.DbFactory.DbEntityProvider
             
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            //modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
+            //modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFile(path));
 
-            var regTypes = Assembly.LoadFile(path).GetTypes()
-                .Where(type => !String.IsNullOrEmpty(type.Namespace)
-                 && type.GetTypeInfo().IsClass
-                 && type.GetTypeInfo().BaseType != null
-               && type.BaseType.GetGenericTypeDefinition() == typeof(DbEntity<>));
+            var regTypes = Assembly.LoadFrom(path).GetTypes()
+                .Where(type => type.BaseType.GetGenericTypeDefinition() == typeof(DbEntity<>));
+
+            if (regTypes.Count() == 0)
+                throw new Exception("无实体映射,请添加实体映射" + path);
 
             foreach (var type in regTypes)
             {

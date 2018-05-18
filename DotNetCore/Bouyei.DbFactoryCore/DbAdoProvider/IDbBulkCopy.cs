@@ -16,9 +16,8 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
     {
         void WriteToServer(DataTable dataTable);
 
-        void WriteToServer(DataTable dataTable,DataRowState state);
 
-        //void WriteToServer(IDataReader dataReader);
+        void WriteToServer(IDataReader dataReader,string tableName);
 
         //void WriteToServer(DataRow[] dataRow);
     }
