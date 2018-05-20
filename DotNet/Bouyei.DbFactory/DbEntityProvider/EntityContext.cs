@@ -270,19 +270,19 @@ namespace Bouyei.DbFactory.DbEntityProvider
             
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            //modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFile(path));
+            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
 
-            var regTypes = Assembly.LoadFrom(path).GetTypes()
-                .Where(type => type.BaseType.GetGenericTypeDefinition() == typeof(DbEntity<>));
+            //var regTypes = Assembly.LoadFile(path).GetTypes()
+            //    .Where(type => typeof(DbEntity<>).IsAssignableFrom(type));
 
-            if (regTypes.Count() == 0)
-                throw new Exception("无实体映射,请添加实体映射" + path);
+            //if (regTypes.Count() == 0)
+            //    throw new Exception("无实体映射,请添加实体映射" + path);
 
-            foreach (var type in regTypes)
-            {
-                dynamic typeInstance = Activator.CreateInstance(type);
-                modelBuilder.Configurations.Add(typeInstance);
-            }
+            //foreach (var type in regTypes)
+            //{
+            //    dynamic typeInstance = Activator.CreateInstance(type);
+            //    modelBuilder.Configurations.Add(typeInstance);
+            //}
 
             base.OnModelCreating(modelBuilder);
         }
