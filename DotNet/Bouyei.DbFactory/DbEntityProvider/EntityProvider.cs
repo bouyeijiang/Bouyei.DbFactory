@@ -90,15 +90,9 @@ namespace Bouyei.DbFactory.DbEntityProvider
             eContext.Delete(entity, isSaveChange);
         }
 
-        public IEnumerable<TEntity> Delete<TEntity>(Func<TEntity, bool> predicate, bool isSaveChange = false) where TEntity : class
+        public int Delete<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isSaveChange = false) where TEntity : class
         {
-            var items = this.eContext.Set<TEntity>().Where(predicate);
-            foreach (var item in items)
-            {
-                eContext.Delete(item,isSaveChange);
-            }
-
-            return items;
+          return  eContext.Delete<TEntity>(predicate, isSaveChange);
         }
 
         public int ExecuteCommand(string command, params object[] parameters)

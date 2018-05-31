@@ -95,13 +95,15 @@ namespace Bouyei.DbFactoryDemo
                     UserName = "http://aileenyin.com/"
                 };
 
-                var query = ormProvider.QueryNoTracking<User>(x => true).FirstOrDefault();
+               int c= ormProvider.Delete<User>(x => x.id == 3,true);
 
-                //使用mapper修改对象
-                EntityMapper.MapTo<UserDto, User>(ud, item);
-                ormProvider.Update(item);
-                //保存修改
-                int rt = ormProvider.SaveChanges();
+                //var query = ormProvider.QueryNoTracking<User>(x => true).FirstOrDefault();
+
+                ////使用mapper修改对象
+                //EntityMapper.MapTo<UserDto, User>(ud, item);
+                //ormProvider.Update(item);
+                ////保存修改
+                //int rt = ormProvider.SaveChanges();
             }
             catch (Exception ex)
             {

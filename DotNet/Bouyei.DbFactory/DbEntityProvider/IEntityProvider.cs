@@ -39,7 +39,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         void Delete<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class;
 
-        IEnumerable<TEntity> Delete<TEntity>(Func<TEntity, bool> predicate, bool isSaveChange = false) where TEntity : class;
+       int Delete<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isSaveChange = false) where TEntity : class;
 
         int ExecuteCommand(string command, params object[] parameters);
 
