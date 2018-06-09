@@ -89,21 +89,22 @@ namespace Bouyei.DbFactoryDemo
             IOrmProvider ormProvider = OrmProvider.CreateProvider();
             try
             {
-                User item = ormProvider.GetById<User>(1);
+                User item = new User() {
+                     id=4,
+                      name="bouyei"
+                };// ormProvider.GetById<User>(1);
                 UserDto ud = new UserDto()
                 {
                     UserName = "http://aileenyin.com/"
                 };
 
-               int c= ormProvider.Delete<User>(x => x.id == 3,true);
+             //int c= ormProvider.Delete<User>(x => x.id == 3,true);
 
                 //var query = ormProvider.QueryNoTracking<User>(x => true).FirstOrDefault();
 
                 ////使用mapper修改对象
                 //EntityMapper.MapTo<UserDto, User>(ud, item);
-                //ormProvider.Update(item);
-                ////保存修改
-                //int rt = ormProvider.SaveChanges();
+                ormProvider.Update(item,true);
             }
             catch (Exception ex)
             {

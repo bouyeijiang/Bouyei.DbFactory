@@ -71,19 +71,20 @@ namespace Bouyei.DbFactory.DbEntityProvider
             return Set<TEntity>().Where(predicate).AsNoTracking();
         }
 
-        public TEntity Update<TEntity>(TEntity entity,bool isSaveChange=false) where TEntity : class
+        public TEntity Update<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-            if (EnsureChange<TEntity>(entity) > 0)
+            //if (EnsureChange<TEntity>(entity) > 0)
+            //{
+            Set<TEntity>().Attach(entity);
+            this.Entry(entity).State = EntityState.Modified;
+
+            if (isSaveChange)
             {
-                Set<TEntity>().Attach(entity);
-                this.Entry<TEntity>(entity).State = EntityState.Modified;
-                if (isSaveChange)
-                {
-                   int rt= SaveChanges();
-                    if (rt > 0) return entity;
-                    else return default(TEntity);
-                }
+                int rt = SaveChanges();
+                if (rt > 0) return entity;
+                else return default(TEntity);
             }
+            //}
             return default(TEntity);
         }
 
