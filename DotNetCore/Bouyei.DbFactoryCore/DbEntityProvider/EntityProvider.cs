@@ -14,118 +14,187 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         public ProviderType ProviderType { get; set; }
 
+        private object lobject = new object();
+
         public EntityProvider(ProviderType providerType=ProviderType.SqlServer,string DbConnectionString=null)
         {
-            this.DbConnectionString = DbConnectionString;
-            this.ProviderType = providerType;
-            eContext = new EntityContext(providerType, DbConnectionString);
+            lock (lobject)
+            {
+                if (DbConnectionString != this.DbConnectionString)
+                    this.DbConnectionString = DbConnectionString;
+
+                Dispose(true);
+
+                this.ProviderType = providerType;
+                eContext = new EntityContext(providerType, DbConnectionString);
+            }
         }
 
         public void DatabaseCreateOrMigrate()
         {
-            eContext.DbMigrate();
+            lock (lobject)
+            {
+                eContext.DbMigrate();
+            }
         }
 
 		public void Refresh<TEntity>(TEntity entity) where TEntity : class
 		{
-            eContext.Reload(entity);
+            lock (lobject)
+            {
+                eContext.Reload(entity);
+            }
 		}
 
         public int Count<TEntity>(Expression<Func<TEntity, bool>> predicate)where TEntity:class
         {
-           return eContext.Count(predicate);
+            lock (lobject)
+            {
+                return eContext.Count(predicate);
+            }
         }
 
         public bool Any<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity:class
         {
-            return eContext.Any(predicate);
+            lock (lobject)
+            {
+                return eContext.Any(predicate);
+            }
         }
 
         public IQueryable<TEntity> Query<TEntity>() where TEntity : class
         {
-            return eContext.Query<TEntity>();
+            lock (lobject)
+            {
+                return eContext.Query<TEntity>();
+            }
         }
         public IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity,bool>> predicate) where TEntity : class
         {
-            return eContext.Query(predicate);
+            lock (lobject)
+            {
+                return eContext.Query(predicate);
+            }
         }
 
         public IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity,bool>>predicate) where TEntity : class
         {
-            return eContext.QueryNoTracking(predicate);
+            lock (lobject)
+            {
+                return eContext.QueryNoTracking(predicate);
+            }
         }
 
         public TEntity GetById<TEntity>(object id) where TEntity : class
         {
-            return  eContext.Find<TEntity>(id);
+            lock (lobject)
+            {
+                return eContext.Find<TEntity>(id);
+            }
         }
 
         public TEntity Insert<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-			return eContext.Insert<TEntity>(entity, isSaveChange);
+            lock (lobject)
+            {
+                return eContext.Insert<TEntity>(entity, isSaveChange);
+            }
 		}
 
         public IEnumerable<TEntity> InsertRange<TEntity>(TEntity[] entities, bool isSaveChange = false) where TEntity:class
         {
-           return eContext.InsertRange<TEntity>(entities, isSaveChange);
+            lock (lobject)
+            {
+                return eContext.InsertRange<TEntity>(entities, isSaveChange);
+            }
         }
 
         public long BulkCopy<TEntity>(IList<TEntity> buffer,int batchSize=10240) where TEntity : class
         {
-            return eContext.BulkCopy<TEntity>(buffer,batchSize);
+            lock (lobject)
+            {
+                return eContext.BulkCopy<TEntity>(buffer, batchSize);
+            }
         }
 
         public void Update<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-            eContext.Update(entity, isSaveChange);
+            lock (lobject)
+            {
+                eContext.Update(entity, isSaveChange);
+            }
         }
 
         public void Delete<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class
         {
-            eContext.Delete(entity, isSaveChange);
+            lock (lobject)
+            {
+                eContext.Delete(entity, isSaveChange);
+            }
         }
 
         public IEnumerable<TEntity> Delete<TEntity>(Func<TEntity, bool> predicate, bool isSaveChange = false) where TEntity : class
         {
-            var items = this.eContext.Set<TEntity>().Where(predicate);
-            foreach (var item in items)
+            lock (lobject)
             {
-                eContext.Delete(item,isSaveChange);
-            }
+                var items = this.eContext.Set<TEntity>().Where(predicate);
+                foreach (var item in items)
+                {
+                    eContext.Delete(item, isSaveChange);
+                }
 
-            return items;
+                return items;
+            }
         }
 
         public int ExecuteCommand(string command, params object[] parameters)
         {
-           return eContext.ExecuteCommand(command, parameters);
+            lock (lobject)
+            {
+                return eContext.ExecuteCommand(command, parameters);
+            }
         }
 
         public int ExecuteTransaction(string command,
             System.Data.IsolationLevel IsolationLevel=System.Data.IsolationLevel.Serializable, params object[] parameters)
         {
-            return eContext.ExecuteTransaction(command, IsolationLevel,parameters);
+            lock (lobject)
+            {
+                return eContext.ExecuteTransaction(command, IsolationLevel, parameters);
+            }
         }
 
         public int ExecuteTransaction(string[] commands,params object[] parameters)
         {
-            return eContext.ExecuteTransaction(commands, parameters);
+            lock (lobject)
+            {
+                return eContext.ExecuteTransaction(commands, parameters);
+            }
         }
 
         public IQueryable<T> Query<T>(string command, params object[] parameters) where T : class
         {
-            return eContext.Query<T>(command, parameters);
+            lock (lobject)
+            {
+                return eContext.Query<T>(command, parameters);
+            }
         }
 
         public int SaveChanges()
         {
-            return eContext.SaveChanges();
+            lock (lobject)
+            {
+                return eContext.SaveChanges();
+            }
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            lock (lobject)
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         ~EntityProvider()
