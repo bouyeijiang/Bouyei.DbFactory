@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bouyei.DbFactoryCore.DbEntityProvider
 {
-    public interface IEntityProvider
+    public interface IEntityProvider:IDisposable
     {
         void DatabaseCreateOrMigrate();
         string DbConnectionString { get; set; }
@@ -53,6 +53,5 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         int SaveChanges();
 
-        void Dispose();
     }
 }

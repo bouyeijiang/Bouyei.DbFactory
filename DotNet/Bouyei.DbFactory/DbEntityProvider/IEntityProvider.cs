@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Bouyei.DbFactory.DbEntityProvider
 {
-    public interface IEntityProvider
+    public interface IEntityProvider:IDisposable
     {
         void DatabaseCreateOrMigrate();
 
@@ -51,7 +51,5 @@ namespace Bouyei.DbFactory.DbEntityProvider
         List<T> Query<T>(string command, params object[] parameters);
 
         int SaveChanges();
-
-        void Dispose();
     }
 }
