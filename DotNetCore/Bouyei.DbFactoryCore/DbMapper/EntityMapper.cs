@@ -113,13 +113,13 @@ namespace Bouyei.DbFactoryCore.DbMapper
                 {
                     vTo = Convert.ChangeType(vFrom, pToType.GetGenericArguments()[0]);
                 }
-                else if (pToType.IsValueType)
-                {
-                    vTo = Convert.ChangeType(vFrom, pTo.PropertyType);
-                }
                 else if (pToType.IsEnum)
                 {
                     vTo = Enum.ToObject(pToType, vFrom);
+                }
+                else
+                {
+                    vTo = Convert.ChangeType(vFrom, pTo.PropertyType);
                 }
                 if (filterType == FilterType.NullIgnore
                     && vTo == null) continue;

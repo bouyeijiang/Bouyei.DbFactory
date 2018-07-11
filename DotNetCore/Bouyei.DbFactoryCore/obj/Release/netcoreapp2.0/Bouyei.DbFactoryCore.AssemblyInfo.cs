@@ -15,11 +15,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("bouyei")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Multiple database universal access interface")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.5.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.5")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.6.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bouyei.DbFactoryCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bouyei.DbFactoryCore")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.1.5.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.1.6.0")]
 
 // 由 MSBuild WriteCodeFragment 类生成。
 

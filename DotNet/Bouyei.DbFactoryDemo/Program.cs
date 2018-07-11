@@ -47,7 +47,7 @@ namespace Bouyei.DbFactoryDemo
             //AdoDemo(connectionString);
 
             ////orm
-            //OrmDemo(connectionString);
+            OrmDemo(connectionString);
 
             //Data Sync Provider
             //SyncProviderDemo syncProvider = new SyncProviderDemo();
@@ -98,12 +98,22 @@ namespace Bouyei.DbFactoryDemo
                     UserName = "http://aileenyin.com/"
                 };
 
-             //int c= ormProvider.Delete<User>(x => x.id == 3,true);
+                //int c= ormProvider.Delete<User>(x => x.id == 3,true);
 
                 //var query = ormProvider.QueryNoTracking<User>(x => true).FirstOrDefault();
 
                 ////使用mapper修改对象
-                //EntityMapper.MapTo<UserDto, User>(ud, item);
+                User u = new User() {
+                     name="b",
+                      id=1
+                };
+
+                User b = new User() {
+                     name="a",
+                      id=2
+                };
+                EntityMapper.MapTo(u, b, FilterType.Include, "name");
+
                 ormProvider.Update(item,true);
             }
             catch (Exception ex)

@@ -1759,7 +1759,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "Bouyei.DbFactoryCore/1.1.5": {
+      "Bouyei.DbFactoryCore/1.1.6": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
@@ -6151,7 +6151,7 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
-    "Bouyei.DbFactoryCore/1.1.5": {
+    "Bouyei.DbFactoryCore/1.1.6": {
       "type": "project",
       "path": "../Bouyei.DbFactoryCore/Bouyei.DbFactoryCore.csproj",
       "msbuildProject": "../Bouyei.DbFactoryCore/Bouyei.DbFactoryCore.csproj"
@@ -6159,7 +6159,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "Bouyei.DbFactoryCore >= 1.1.5",
+      "Bouyei.DbFactoryCore >= 1.1.6",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },

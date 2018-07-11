@@ -10,7 +10,7 @@
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/dbproviderfactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/dbproviderfactory</RepositoryUrl>
   </PropertyGroup>
