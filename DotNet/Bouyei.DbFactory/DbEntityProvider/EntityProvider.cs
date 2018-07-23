@@ -17,16 +17,18 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         private object lobjcct = new object();
 
-        public EntityProvider(string DbConnectionString = null)
+        public EntityProvider(string NameOrDbConnectionString = null)
         {
             lock (lobjcct)
             {
-                if (DbConnectionString != this.DbConnectionString)
-                    this.DbConnectionString = DbConnectionString;
+                //if (DbConnectionString != this.DbConnectionString)
+                //    this.DbConnectionString = DbConnectionString;
 
                 Dispose(true);
 
-                eContext = new EntityContext(DbConnectionString);
+                eContext = new EntityContext(NameOrDbConnectionString);
+
+                DbConnectionString = eContext.ConnectionString;
             }
         }
 
