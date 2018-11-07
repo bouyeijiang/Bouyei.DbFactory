@@ -18,12 +18,12 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     { 
         public string ConnectionString { get; set; }
 
-        public ProviderType ProviderType { get; set; }
+        public DbType ProviderType { get; set; }
 
-        public EntityContext(ProviderType providerType=ProviderType.SqlServer, string NameOrConnectionString = null)
+        public EntityContext(DbType dbType=DbType.SqlServer, string NameOrConnectionString = null)
         {
             this.ConnectionString = NameOrConnectionString;
-            this.ProviderType = providerType;
+            this.ProviderType = dbType;
         }
 
         public void DbMigrate()
@@ -257,20 +257,20 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            if (ProviderType == ProviderType.SqlServer)
+            if (ProviderType == DbType.SqlServer)
             {
                 optionsBuilder.UseSqlServer(ConnectionString, (SqlServerDbContextOptionsBuilder option) =>
                 {
                 });
             }
-            else if (ProviderType == ProviderType.SQLite)
+            else if (ProviderType == DbType.SQLite)
             {
                 optionsBuilder.UseSqlite(ConnectionString, (SqliteDbContextOptionsBuilder option) =>
                 {
 
                 });
             }
-            else if (ProviderType == ProviderType.MySql)
+            else if (ProviderType == DbType.MySql)
             {
                 optionsBuilder.UseMySQL(ConnectionString,(MySQLDbContextOptionsBuilder option) => {
 

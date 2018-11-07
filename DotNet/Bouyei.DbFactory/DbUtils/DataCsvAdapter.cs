@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Bouyei.DbFactory.DbUtils
 {
-    public class DbCsvHelper
+    public class DataCsvAdapter
     {
         public MemoryStream ExportCsv(DataTable dt)
         {

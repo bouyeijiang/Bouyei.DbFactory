@@ -39,9 +39,9 @@ namespace DotNetCoreDemo
             //    CommandText = "select * from std_user"
             //});
 
-           //var brt= adoProvider.BulkCopy(new BulkParameter(dt));
+            //var brt= adoProvider.BulkCopy(new BulkParameter(dt));
 
-            IOrmProvider ormProvider = OrmProvider.CreateProvider(ProviderType.SqlServer, connectionString);
+            IOrmProvider ormProvider = OrmProvider.CreateProvider(Bouyei.DbFactoryCore.DbType.SqlServer, connectionString);
             var items = ormProvider.Query<DbEntity.User>();
             foreach (var item in items)
             {

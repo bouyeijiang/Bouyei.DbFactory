@@ -29,7 +29,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         public string DbConnectionString { get; set; }
         
-        public ProviderType DbType { get; set; }
+        public DbType DbType { get; set; }
 
         public int LockTimeout
         {
@@ -71,7 +71,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         #region  structure
         public DbProvider(
             string connectionString,
-            ProviderType providerType = ProviderType.SqlServer,
+            DbType providerType = DbType.SqlServer,
             bool isSingleton = false)
             : base(providerType, isSingleton)
         {
@@ -80,7 +80,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         }
 
         public DbProvider(
-            ProviderType providerType = ProviderType.SqlServer,
+            DbType providerType = DbType.SqlServer,
             bool isSingleton = false)
             : base(providerType, isSingleton)
         {

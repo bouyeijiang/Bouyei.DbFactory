@@ -12,11 +12,11 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         public string DbConnectionString { get; set; }
 
-        public ProviderType ProviderType { get; set; }
+        public DbType ProviderType { get; set; }
 
         private object lobject = new object();
 
-        public EntityProvider(ProviderType providerType=ProviderType.SqlServer,string DbConnectionString=null)
+        public EntityProvider(DbType providerType=DbType.SqlServer,string DbConnectionString=null)
         {
             lock (lobject)
             {

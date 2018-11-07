@@ -102,10 +102,10 @@ E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Release\netcoreapp2.0\DbEnti
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Release\netcoreapp2.0\DbEntity.pdb
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Release\netcoreapp2.0\Bouyei.DbFactoryCore.dll
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Release\netcoreapp2.0\Bouyei.DbFactoryCore.pdb
-E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.csprojResolveAssemblyReference.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.csproj.CoreCompileInputs.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.AssemblyInfoInputs.cache
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.AssemblyInfo.cs
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.csproj.CopyComplete
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.dll
 E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.pdb
+E:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Release\netcoreapp2.0\DbEntity.csprojAssemblyReference.cache

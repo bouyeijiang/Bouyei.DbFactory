@@ -12,7 +12,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         void DatabaseCreateOrMigrate();
         string DbConnectionString { get; set; }
 
-        ProviderType ProviderType { get; set; }
+        DbType ProviderType { get; set; }
 
         IQueryable<TEntity> Query<TEntity>() where TEntity : class;
 

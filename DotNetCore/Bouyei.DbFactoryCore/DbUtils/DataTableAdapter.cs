@@ -12,9 +12,9 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 
-namespace Bouyei.DbFactory.DbUtils
+namespace Bouyei.DbFactoryCore.DbUtils
 {
-    public static class DataTableHelper
+    public static class DataTableAdapter
     {
         #region public
         public static T DataReaderTo<T>(this IDataReader dataReader, bool IgnoreCase = false)

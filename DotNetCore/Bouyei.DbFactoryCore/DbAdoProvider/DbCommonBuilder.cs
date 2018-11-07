@@ -23,7 +23,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         protected DbTransaction dbTransaction = null;
         protected DbCommonBulkCopy dbBulkCopy = null;
         protected DbCommandBuilder dbCommandBuilder = null;
-        protected ProviderType DbProviderType { get; private set; }
+        protected DbType DbProviderType { get; private set; }
 
         protected bool IsSingleton { get; private set; }
 
@@ -35,7 +35,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         /// </summary>
         /// <param name="dbProviderType"></param>
         /// <param name="IsSingleton"></param>
-        protected DbCommonBuilder(ProviderType dbProviderType,
+        protected DbCommonBuilder(DbType dbProviderType,
              bool IsSingleton)
             :base(dbProviderType)
         {

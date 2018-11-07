@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Bouyei.DbFactoryCore
 {
     [Flags]
-    public enum ProviderType : byte
+    public enum DbType : byte
     {
         SqlServer = 0x00,
         DB2 = 0x01,

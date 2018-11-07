@@ -61,7 +61,7 @@ namespace Bouyei.DbFactoryDemo
         {
            DataTable inverant=  DbProviderFactories.GetFactoryClasses();
 
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, ProviderType.MySql);
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, DbFactory.DbType.MySql);
             var ext = dbProvider.Connect(connectionString);
             var adort = dbProvider.Query(new Parameter()
             {

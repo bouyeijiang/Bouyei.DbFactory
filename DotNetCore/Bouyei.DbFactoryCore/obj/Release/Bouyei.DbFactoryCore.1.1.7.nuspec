@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Bouyei.DbFactoryCore</id>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
     <authors>Bouyei.DbFactoryCore</authors>
     <owners>Bouyei.DbFactoryCore</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

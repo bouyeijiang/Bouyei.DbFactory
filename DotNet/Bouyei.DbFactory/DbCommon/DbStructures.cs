@@ -20,7 +20,7 @@ namespace Bouyei.DbFactory
 
     public class CmdParameter : DbParameter
     {
-        public override DbType DbType { get; set; }
+        public override System.Data.DbType DbType { get; set; }
 
         public override string ParameterName { get; set; }
 
@@ -63,6 +63,13 @@ namespace Bouyei.DbFactory
             this.CommandText = CommandText;
             this.dbProviderParameters = dbProviderParameters;
         }
+
+        public Parameter(string format,params object[] args)
+            :base()
+        {
+            this.CommandText = string.Format(format, args);
+        }
+
         /// <summary>
         /// 查询映射对象名忽略大小写
         /// </summary>
@@ -166,7 +173,7 @@ namespace Bouyei.DbFactory
     [Serializable]
     public class ConnectionConfig
     {
-        public ProviderType DbType { get; set; }
+        public DbType DbType { get; set; }
 
         public string DbIp { get; set; }
 
@@ -184,15 +191,15 @@ namespace Bouyei.DbFactory
         {
             switch (DbType)
             {
-                case ProviderType.SqlServer:
+                case DbType.SqlServer:
                     {
                         if (DbPort <= 0) DbPort = 1433;
                         ConnectionString = string.Format("Server={0},{1};Database={2};User Id={3};Password={4};",
                             DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case ProviderType.Oracle:
-                case ProviderType.MsOracle:
+                case DbType.Oracle:
+                case DbType.MsOracle:
                     {
                         if (DbPort <= 0) DbPort = 1521;
 
@@ -202,7 +209,7 @@ namespace Bouyei.DbFactory
                              DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case ProviderType.DB2:
+                case DbType.DB2:
                     {
                         if (DbPort <= 0) DbPort = 50000;
 
@@ -210,18 +217,18 @@ namespace Bouyei.DbFactory
                             DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case ProviderType.MySql:
+                case DbType.MySql:
                     {
                         if (DbPort <= 0) DbPort = 3306;
                         ConnectionString = string.Format("Data Source={0};port={1};Database={2};User Id={3};Password={4};pooling=false;CharSet=utf8;",
                           DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case ProviderType.SQLite:
+                case DbType.SQLite:
                     ConnectionString = string.Format("Data Source={0};Version=3;Password={1};", DbIp, DbPassword);
                     break;
-                case ProviderType.Odbc:
-                case ProviderType.OleDb:
+                case DbType.Odbc:
+                case DbType.OleDb:
                     ConnectionString = "未定义该连接类型字符串";
                     break;
                 default:

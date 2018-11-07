@@ -17,7 +17,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
     public interface IDbProvider: IDisposable
     {
         string DbConnectionString { get; set; }
-        ProviderType DbType { get; set; }
+        DbType DbType { get; set; }
         ResultInfo<bool, string> Connect(string connString);
         ResultInfo<DataTable, string> Query(Parameter dbParameter);
         ResultInfo<List<T>, string> Query<T>(Parameter dbParameter);

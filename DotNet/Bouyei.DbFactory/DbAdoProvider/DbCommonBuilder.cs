@@ -25,22 +25,22 @@ namespace Bouyei.DbFactory.DbAdoProvider
         protected DbTransaction dbTransaction = null;
         protected DbCommonBulkCopy dbBulkCopy = null;
         protected DbCommandBuilder dbCommandBuilder = null;
-        protected ProviderType DbProviderType { get; private set; }
+        protected DbType DbProviderType { get; private set; }
 
         protected bool IsSingleton { get; private set; }
 
         protected string ConnectionString { get; private set; }
 
         //默认预设的工厂提供动态实例，可以直接在app.config配置
-        private static Dictionary<ProviderType, AssemblyFactoryInfo> AssemblyCache
-            = new Dictionary<ProviderType, AssemblyFactoryInfo>();
+        private static Dictionary<DbType, AssemblyFactoryInfo> AssemblyCache
+            = new Dictionary<DbType, AssemblyFactoryInfo>();
 
         /// <summary>
         /// 构造
         /// </summary>
         /// <param name="dbProviderType"></param>
         /// <param name="IsSingleton"></param>
-        protected DbCommonBuilder(ProviderType dbProviderType,
+        protected DbCommonBuilder(DbType dbProviderType,
              bool IsSingleton):
             base(dbProviderType)
         {
@@ -155,7 +155,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
         {
             switch (DbProviderType)
             {
-                case ProviderType.SqlServer:
+                case DbType.SqlServer:
                     return new System.Data.SqlClient.SqlParameter()
                     {
                         DbType = dbProviderParameter.DbType,
@@ -179,7 +179,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 //        SourceVersion = dbProviderParameter.SourceVersion,
                 //        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
                 //    };
-                case ProviderType.Oracle:
+                case DbType.Oracle:
                     return new Oracle.DataAccess.Client.OracleParameter()
                     {
                         DbType = dbProviderParameter.DbType,
@@ -191,7 +191,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         SourceVersion = dbProviderParameter.SourceVersion,
                         SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
                     };
-                case ProviderType.MySql:
+                case DbType.MySql:
                     return new MySql.Data.MySqlClient.MySqlParameter()
                     {
                         DbType = dbProviderParameter.DbType,

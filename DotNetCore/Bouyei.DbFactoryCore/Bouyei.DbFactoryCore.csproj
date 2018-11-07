@@ -5,14 +5,16 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Multiple database universal access interface</Description>
     <Copyright>bouyei</Copyright>
-    <PackageLicenseUrl>http://openthinking.cn</PackageLicenseUrl>
-    <PackageIconUrl>http://aileenyin.com</PackageIconUrl>
+    <PackageLicenseUrl>http://bouyeijiang.com</PackageLicenseUrl>
+    <PackageIconUrl>http://anystore.bouyeijiang.com</PackageIconUrl>
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.1.6</Version>
+    <Version>1.1.7</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/dbproviderfactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/dbproviderfactory</RepositoryUrl>
+    <AssemblyVersion>1.1.6.1</AssemblyVersion>
+    <FileVersion>1.1.6.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

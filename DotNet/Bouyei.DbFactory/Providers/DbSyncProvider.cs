@@ -22,7 +22,7 @@ namespace Bouyei.DbFactory
     {
         SqlBaseSyncProvider sqlSyncProvider = null;
 
-        public ProviderType SyncProviderType { get; set; }
+        public DbType SyncProviderType { get; set; }
 
         public string SourceConnectionString { get;  set; }
 
@@ -34,13 +34,13 @@ namespace Bouyei.DbFactory
      
         public DbSyncProvider(string SourceConnectionString, string TargetConnectionString, 
             string ScopeName, List<SyncTableSchema> TableSchemaes,
-            ProviderType SyncProviderType=ProviderType.SqlServer)
+            DbType SyncProviderType=DbType.SqlServer)
         {
             this.SourceConnectionString = SourceConnectionString;
             this.TargetConnectionString = TargetConnectionString;
             this.SyncProviderType = SyncProviderType;
 
-            if (SyncProviderType == ProviderType.SqlServer)
+            if (SyncProviderType == DbType.SqlServer)
             {
                 sqlSyncProvider = new SqlBaseSyncProvider(SourceConnectionString,
                     TargetConnectionString,
@@ -54,7 +54,7 @@ namespace Bouyei.DbFactory
 
         public static DbSyncProvider CreateProvider(string SourceConnectionString, string TargetConnectionString,
             string ScopeName, List<SyncTableSchema> TableSchemaes,
-            ProviderType SyncProviderType = ProviderType.SqlServer)
+            DbType SyncProviderType = DbType.SqlServer)
         {
             return new DbSyncProvider(SourceConnectionString,
                 TargetConnectionString,
@@ -68,7 +68,7 @@ namespace Bouyei.DbFactory
         /// <returns></returns>
         public SyncResultInfo ExecuteSync(SyncParameter syncParameter)
         {
-            if (SyncProviderType == ProviderType.SqlServer)
+            if (SyncProviderType == DbType.SqlServer)
             {
                 sqlSyncProvider.SyncProgressHanlder = SyncProgressHandler;
                 sqlSyncProvider.SyncStateHandler = SyncStateHandler;
@@ -86,7 +86,7 @@ namespace Bouyei.DbFactory
         /// </summary>
         public void DeprovisionScope()
         {
-            if (SyncProviderType == ProviderType.SqlServer)
+            if (SyncProviderType == DbType.SqlServer)
             {
                 sqlSyncProvider.DeprovisionScope();
             }
@@ -102,7 +102,7 @@ namespace Bouyei.DbFactory
         /// <param name="filterSchemaes"></param>
         public void ProvisionScope(List<SyncFilterSchema> filterSchemaes)
         {
-            if (SyncProviderType == ProviderType.SqlServer)
+            if (SyncProviderType == DbType.SqlServer)
             {
                 sqlSyncProvider.ProvisionScope(filterSchemaes);
             }

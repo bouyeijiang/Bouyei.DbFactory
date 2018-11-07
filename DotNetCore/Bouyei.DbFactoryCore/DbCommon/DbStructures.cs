@@ -20,7 +20,7 @@ namespace Bouyei.DbFactoryCore
 
     public class CmdParameter : DbParameter
     {
-        public override DbType DbType { get; set; }
+        public override System.Data.DbType DbType { get; set; }
 
         public override string ParameterName { get; set; }
 
@@ -63,6 +63,12 @@ namespace Bouyei.DbFactoryCore
             this.CommandText = CommandText;
             this.dbProviderParameters = dbProviderParameters;
         }
+        public Parameter(string format,params object[] args)
+            :base()
+        {
+            this.CommandText = string.Format(format, args);
+        }
+
         /// <summary>
         /// 查询映射对象名忽略大小写
         /// </summary>
@@ -183,7 +189,7 @@ namespace Bouyei.DbFactoryCore
             IsolationLevel = isolationLevel;
         }
 
-        public BaseParameter(int ExecuteTimeout=60)
+        public BaseParameter(int ExecuteTimeout=1800)
         {
             this.ExecuteTimeout = ExecuteTimeout;
         }

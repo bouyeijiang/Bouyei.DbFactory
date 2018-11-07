@@ -46,7 +46,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
 
         public int WriteToServer(DataTable dt,int batchSize=10240)
         {
-            DbUtils.DbCsvHelper dbCsvHelper = new DbUtils.DbCsvHelper();
+            DbUtils.DataCsvAdapter dbCsvHelper = new DbUtils.DataCsvAdapter();
             string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName;
 
             bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
