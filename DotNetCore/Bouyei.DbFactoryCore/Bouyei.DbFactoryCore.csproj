@@ -19,15 +19,15 @@
 
   <ItemGroup>
     <PackageReference Include="IBM.Data.DB2.Core" Version="1.2.2.100" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Mono.Data.OracleClientCore" Version="1.0.0" />
-    <PackageReference Include="MySql.Data" Version="6.10.6" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.6" />
-    <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="MySql.Data" Version="8.0.13" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.13" />
+    <PackageReference Include="Npgsql" Version="4.0.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
   </ItemGroup>
 
 </Project>
