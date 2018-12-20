@@ -17,27 +17,29 @@ namespace Bouyei.DbFactoryCore.DbUtils
     public static class DataTableAdapter
     {
         #region public
-        public static T DataReaderTo<T>(this IDataReader dataReader, bool IgnoreCase = false)
+       static DbExpression expression = new DbExpression();
+
+        public static T DataReaderTo<T>(this IDataReader dataReader)
         {
-            if (DbReflection.IsChangeType<T>())
+            if (expression.IsPrimitType<T>())
             {
-                return DbReflection.GetBaseObject<T>(dataReader);
+                return expression.FromDataReader<T>(dataReader);
             }
             else
             {
-                return DbReflection.GetObject<T>((DbDataReader)dataReader);
+                return expression.FromDbDataReader<T>((DbDataReader)dataReader);
             }
         }
 
-        public static List<T> DataReaderToList<T>(this IDataReader dataReader, bool IgnoreCase = false)
+        public static List<T> DataReaderToList<T>(this IDataReader dataReader)
         {
-            if (DbReflection.IsChangeType<T>())
+            if (expression.IsPrimitType<T>())
             {
-              return  DbReflection.GetBaseObjects<T>(dataReader);
+              return  expression.FromDataReaderToList<T>(dataReader);
             }
             else
             {
-                return DbReflection.GetObjects<T>((DbDataReader)dataReader, IgnoreCase);
+                return expression.FromDataReaderToList<T>((DbDataReader)dataReader);
             }
         }
 
@@ -63,18 +65,20 @@ namespace Bouyei.DbFactoryCore.DbUtils
         /// <returns></returns>
         public static int CopyTo<T>(ref DataTable table, IList<T> list)
         {
-            Type type = typeof(T);
-            PropertyInfo[] properties =type.GetProperties(BindingFlags.Public|BindingFlags.Instance);
+            ExpressProperty<T> expressPros = new ExpressProperty<T>();
+            Type type = expressPros.classType;
 
+            PropertyInfo[] properties =type.GetProperties(BindingFlags.Public|BindingFlags.Instance);
+            
             //添加数据行
             foreach (T item in list)
             {
                 DataRow row = table.NewRow();
-                foreach (PropertyInfo pInfo in properties)
+                foreach (PropertyInfo p in properties)
                 {
-                    object v= pInfo.GetValue(item);
+                    object v = expressPros.GetValue(item, p.Name);// p.GetValue(item);
                     if (v == null) continue;
-                    row[pInfo.Name] = v;
+                    row[p.Name] = v;
                 }
 
                 table.Rows.Add(row);
@@ -90,6 +94,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
         /// <returns></returns>
         public static DataTable ConvertTo<T>(this IList<T> list)
         {
+            ExpressProperty<T> expressPros = new ExpressProperty<T>();
             PropertyInfo[] properties = null;
             DataTable table = CreateTable<T>(out properties);
 
@@ -97,11 +102,11 @@ namespace Bouyei.DbFactoryCore.DbUtils
             foreach (T item in list)
             {
                 DataRow row = table.NewRow();
-                foreach (PropertyInfo prop in properties)
+                foreach (PropertyInfo p in properties)
                 {
-                    object v=prop.GetValue(item);
+                    object v = expressPros.GetValue(item, p.Name);// p.GetValue(item);
                     if (v == null) continue;
-                    row[prop.Name] = v;
+                    row[p.Name] = v;
                 }
 
                 table.Rows.Add(row);
@@ -117,8 +122,9 @@ namespace Bouyei.DbFactoryCore.DbUtils
         /// <returns></returns>
         public static List<T> ConvertTo<T>(this DataTable table)
         {
+            ExpressProperty<T> expressPros = new ExpressProperty<T>();
             List<T> list = new List<T>(table.Rows.Count);
-            Type type = typeof(T);
+            Type type = expressPros.classType;
 
             //换行列
             List<PropertyInfo> properties = new List<PropertyInfo>(table.Columns.Count);
@@ -130,11 +136,20 @@ namespace Bouyei.DbFactoryCore.DbUtils
                 properties.Add(pinfo);
             }
 
+            var pros = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
             //转换行
             foreach (DataRow dr in table.Rows)
             {
-                T value = DataRowTo<T>(dr, properties);
-                list.Add(value);
+                T obj = Activator.CreateInstance<T>();
+                foreach (var p in pros)
+                {
+                    object value = dr[p.Name];
+                    if (value == null) continue;
+
+                    expressPros.SetValue(obj, p.Name, value);
+                }
+                list.Add(obj);
             }
 
             return list;
@@ -154,22 +169,6 @@ namespace Bouyei.DbFactoryCore.DbUtils
                 table.Columns.Add(propertie.Name, propertie.PropertyType);
 
             return table;
-        }
-
-        private static T DataRowTo<T>(DataRow dr, List<PropertyInfo> properties)
-        {
-            T obj = Activator.CreateInstance<T>();
-
-            foreach (PropertyInfo property in properties)
-            {
-                object value = dr[property.Name];
-                if (value == null
-                    ||value==DBNull.Value) continue;
-
-                property.SetValue(obj, value);
-            }
-
-            return obj;
         }
 
         #endregion
