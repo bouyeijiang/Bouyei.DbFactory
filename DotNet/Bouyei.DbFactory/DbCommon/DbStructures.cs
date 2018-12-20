@@ -69,11 +69,6 @@ namespace Bouyei.DbFactory
         {
             this.CommandText = string.Format(format, args);
         }
-
-        /// <summary>
-        /// 查询映射对象名忽略大小写
-        /// </summary>
-        public bool IgnoreCase { get; set; }
         /// <summary>
         /// 执行脚本的语句
         /// </summary>

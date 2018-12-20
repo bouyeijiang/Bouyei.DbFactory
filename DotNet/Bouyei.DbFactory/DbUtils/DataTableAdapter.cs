@@ -17,7 +17,7 @@ namespace Bouyei.DbFactory.DbUtils
     public static class DataTableAdapter
     {
         #region public
-        public static T DataReaderTo<T>(this IDataReader dataReader, bool IgnoreCase = false)
+        public static T DataReaderTo<T>(this IDataReader dataReader)
         {
             if (DbReflection.IsChangeType<T>())
             {
@@ -29,7 +29,7 @@ namespace Bouyei.DbFactory.DbUtils
             }
         }
 
-        public static List<T> DataReaderToList<T>(this IDataReader dataReader, bool IgnoreCase = false)
+        public static List<T> DataReaderToList<T>(this IDataReader dataReader)
         {
             if (DbReflection.IsChangeType<T>())
             {
@@ -37,7 +37,7 @@ namespace Bouyei.DbFactory.DbUtils
             }
             else
             {
-                return DbReflection.GetObjects<T>((DbDataReader)dataReader, IgnoreCase);
+                return DbReflection.GetObjects<T>((DbDataReader)dataReader);
             }
         }
 

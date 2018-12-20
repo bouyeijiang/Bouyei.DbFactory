@@ -16,7 +16,7 @@ namespace Bouyei.DbFactory.DbUtils
 {
     internal static class DbReflection
     {
-        public static T GetObject<T>(this DbDataReader reader, bool ignoreCase = false) 
+        public static T GetObject<T>(this DbDataReader reader) 
         {
             T value = Activator.CreateInstance<T>();
             Type toType = typeof(T);
@@ -26,7 +26,7 @@ namespace Bouyei.DbFactory.DbUtils
             {
                 for (int i = 0; i < reader.FieldCount; ++i)
                 {
-                    if (NameEqual(pi.Name, reader.GetName(i), ignoreCase))
+                    if (NameEqual(pi.Name, reader.GetName(i)))
                     {
                         object dbValue = reader.GetValue(i);
 
@@ -65,7 +65,7 @@ namespace Bouyei.DbFactory.DbUtils
         /// <typeparam name="T"></typeparam>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public static List<T> GetObjects<T>(this DbDataReader reader, bool ignoreCase = false) 
+        public static List<T> GetObjects<T>(this DbDataReader reader) 
         {
             List<T> items = new List<T>(64);
             Type toType = typeof(T);
@@ -80,7 +80,7 @@ namespace Bouyei.DbFactory.DbUtils
                 {
                     for (int i = 0; i < reader.FieldCount; ++i)
                     {
-                        if (NameEqual(pi.Name, reader.GetName(i), ignoreCase))
+                        if (NameEqual(pi.Name, reader.GetName(i)))
                         {
                             object dbValue = reader.GetValue(i);
 
@@ -152,16 +152,9 @@ namespace Bouyei.DbFactory.DbUtils
                 || type.Name == "Object");
         }
 
-        private static bool NameEqual(string srcName, string dstName, bool ignoreCase)
+        private static bool NameEqual(string srcName, string dstName)
         {
-            if (ignoreCase)
-            {
-                return srcName.ToLower().Equals(dstName.ToLower());
-            }
-            else
-            {
-                return srcName.Equals(dstName);
-            }
+            return srcName == dstName;
         }
     }
 }
