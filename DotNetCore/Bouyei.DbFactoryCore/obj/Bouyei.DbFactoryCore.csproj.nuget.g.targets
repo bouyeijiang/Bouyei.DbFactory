@@ -6,6 +6,6 @@
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)netstandard.library\2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('$(NuGetPackageRoot)netstandard.library\2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
     <Import Project="$(NuGetPackageRoot)microsoft.netcore.app\2.0.0\build\netcoreapp2.0\Microsoft.NETCore.App.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.netcore.app\2.0.0\build\netcoreapp2.0\Microsoft.NETCore.App.targets')" />
-    <Import Project="$(NuGetPackageRoot)ibm.data.db2.core\1.2.2.100\build\IBM.Data.DB2.Core.targets" Condition="Exists('$(NuGetPackageRoot)ibm.data.db2.core\1.2.2.100\build\IBM.Data.DB2.Core.targets')" />
+    <Import Project="$(NuGetPackageRoot)ibm.data.db2.core\1.3.0.100\build\IBM.Data.DB2.Core.targets" Condition="Exists('$(NuGetPackageRoot)ibm.data.db2.core\1.3.0.100\build\IBM.Data.DB2.Core.targets')" />
   </ImportGroup>
 </Project>

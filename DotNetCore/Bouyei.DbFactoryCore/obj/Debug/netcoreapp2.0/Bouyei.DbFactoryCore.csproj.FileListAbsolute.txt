@@ -217,9 +217,6 @@ E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.csprojAssemblyReference.cache
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.pdb
-C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\amd64.VC12.CRT\amd64.VC12.CRT.manifest
-C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\amd64.VC12.CRT\msvcp120.dll
-C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\amd64.VC12.CRT\msvcr120.dll
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\db2app64.dll
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\db2cli.exe
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\db2cli64.dll
@@ -235,7 +232,6 @@ C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\b
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBM.DB2.CLI64.manifest
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBM.DB2.CLIXML4C64.manifest
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBM.DB2.SEC64.manifest
-C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBMIAMauth.dll
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBMIAMauth64.dll
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBMOSauthclient64.dll
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\IBMOSauthclientTwoPart64.dll
@@ -322,3 +318,5 @@ C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\b
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.csproj.CoreCompileInputs.cache
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfoInputs.cache
 C:\Users\bouyei\Source\Repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.AssemblyInfo.cs
+C:\Users\bouyei\source\repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\msvcp120.dll
+C:\Users\bouyei\source\repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\clidriver\bin\msvcr120.dll
