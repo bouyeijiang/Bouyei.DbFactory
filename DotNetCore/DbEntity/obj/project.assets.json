@@ -5971,11 +5971,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bouyei\\Source\\Repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+      "projectUniqueName": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
       "projectName": "DbEntity",
-      "projectPath": "C:\\Users\\bouyei\\Source\\Repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+      "projectPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
       "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bouyei\\Source\\Repos\\dbproviderfactory\\DotNetCore\\DbEntity\\obj\\",
+      "outputPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5994,8 +5994,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\bouyei\\Source\\Repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-              "projectPath": "C:\\Users\\bouyei\\Source\\Repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+            "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+              "projectPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
             }
           }
         }

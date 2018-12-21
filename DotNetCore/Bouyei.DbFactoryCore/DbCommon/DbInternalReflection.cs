@@ -187,11 +187,14 @@ namespace Bouyei.DbFactoryCore.DbUtils
     internal class ExpressProperty<T>
     {
         private Func<T, string, object> getValue = null;
+        private Dictionary<string, Action<T, object>> setterExpressionCaching = null;
+
         internal Type classType = null;
 
         public ExpressProperty()
         {
             classType = typeof(T);
+            setterExpressionCaching = new Dictionary<string, Action<T, object>>();
         }
 
         public V GetValue<V>(T value, string proName)
@@ -216,20 +219,44 @@ namespace Bouyei.DbFactoryCore.DbUtils
         }
         public T SetValue(string proName, object proValue)
         {
-            T obj = Activator.CreateInstance<T>();
-            GenerateSetExpress(proName)(obj, proValue);
+            string key = classType.FullName + proName;
+            Action<T, object> act = null;
 
-            return obj;
+            if (setterExpressionCaching.TryGetValue(key, out act) == false)
+            {
+                act = GenerateSetExpress(proName);
+                setterExpressionCaching.Add(key, act);
+            }
+
+            T val = Activator.CreateInstance<T>();
+            act(val, proValue);
+
+            return val;
         }
 
         public void SetValue<V>(T value, string proName, V proValue)
         {
-            GenerateSetExpress(proName)(value, proValue);
+            string key = classType.FullName + proName;
+            Action<T, object> act = null;
+            if (setterExpressionCaching.TryGetValue(key, out act) == false)
+            {
+                act = GenerateSetExpress(proName);
+                setterExpressionCaching.Add(key, act);
+            }
+            act(value, proValue);
         }
 
         public void SetValue(T value, string proName, object proValue)
         {
-            GenerateSetExpress(proName)(value, proValue);
+            string key = classType.FullName + proName;
+            Action<T, object> act = null;
+
+            if (setterExpressionCaching.TryGetValue(key, out act) == false)
+            {
+                act = GenerateSetExpress(proName);
+                setterExpressionCaching.Add(key, act);
+            }
+            act(value, proValue);
         }
 
         private Func<T, string, object> GenerateGetExpress()
@@ -252,7 +279,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
             return Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
         }
 
-        private Action<T,object> GenerateSetExpress(string proName)
+        private Action<T, object> GenerateSetExpress(string proName)
         {
             var pro = classType.GetProperty(proName);
 
@@ -270,8 +297,8 @@ namespace Bouyei.DbFactoryCore.DbUtils
                 ? Expression.TypeAs(value, pro.PropertyType)
                 : Expression.Convert(value, pro.PropertyType);
 
-          var exp=  Expression.Lambda<Action<T, object>>(Expression.Call(instanceCast, pro.GetSetMethod(), valueCast),
-                new ParameterExpression[] { instance, value }).Compile();
+            var exp = Expression.Lambda<Action<T, object>>(Expression.Call(instanceCast, pro.GetSetMethod(), valueCast),
+                  new ParameterExpression[] { instance, value }).Compile();
 
             return exp;
         }
