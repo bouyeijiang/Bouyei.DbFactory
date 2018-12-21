@@ -222,7 +222,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         bool isContinue = false;
                         while (reader.Read())
                         {
-                            T row = reader.DataReaderTo<T>(dbParameter.IgnoreCase);
+                            T row = reader.DataReaderTo<T>();
                             isContinue = rowAction(row);
                             if (isContinue == false) break;
                             ++rows;
@@ -516,7 +516,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         if (reader.HasRows == false)
                             return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
 
-                        List<T> items = reader.DataReaderToList<T>(dbParameter.IgnoreCase);
+                        List<T> items = reader.DataReaderToList<T>();
 
                         return ResultInfo<List<T>, string>.Create(items, string.Empty);
                     }
