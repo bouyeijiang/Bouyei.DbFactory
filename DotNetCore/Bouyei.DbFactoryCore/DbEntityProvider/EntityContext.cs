@@ -280,7 +280,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            string path = JsonConfiguration.Configuration["EntityMapping"];
+            string path = JsonConfiguration.Configuration["AppSettings:EntityMapping"];
 
             var eItems = Assembly.LoadFrom(path).GetTypes()
             .Where(type =>type.GetTypeInfo().BaseType != null
@@ -302,14 +302,15 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     {
         public static IConfiguration Configuration { get; set; }
 
-         static JsonConfiguration()
+        static JsonConfiguration()
         {
             Configuration = new ConfigurationBuilder()
-                .Add(new JsonConfigurationSource
-                {
-                    Path = "AppSettings.json",
-                    ReloadOnChange = true
-                }).Build();
+                .AddJsonFile("AppSettings.json", true, true).Build();
+        }
+
+        public static T GetValue<T>(string key)
+        {
+            return Configuration.GetValue<T>(key);
         }
     }
 

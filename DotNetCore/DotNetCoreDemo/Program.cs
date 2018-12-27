@@ -2,6 +2,7 @@
 using System.Data;
 using Bouyei.DbFactoryCore;
 using System.Linq;
+using Bouyei.DbFactoryCore.DbEntityProvider;
 
 namespace DotNetCoreDemo
 {
@@ -9,8 +10,10 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
-            IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
+            string connectionString =  JsonConfiguration.Configuration["AppSettings:ConnectionString"];
+            var mapping = JsonConfiguration.GetValue<string>("AppSettings:EntityMapping");
+
+            //IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
             //var rt = adoProvider.Query(new Parameter()
             //{
             //    CommandText = "select * from MemUser"
