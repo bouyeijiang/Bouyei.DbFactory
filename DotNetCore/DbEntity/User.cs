@@ -21,5 +21,7 @@ namespace DbEntity
 
         public int age { get; set; }
 
+        public byte[] stamp { get; set; }
+
     }
 }

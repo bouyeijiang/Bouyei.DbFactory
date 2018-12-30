@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Bouyei.DbFactoryCore</id>
+    <version>1.2.2</version>
+    <authors>Bouyei.DbFactoryCore</authors>
+    <owners>Bouyei.DbFactoryCore</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://bouyeijiang.com/</licenseUrl>
+    <projectUrl>https://gitee.com/bouyei/dbproviderfactory</projectUrl>
+    <iconUrl>http://anystore.bouyeijiang.com/</iconUrl>
+    <description>Multiple database universal access interface</description>
+    <releaseNotes>open source no limit</releaseNotes>
+    <copyright>bouyei</copyright>
+    <repository url="https://gitee.com/bouyei/dbproviderfactory" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp2.2">
+        <dependency id="IBM.Data.DB2.Core" version="1.3.0.100" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Mono.Data.OracleClientCore" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data" version="8.0.13" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data.EntityFrameworkCore" version="8.0.13" exclude="Build,Analyzers" />
+        <dependency id="Npgsql" version="4.0.4" exclude="Build,Analyzers" />
+        <dependency id="System.Data.SQLite.Core" version="1.0.109.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Release\netcoreapp2.2\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.2\Bouyei.DbFactoryCore.dll" />
+  </files>
+</package>

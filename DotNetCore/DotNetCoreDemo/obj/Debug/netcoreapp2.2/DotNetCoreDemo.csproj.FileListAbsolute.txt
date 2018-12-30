@@ -113,3 +113,4 @@ E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.2\Do
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.2\DotNetCoreDemo.runtimeconfig.dev.json
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.2\DotNetCoreDemo.dll
 E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.2\DotNetCoreDemo.pdb
+E:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.2\AppSettings.json

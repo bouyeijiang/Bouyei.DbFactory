@@ -16,109 +16,109 @@ using System.Linq.Expressions;
 
 namespace Bouyei.DbFactoryCore.DbUtils
 {
-    internal class DbReflection:DbParseBase
-    {
-        public T FromDbDataReader<T>(DbDataReader reader) 
-        {
-            T value = Activator.CreateInstance<T>();
-            Type toType = typeof(T);
-            PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+    //internal class DbReflection:DbParseBase
+    //{
+    //    public T FromDbDataReader<T>(DbDataReader reader) 
+    //    {
+    //        T value = Activator.CreateInstance<T>();
+    //        Type toType = typeof(T);
+    //        PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
         
-            foreach (var pi in pinfos)
-            {
-                for (int i = 0; i < reader.FieldCount; ++i)
-                {
-                    if (NameEquals(pi.Name, reader.GetName(i)))
-                    {
-                        object dbValue = reader.GetValue(i);
+    //        foreach (var pi in pinfos)
+    //        {
+    //            for (int i = 0; i < reader.FieldCount; ++i)
+    //            {
+    //                if (NameEquals(pi.Name, reader.GetName(i)))
+    //                {
+    //                    object dbValue = reader.GetValue(i);
 
-                        if (dbValue == null || dbValue == DBNull.Value)
-                            continue;
+    //                    if (dbValue == null || dbValue == DBNull.Value)
+    //                        continue;
 
-                        //转换类型
-                        var dstPro = toType.GetProperty(pi.Name);
-                        var dstType = dstPro.PropertyType;
+    //                    //转换类型
+    //                    var dstPro = toType.GetProperty(pi.Name);
+    //                    var dstType = dstPro.PropertyType;
 
-                        object dstValue = null;
+    //                    object dstValue = null;
 
-                        if (dstType.IsGenericType && dstType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                        {
-                            dstValue = Convert.ChangeType(dbValue, dstType.GetGenericArguments()[0]);
-                        }
-                        else if (dstType.IsEnum)
-                        {
-                            dstValue = Enum.ToObject(dstType, dbValue);
-                        }
-                        else
-                        {
-                            dstValue = Convert.ChangeType(dbValue, dstType);
-                        }
-                        pi.SetValue(value, dstValue);
-                        break;
-                    }
-                }
-            }
-            return value;
-        }
+    //                    if (dstType.IsGenericType && dstType.GetGenericTypeDefinition() == typeof(Nullable<>))
+    //                    {
+    //                        dstValue = Convert.ChangeType(dbValue, dstType.GetGenericArguments()[0]);
+    //                    }
+    //                    else if (dstType.IsEnum)
+    //                    {
+    //                        dstValue = Enum.ToObject(dstType, dbValue);
+    //                    }
+    //                    else
+    //                    {
+    //                        dstValue = Convert.ChangeType(dbValue, dstType);
+    //                    }
+    //                    pi.SetValue(value, dstValue);
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //        return value;
+    //    }
 
-        /// <summary>
-        /// 根据DbDataReader映射到结构体集合
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public List<T> FromDbDataReaderToList<T>(DbDataReader reader) 
-        {
-            List<T> items = new List<T>(64);
-            Type toType = typeof(T);
+    //    /// <summary>
+    //    /// 根据DbDataReader映射到结构体集合
+    //    /// </summary>
+    //    /// <typeparam name="T"></typeparam>
+    //    /// <param name="reader"></param>
+    //    /// <returns></returns>
+    //    public List<T> FromDbDataReaderToList<T>(DbDataReader reader) 
+    //    {
+    //        List<T> items = new List<T>(64);
+    //        Type toType = typeof(T);
 
-            PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            ExpressProperty<T> expPros = new ExpressProperty<T>();
+    //        PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+    //        ExpressProperty<T> expPros = new ExpressProperty<T>();
 
-            while (reader.Read())
-            {
-                T value = Activator.CreateInstance<T>();
+    //        while (reader.Read())
+    //        {
+    //            T value = Activator.CreateInstance<T>();
                 
-                foreach (var pi in pinfos)
-                {
-                    for (int i = 0; i < reader.FieldCount; ++i)
-                    {
-                        if (NameEquals(pi.Name, reader.GetName(i)))
-                        {
-                            object dbValue = reader.GetValue(i);
+    //            foreach (var pi in pinfos)
+    //            {
+    //                for (int i = 0; i < reader.FieldCount; ++i)
+    //                {
+    //                    if (NameEquals(pi.Name, reader.GetName(i)))
+    //                    {
+    //                        object dbValue = reader.GetValue(i);
 
-                            if (dbValue == null || dbValue == DBNull.Value)
-                                continue;
+    //                        if (dbValue == null || dbValue == DBNull.Value)
+    //                            continue;
 
-                            //转换为指定类型
-                            var dstPro = toType.GetProperty(pi.Name);
-                            var dstType = dstPro.PropertyType;
+    //                        //转换为指定类型
+    //                        var dstPro = toType.GetProperty(pi.Name);
+    //                        var dstType = dstPro.PropertyType;
 
-                            object dstValue = null;
+    //                        object dstValue = null;
 
-                            if (dstType.IsGenericType && dstType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                            {
-                                dstValue = Convert.ChangeType(dbValue, dstType.GetGenericArguments()[0]);
-                            }
-                            else if (dstType.IsEnum)
-                            {
-                                dstValue = Enum.ToObject(dstType, dbValue);
-                            }
-                            else
-                            {
-                                dstValue = Convert.ChangeType(dbValue, dstType);
-                            }
-                            pi.SetValue(value, dbValue);
+    //                        if (dstType.IsGenericType && dstType.GetGenericTypeDefinition() == typeof(Nullable<>))
+    //                        {
+    //                            dstValue = Convert.ChangeType(dbValue, dstType.GetGenericArguments()[0]);
+    //                        }
+    //                        else if (dstType.IsEnum)
+    //                        {
+    //                            dstValue = Enum.ToObject(dstType, dbValue);
+    //                        }
+    //                        else
+    //                        {
+    //                            dstValue = Convert.ChangeType(dbValue, dstType);
+    //                        }
+    //                        pi.SetValue(value, dbValue);
 
-                            break;
-                        }
-                    }
-                }
-                items.Add(value);
-            }
-            return items;
-        }
-    }
+    //                        break;
+    //                    }
+    //                }
+    //            }
+    //            items.Add(value);
+    //        }
+    //        return items;
+    //    }
+    //}
 
     internal class DbExpression:DbParseBase
     {
@@ -128,7 +128,8 @@ namespace Bouyei.DbFactoryCore.DbUtils
             ExpressProperty<T> expressPro = new ExpressProperty<T>();
             Type toType = expressPro.classType;
 
-            PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
             foreach (var pi in pinfos)
             {
@@ -155,7 +156,9 @@ namespace Bouyei.DbFactoryCore.DbUtils
             ExpressProperty<T> expressPro = new ExpressProperty<T>();
             Type toType = expressPro.classType;
 
-            PropertyInfo[] pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+
             ExpressProperty<T> expPros = new ExpressProperty<T>();
 
             while (reader.Read())
@@ -283,11 +286,11 @@ namespace Bouyei.DbFactoryCore.DbUtils
         {
             var pro = classType.GetProperty(proName);
 
+            var method = pro.GetSetMethod(true);
+
             var instance = Expression.Parameter(classType, "instance");
 
             var value = Expression.Parameter(typeof(object), "value");
-
-            // value as T is slightly faster than (T)value, so if it's not a value type, use that
 
             UnaryExpression instanceCast = (!pro.DeclaringType.IsValueType)
                 ? Expression.TypeAs(instance, pro.DeclaringType)
@@ -297,7 +300,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
                 ? Expression.TypeAs(value, pro.PropertyType)
                 : Expression.Convert(value, pro.PropertyType);
 
-            var exp = Expression.Lambda<Action<T, object>>(Expression.Call(instanceCast, pro.GetSetMethod(), valueCast),
+            var exp = Expression.Lambda<Action<T, object>>(Expression.Call(instanceCast,method, valueCast),
                   new ParameterExpression[] { instance, value }).Compile();
 
             return exp;
