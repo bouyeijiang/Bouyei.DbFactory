@@ -2,6 +2,8 @@
 using System.Data;
 using Bouyei.DbFactoryCore;
 using System.Linq;
+using Bouyei.DbFactoryCore.DbEntityProvider;
+using Bouyei.DbFactoryCore.DbAdoProvider;
 
 namespace DotNetCoreDemo
 {
@@ -9,8 +11,22 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
+            string sql = @"";
+            string connectionString = "Data Source=127.0.0.1;Initial Catalog=B;User ID=sa;Password=123456;";
             IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
+            // var t= adoProvider.Query<ReportBid>(new Parameter(sql));
+
+            var data = new DbEntity.User()
+            {
+                name = "bouyei",
+                age = 1,
+            };
+            //删除
+          ResultInfo<int,string> rt = null;
+            // rt=adoProvider.Insert<DbEntity.User>(data);
+
+            rt = adoProvider.Delete<DbEntity.User>(x => x.id == 4 || x.id == 5);
+            
             //var rt = adoProvider.Query(new Parameter()
             //{
             //    CommandText = "select * from MemUser"
@@ -42,10 +58,10 @@ namespace DotNetCoreDemo
             //var brt= adoProvider.BulkCopy(new BulkParameter(dt));
 
             IOrmProvider ormProvider = OrmProvider.CreateProvider(Bouyei.DbFactoryCore.DbType.SqlServer, connectionString);
-            var items = ormProvider.Query<DbEntity.User>();
+            var items = ormProvider.Table<DbEntity.User>();
             foreach (var item in items)
             {
-                Console.WriteLine(item.uName);
+                Console.WriteLine(item.no);
             }
             Console.ReadKey();
         }
@@ -60,11 +76,22 @@ namespace DotNetCoreDemo
             return expression.ToString();
         }
 
-       public class Info
+       public class user
         {
-            public int id { get; set; }
-
+            public int age { get; set; }
             public string name { get; set; }
+        }
+
+        public class ReportBid
+        {
+            public int ID { get; set; }
+            public string LoginID { get; set; }
+            public string RealName { get; set; }
+            public string Mobile { get; set; }
+            public DateTime CreateTime { get; set; }
+            public decimal? ReMoney { get; set; }
+            public decimal? InMoney { get; set; }
+            public decimal? WithMoney { get; set; }
         }
     }
 }

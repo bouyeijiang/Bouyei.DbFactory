@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
@@ -27,10 +28,13 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         public string ToString<T>(params T[] value)
         {
             StringBuilder builder = new StringBuilder("Values ");
+            var pros = typeof(T).GetProperties(BindingFlags.Public
+                | BindingFlags.Instance);
+
             for (int i = 0; i < value.Length; ++i)
             {
                 builder.AppendFormat("({0}){1}",
-                    base.ParameterFormat<T>(value[i]), i < value.Length - 1 ? "," : "");
+                    base.ParameterFormat<T>(pros,value[i]), i < value.Length - 1 ? "," : "");
             }
             return builder.Append(" ").ToString();
         }

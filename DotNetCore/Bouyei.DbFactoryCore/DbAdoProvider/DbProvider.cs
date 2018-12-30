@@ -11,12 +11,12 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading;
+using System.Linq.Expressions;
 
 namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
     using DbUtils;
-    
+
     public class DbProvider : DbCommonBuilder, IDbProvider
     {
         #region variable
@@ -28,7 +28,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         private bool disposed = false;
 
         public string DbConnectionString { get; set; }
-        
+
         public DbType DbType { get; set; }
 
         public int LockTimeout
@@ -117,7 +117,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = this.CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = this.CreateCommand(conn, dbParameter, trans))
                     using (DbDataAdapter adapter = this.CreateAdapter())
                     {
                         DataTable dt = new DataTable();
@@ -145,7 +145,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataSet ds = new DataSet();
@@ -174,7 +174,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (dbParameter.IsTransaction)
@@ -201,7 +201,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        public ResultInfo<int,string> QueryTo<T>(Parameter dbParameter,Func<T,bool> rowAction)
+        public ResultInfo<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -210,7 +210,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     int rows = 0;
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         if (dbParameter.IsTransaction)
@@ -236,6 +236,15 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     return new ResultInfo<int, string>(-1, ex.ToString());
                 }
             }
+        }
+
+        public ResultInfo<List<T>, string> Query<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider();
+            var commandText = sql.Select<T>().From<T>().Where(predicate).SqlString;
+            var rt = Query<T>(new Parameter(commandText));
+
+            return rt;
         }
 
         public ResultInfo<IDataReader, string> QueryToReader(Parameter dbParameter)
@@ -264,7 +273,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     {
                         int rt = cmd.ExecuteNonQuery();
 
@@ -292,7 +301,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     using (DbDataReader dReader = cmd.ExecuteReader())
                     {
                         if (dbParameter.IsTransaction)
@@ -301,7 +310,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                         int oCnt = dstTable.Rows.Count;
 
                         dstTable.Load(dReader);
- 
+
                         return ResultInfo<int, string>.Create(dstTable.Rows.Count - oCnt, string.Empty);
                     }
                 }
@@ -348,7 +357,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts,int timeout = 1800, Func<int, bool> action = null)
+        public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> action = null)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -415,7 +424,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     {
                         object obj = cmd.ExecuteScalar();
 
@@ -528,7 +537,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        public ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action)
+        public ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable, bool> action)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -536,7 +545,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter,trans))
+                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                     using (DbDataAdapter adapter = CreateAdapter())
                     {
                         DataTable dt = new DataTable();
@@ -579,7 +588,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             if (cmd.Parameters != null && cmd.Parameters.Count > 0)
             {
-                for(int i = 0; i < cmd.Parameters.Count; ++i)
+                for (int i = 0; i < cmd.Parameters.Count; ++i)
                 {
                     if (cmd.Parameters[i].Direction != ParameterDirection.Input)
                     {
@@ -591,5 +600,57 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             return null;
         }
         #endregion
+    }
+
+    public static class DbProviderExtensions
+    {
+        public static ResultInfo<List<T>, string> Query<T>(this IDbProvider dbProvider,
+            Expression<Func<T, bool>> predicate) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider();
+            var commandText = sql.Select<T>().From<T>().Where(predicate).SqlString;
+            var rt = dbProvider.Query<T>(new Parameter(commandText));
+            if (rt.Info != string.Empty)
+                rt.Info = rt.Info + commandText;
+
+            return rt;
+        }
+
+        public static ResultInfo<int, string> Delete<T>(this IDbProvider dbProvider
+            , Expression<Func<T, bool>> predicate)
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider();
+            var commandText = sql.Delete().From<T>().Where(predicate).SqlString;
+            var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
+            if (rt.Info != string.Empty)
+                rt.Info = rt.Info + commandText;
+
+            return rt;
+        }
+
+        public static ResultInfo<int, string> Update<T>(this IDbProvider dbProvider,
+            T value, Expression<Func<T,bool>> predicate) where T:class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider();
+            var commandText = sql.Update<T>().Set<T>(value).Where(predicate).SqlString;
+            var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
+
+            if (rt.Info != string.Empty)
+                rt.Info = rt.Info + commandText;
+
+            return rt;
+        }
+
+        public static ResultInfo<int, string> Insert<T>(this IDbProvider dbProvider,params T[] value) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider();
+            var commandText = sql.Insert<T>().Values<T>(value).SqlString;
+            var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
+
+            if (rt.Info != string.Empty)
+                rt.Info = rt.Info + commandText;
+
+            return rt;
+        }
     }
 }

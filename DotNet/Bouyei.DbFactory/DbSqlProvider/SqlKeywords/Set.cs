@@ -17,7 +17,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
             foreach (var item in NameValues)
             {
-                builder.AppendFormat("{0}={1}{2}", item.Key,
+                builder.AppendFormat("[{0}]={1}{2}", item.Key,
                     IsDigital(item.Value) ? item.Value : string.Format("'{0}'", item.Value),
                    (--c) > 0 ? "," : "");
             }
@@ -35,7 +35,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                 var rVal = item.GetValue(value, null);
                 if (rVal == null) continue;
 
-                builder.AppendFormat("{0}={1}{2}",item.Name,
+                builder.AppendFormat("[{0}]={1}{2}",item.Name,
                     IsDigital(rVal) ? rVal : string.Format("'{0}'", rVal),
                    (--c) > 0 ? "," : "");
             }

@@ -57,7 +57,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             return Set<TEntity>().Any(predicate);
         }
 
-        public IQueryable<TEntity> Query<TEntity>() where TEntity : class
+        public IQueryable<TEntity> Table<TEntity>() where TEntity : class
         {
             return Set<TEntity>().AsQueryable();
         }

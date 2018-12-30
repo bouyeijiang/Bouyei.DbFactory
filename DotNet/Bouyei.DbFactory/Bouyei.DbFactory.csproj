@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbAdoProvider\DbAdapterProvider.cs" />
+    <Compile Include="DbAdoProvider\Entities\Attributes.cs" />
     <Compile Include="DbAdoProvider\Factories\BaseFactory.cs" />
     <Compile Include="DbAdoProvider\Factories\Db2Factory.cs" />
     <Compile Include="DbAdoProvider\Factories\IFactory.cs" />

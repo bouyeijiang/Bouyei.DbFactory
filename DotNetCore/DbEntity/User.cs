@@ -1,4 +1,5 @@
 ﻿using System;
+using Bouyei.DbFactoryCore;
 
 namespace DbEntity
 {
@@ -6,18 +7,19 @@ namespace DbEntity
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("MemUser")]
+    [Table("user")]
     public class User : DbEntity
     {
         [Key]
-        public Int64 uNo { get; set; }
+        [IgnoreWrite]
+        public int id { get; set; }
 
-        public string uName { get; set; }
+        public string name { get; set; }
 
-        public string uCity { get; set; }
+        public string no { get; set; }
 
-        public int uAge { get; set; }
 
-        public DateTime uBirth { get; set; }
+        public int age { get; set; }
+
     }
 }
