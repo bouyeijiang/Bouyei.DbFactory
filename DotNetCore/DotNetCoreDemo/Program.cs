@@ -11,22 +11,8 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            string sql = @"";
-            string connectionString = "Data Source=127.0.0.1;Initial Catalog=B;User ID=sa;Password=123456;";
+            string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
             IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
-            // var t= adoProvider.Query<ReportBid>(new Parameter(sql));
-
-            var data = new DbEntity.User()
-            {
-                name = "bouyei",
-                age = 1,
-            };
-            //删除
-          ResultInfo<int,string> rt = null;
-            // rt=adoProvider.Insert<DbEntity.User>(data);
-
-            rt = adoProvider.Delete<DbEntity.User>(x => x.id == 4 || x.id == 5);
-            
             //var rt = adoProvider.Query(new Parameter()
             //{
             //    CommandText = "select * from MemUser"
