@@ -270,7 +270,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
             if (string.IsNullOrEmpty(path) || System.IO.File.Exists(path) == false)
                 throw new Exception("找不到数据库表实体映射配置路径:" + path);
             
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+           // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
 

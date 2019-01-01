@@ -283,17 +283,21 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         {
             string path = JsonConfiguration.Configuration["AppSettings:EntityMapping"];
 
-            var eItems = Assembly.LoadFrom(path).GetTypes()
-            .Where(type =>type.GetTypeInfo().BaseType != null
+            var assem = Assembly.LoadFrom(path);
+            modelBuilder.ApplyConfigurationsFromAssembly(assem, type => type.GetTypeInfo().BaseType != null
             && typeof(DbEntity).IsAssignableFrom(type));
 
-            foreach (var item in eItems)
-            {
-                if (modelBuilder.Model.FindEntityType(item) != null)
-                    continue;
+            //var eItems = assem.GetTypes()
+            //.Where(type => type.GetTypeInfo().BaseType != null
+            //&& typeof(DbEntity).IsAssignableFrom(type));
 
-                modelBuilder.Model.AddEntityType(item);
-            }
+            //foreach (var item in eItems)
+            //{
+            //    if (modelBuilder.Model.FindEntityType(item) != null)
+            //        continue;
+
+            //    modelBuilder.Model.AddEntityType(item);
+            //}
 
             base.OnModelCreating(modelBuilder);
         }
