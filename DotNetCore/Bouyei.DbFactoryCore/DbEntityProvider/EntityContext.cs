@@ -13,6 +13,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Configuration.Json;
     using MySql.Data.EntityFrameworkCore.Infraestructure;
+    using System.Data.Common;
 
     internal class EntityContext : DbContext, IDisposable
     { 
@@ -57,7 +58,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
             return Set<TEntity>().Any(predicate);
         }
 
-        public IQueryable<TEntity> Query<TEntity>() where TEntity : class
+        public IQueryable<TEntity> Table<TEntity>() where TEntity : class
         {
             return Set<TEntity>().AsQueryable();
         }
@@ -180,7 +181,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         {
             this.Database.OpenConnection();
 
-            using (System.Data.Common.DbTransaction dbTrans = this.Database.GetDbConnection().BeginTransaction(IsolationLevel))
+            using (DbTransaction dbTrans = this.Database.GetDbConnection().BeginTransaction(IsolationLevel))
             {
                 this.Database.UseTransaction(dbTrans);
                 try
@@ -201,7 +202,7 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         public int ExecuteTransaction(string[] commands, params object[] parameters)
         {
-            using (System.Data.Common.DbTransaction dbTrans = this.Database.GetDbConnection().BeginTransaction())
+            using (DbTransaction dbTrans = this.Database.GetDbConnection().BeginTransaction())
             {
                 this.Database.UseTransaction(dbTrans);
                 try
@@ -282,17 +283,21 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         {
             string path = JsonConfiguration.Configuration["AppSettings:EntityMapping"];
 
-            var eItems = Assembly.LoadFrom(path).GetTypes()
-            .Where(type =>type.GetTypeInfo().BaseType != null
+            var assem = Assembly.LoadFrom(path);
+            modelBuilder.ApplyConfigurationsFromAssembly(assem, type => type.GetTypeInfo().BaseType != null
             && typeof(DbEntity).IsAssignableFrom(type));
 
-            foreach (var item in eItems)
-            {
-                if (modelBuilder.Model.FindEntityType(item) != null)
-                    continue;
+            //var eItems = assem.GetTypes()
+            //.Where(type => type.GetTypeInfo().BaseType != null
+            //&& typeof(DbEntity).IsAssignableFrom(type));
 
-                modelBuilder.Model.AddEntityType(item);
-            }
+            //foreach (var item in eItems)
+            //{
+            //    if (modelBuilder.Model.FindEntityType(item) != null)
+            //        continue;
+
+            //    modelBuilder.Model.AddEntityType(item);
+            //}
 
             base.OnModelCreating(modelBuilder);
         }

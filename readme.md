@@ -9,6 +9,18 @@
 		CommandText = "select * from MemUser"
 	});
 
+	//…æ≥˝
+	var del= adoProvider.Delete<user>(x => x.name == "hello");
+
+	//≤Â»Î
+	  var insert = adoProvider.Insert<user>(new user() {
+                 name="bouyei",
+                 age=30
+            });
+
+	//≤È—Ø
+	var users = adoProvider.Query<user>(x => 1 == 1);
+
 	foreach (DataRow dr in rt.Result.Rows)
 	{
 		Console.WriteLine(string.Join(",", dr.ItemArray));

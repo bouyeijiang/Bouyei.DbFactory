@@ -21,6 +21,9 @@ namespace Bouyei.DbFactory.DbMapper
             var psFrom = typeof(FromEntity).GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var pFrom in psFrom)
             {
+                if (ExistIgnoreAttribute(pFrom))
+                    continue;
+
                 var pTo = tTo.GetProperty(pFrom.Name);
                 if (pTo == null) continue;
 
@@ -53,6 +56,9 @@ namespace Bouyei.DbFactory.DbMapper
             PropertyInfo[] psFrom = typeof(FromEntity).GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var pFrom in psFrom)
             {
+                if (ExistIgnoreAttribute(pFrom))
+                    continue;
+
                 var vFrom = pFrom.GetValue(from);
                 if (vFrom == null) continue;
 
@@ -87,6 +93,9 @@ namespace Bouyei.DbFactory.DbMapper
             var psFrom = typeof(FromEntity).GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var pFrom in psFrom)
             {
+                if (ExistIgnoreAttribute(pFrom))
+                    continue;
+
                 if (filterType != FilterType.Default
                     && FilterColumnNames.Length > 0)
                 {
@@ -128,6 +137,18 @@ namespace Bouyei.DbFactory.DbMapper
                 pTo.SetValue(to, vTo);
             }
             return to;
+        }
+
+        private static bool ExistIgnoreAttribute(PropertyInfo pInfo)
+        {
+            var attrs = pInfo.GetCustomAttributes();
+            foreach (var attr in attrs)
+            {
+                if (attr is IgnoreAttribute
+                    || attr is IgnoreWriteAttribute
+                    || attr is IgnoreReadAttribute) return true;
+            }
+            return false;
         }
     }
 

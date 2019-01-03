@@ -62,11 +62,11 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
             }
         }
 
-        public IQueryable<TEntity> Query<TEntity>() where TEntity : class
+        public IQueryable<TEntity> Table<TEntity>() where TEntity : class
         {
             lock (lobject)
             {
-                return eContext.Query<TEntity>();
+                return eContext.Table<TEntity>();
             }
         }
         public IQueryable<TEntity> Query<TEntity>(Expression<Func<TEntity,bool>> predicate) where TEntity : class

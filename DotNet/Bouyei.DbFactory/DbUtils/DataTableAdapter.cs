@@ -39,7 +39,7 @@ namespace Bouyei.DbFactory.DbUtils
             }
             else
             {
-                return expression.FromDataReaderToList<T>((DbDataReader)dataReader);
+                return expression.FromDbDataReaderToList<T>((DbDataReader)dataReader);
             }
         }
 

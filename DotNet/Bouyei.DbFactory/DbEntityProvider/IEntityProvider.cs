@@ -13,7 +13,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         string DbConnectionString { get; set; }
 
-        IQueryable<TEntity> Query<TEntity>() where TEntity : class;
+        IQueryable<TEntity> Table<TEntity>() where TEntity : class;
 
         IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
 

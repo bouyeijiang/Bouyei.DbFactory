@@ -20,7 +20,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
         public override string ToString()
         {
-            return string.Format("Order By {0} {1} ", string.Join(",", ColumnNames), SortType.ToString());
+            return string.Format("Order By {0} {1} ", "["+string.Join("],[", ColumnNames)+"]", SortType.ToString());
         }
     }
 

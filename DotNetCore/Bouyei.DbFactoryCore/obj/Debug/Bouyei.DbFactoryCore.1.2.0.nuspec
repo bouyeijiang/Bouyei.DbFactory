@@ -14,7 +14,7 @@
     <copyright>bouyei</copyright>
     <repository url="https://gitee.com/bouyei/dbproviderfactory" />
     <dependencies>
-      <group targetFramework=".NETCoreApp2.0">
+      <group targetFramework=".NETCoreApp2.2">
         <dependency id="IBM.Data.DB2.Core" version="1.3.0.100" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore" version="2.2.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.2.0" exclude="Build,Analyzers" />
@@ -29,6 +29,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="C:\Users\bouyei\source\repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.0\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.0\Bouyei.DbFactoryCore.dll" />
+    <file src="E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.2\Bouyei.DbFactoryCore.dll" />
   </files>
 </package>
