@@ -89,10 +89,12 @@ namespace Bouyei.DbFactoryDemo
             IOrmProvider ormProvider = OrmProvider.CreateProvider();
             try
             {
-                User item = new User() {
-                     id=4,
-                      name="bouyei"
-                };// ormProvider.GetById<User>(1);
+                User item =
+                //    new User() {
+                //     id=4,
+                //      name="bouyei"
+                //};//
+                ormProvider.GetById<User>(6);
                 UserDto ud = new UserDto()
                 {
                     UserName = "http://aileenyin.com/"

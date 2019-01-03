@@ -49,6 +49,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                     {
                         SysExp.ConstantExpression cex = (SysExp.ConstantExpression)exp;
                         if (cex.Value is string) builder.Append("'" + cex.Value.ToString() + "') ");
+                        else if (cex.Value is bool) builder.Append("1=1");
                         else builder.Append(cex.Value.ToString() + ")");
                         return null;
                     }

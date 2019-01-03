@@ -85,11 +85,11 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
             }
         }
 
-        public TEntity GetById<TEntity>(object id) where TEntity : class
+        public TEntity GetById<TEntity>(params object[] keys) where TEntity : class
         {
             lock (lobject)
             {
-                return eContext.Find<TEntity>(id);
+                return eContext.GetById<TEntity>(keys);
             }
         }
 

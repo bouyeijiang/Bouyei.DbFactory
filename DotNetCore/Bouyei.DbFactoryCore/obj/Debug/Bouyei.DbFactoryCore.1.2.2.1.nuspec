@@ -29,6 +29,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="C:\Users\bouyei\source\repos\dbproviderfactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.2\Bouyei.DbFactoryCore.dll" />
+    <file src="E:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.2\Bouyei.DbFactoryCore.dll" />
   </files>
 </package>

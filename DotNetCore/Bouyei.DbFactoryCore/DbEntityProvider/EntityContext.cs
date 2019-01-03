@@ -68,6 +68,11 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
             return Set<TEntity>().Where(predicate);
         }
 
+        public TEntity GetById<TEntity>(params object[] keys) where TEntity : class
+        {
+            return Set<TEntity>().Find(keys);
+        }
+
         public IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
             return Set<TEntity>().Where(predicate).AsNoTracking();
@@ -281,23 +286,23 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            string path = JsonConfiguration.Configuration["AppSettings:EntityMapping"];
+            string path = AppContext.BaseDirectory + JsonConfiguration.Configuration["AppSettings:EntityMapping"];
 
             var assem = Assembly.LoadFrom(path);
-            modelBuilder.ApplyConfigurationsFromAssembly(assem, type => type.GetTypeInfo().BaseType != null
-            && typeof(DbEntity).IsAssignableFrom(type));
-
-            //var eItems = assem.GetTypes()
-            //.Where(type => type.GetTypeInfo().BaseType != null
+            //need inherit IEntityTypeConfiguration<>
+            //modelBuilder.ApplyConfigurationsFromAssembly(assem, type => type.GetTypeInfo().BaseType != null
             //&& typeof(DbEntity).IsAssignableFrom(type));
 
-            //foreach (var item in eItems)
-            //{
-            //    if (modelBuilder.Model.FindEntityType(item) != null)
-            //        continue;
+            var eItems = assem.GetTypes()
+            .Where(type => type.GetTypeInfo().BaseType != null&& typeof(DbEntity).IsAssignableFrom(type));
 
-            //    modelBuilder.Model.AddEntityType(item);
-            //}
+            foreach (var item in eItems)
+            {
+                if (modelBuilder.Model.FindEntityType(item) != null)
+                    continue;
+
+                modelBuilder.Model.AddEntityType(item);
+            }
 
             base.OnModelCreating(modelBuilder);
         }

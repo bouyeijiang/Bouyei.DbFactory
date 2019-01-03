@@ -2,7 +2,7 @@
 using System.Data;
 using Bouyei.DbFactoryCore;
 using System.Linq;
-using Bouyei.DbFactoryCore.DbEntityProvider;
+using Bouyei.DbFactoryCore;
 using Bouyei.DbFactoryCore.DbAdoProvider;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,9 +13,9 @@ namespace DotNetCoreDemo
         static void Main(string[] args)
         {
             string connectionString = "Data Source=127.0.0.1;Initial Catalog=B;User ID=sa;Password=123456;";
-            IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
+            //IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
 
-            var users = adoProvider.Query<user>(x => 1 == 1);
+            //var users = adoProvider.Query<user>(x => 1==1);
             //var rt = adoProvider.Query(new Parameter()
             //{
             //    CommandText = "select * from MemUser"

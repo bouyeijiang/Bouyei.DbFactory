@@ -67,6 +67,11 @@ namespace Bouyei.DbFactory.DbEntityProvider
             return Set<TEntity>().Where(predicate);
         }
 
+        public TEntity GetById<TEntity>(params object[] keys) where TEntity:class
+        {
+            return Set<TEntity>().Find(keys);
+        }
+
         public IQueryable<TEntity> QueryNoTracking<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
         {
             return Set<TEntity>().Where(predicate).AsNoTracking();
@@ -269,10 +274,8 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
             if (string.IsNullOrEmpty(path) || System.IO.File.Exists(path) == false)
                 throw new Exception("找不到数据库表实体映射配置路径:" + path);
-            
-           // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
+            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFile(path));
 
             //var regTypes = Assembly.LoadFile(path).GetTypes()
             //    .Where(type => typeof(DbEntity<>).IsAssignableFrom(type));

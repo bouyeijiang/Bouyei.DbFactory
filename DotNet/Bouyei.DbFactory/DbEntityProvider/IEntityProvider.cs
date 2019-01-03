@@ -27,7 +27,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
         void Refresh<TEntity>(TEntity entity) where TEntity : class;
 
-        TEntity GetById<TEntity>(object id) where TEntity : class;
+        TEntity GetById<TEntity>(params object[] keys) where TEntity : class;
 
         TEntity Insert<TEntity>(TEntity entity, bool isSaveChange = false) where TEntity : class;
 
