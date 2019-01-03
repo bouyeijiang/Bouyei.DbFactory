@@ -191,7 +191,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
     {
         private Func<T, string, object> getValue = null;
         private Dictionary<string, Action<T, object>> setterExpressionCaching = null;
-
+    
         internal Type classType = null;
 
         public ExpressProperty()
@@ -220,6 +220,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
 
             return obj;
         }
+
         public T SetValue(string proName, object proValue)
         {
             string key = classType.FullName + proName;
@@ -304,6 +305,95 @@ namespace Bouyei.DbFactoryCore.DbUtils
                   new ParameterExpression[] { instance, value }).Compile();
 
             return exp;
+        }
+
+    }
+
+    internal class ExpressionProperty<Entity,Value>
+    {
+        internal Type tClassType = null;
+        internal Type vClassType = null;
+
+        public ExpressionProperty()
+        {
+            tClassType = typeof(Entity);
+            vClassType = typeof(Value);
+        }
+
+        public Value GetGenericValue<V>(Entity value, string proName)
+        {
+            var act = GenericGetExpression(proName);
+            return act(value);
+        }
+
+        public Entity SetGenericValue(Entity value, string proName, Value proValue)
+        {
+            var act = GenericSetExpression(proName);
+            act(value, proValue);
+            return value;
+        }
+
+        public Entity SetGenericValue(string proName, Value proValue)
+        {
+            Entity obj = Activator.CreateInstance<Entity>();
+            var act = GenericSetExpression(proName);
+            act(obj, proValue);
+
+            return obj;
+        }
+
+        private Func<Entity, Value> GenericGetExpression(string proName)
+        {
+            var property = tClassType.GetProperty(proName);
+            var target = Expression.Parameter(property.DeclaringType);
+            var getPropertyValue = Expression.Property(target, property);
+
+            var exp = Expression.Lambda<Func<Entity, Value>>(getPropertyValue, target).Compile();
+
+            return exp;
+        }
+
+        private Action<Entity, Value> GenericSetExpression(string proName)
+        {
+            var property = tClassType.GetProperty(proName);
+            var target = Expression.Parameter(property.DeclaringType);
+            var propertyValue = Expression.Parameter(vClassType);
+            var setPropertyValue = Expression.Call(target, property.GetSetMethod(), propertyValue);
+            return Expression.Lambda<Action<Entity, Value>>(setPropertyValue, target, propertyValue).Compile();
+        }
+    }
+
+    internal class DelegateProperty<Entity,Value>
+    {
+        public delegate Value DelegateGetValue();
+        public delegate void DelegateSetValue(Value v);
+
+        internal Type getClassType = null;
+        internal Type setClassType = null;
+
+        internal Type tClassType = null;
+       
+        public DelegateProperty()
+        {
+            getClassType = typeof(DelegateGetValue);
+            setClassType = typeof(DelegateSetValue);
+            tClassType = typeof(Entity);
+        }
+
+        public Value GetValue(Entity value,string proName)
+        {
+           var exp= (DelegateGetValue)Delegate.CreateDelegate(getClassType, value,
+              tClassType.GetProperty(proName).GetGetMethod());
+
+            return exp();
+        }
+
+        public void SetValue(Entity value, string proName, Value proValue)
+        {
+            var exp = (DelegateSetValue)Delegate.CreateDelegate(setClassType,value,
+                tClassType.GetProperty(proName).GetSetMethod());
+
+            exp(proValue);
         }
     }
 
