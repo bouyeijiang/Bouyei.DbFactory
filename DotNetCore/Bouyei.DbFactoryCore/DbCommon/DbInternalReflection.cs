@@ -124,9 +124,9 @@ namespace Bouyei.DbFactoryCore.DbUtils
     {
         public T FromDbDataReader<T>(DbDataReader reader)
         {
-            T value = Activator.CreateInstance<T>();
             ExpressProperty<T> expressPro = new ExpressProperty<T>();
             Type toType = expressPro.classType;
+            T value = Activator.CreateInstance<T>();
 
             var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
@@ -153,13 +153,11 @@ namespace Bouyei.DbFactoryCore.DbUtils
         public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
         {
             List<T> items = new List<T>(64);
-            ExpressProperty<T> expressPro = new ExpressProperty<T>();
-            Type toType = expressPro.classType;
+            ExpressProperty<T> expPro = new ExpressProperty<T>();
+            Type toType = expPro.classType;
 
             var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
-
-            ExpressProperty<T> expPros = new ExpressProperty<T>();
 
             while (reader.Read())
             {
@@ -176,7 +174,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
                             if (dbValue == null || dbValue == DBNull.Value)
                                 continue;
 
-                            expressPro.SetValue(value, pi.Name, dbValue);
+                            expPro.SetValue(value, pi.Name, dbValue);
                             break;
                         }
                     }
@@ -187,12 +185,161 @@ namespace Bouyei.DbFactoryCore.DbUtils
         }
     }
 
-    internal class ExpressProperty<T>
+    internal class DbReaderDelegateToGeneric:DbParseBase
+    {
+        public DbReaderDelegateToGeneric()
+        {
+
+        }
+
+        public T FromDbDataReader<T>(DbDataReader reader)
+        {
+            ExpressProperty<T> expressPro = new ExpressProperty<T>();
+
+            Type toType = expressPro.classType;
+            var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+
+            var pros = PropertyInfoToEx(pinfos);
+
+            T value = Activator.CreateInstance<T>();
+
+            foreach (var pi in pros)
+            {
+                for (int i = 0; i < reader.FieldCount; ++i)
+                {
+                    if (NameEquals(pi.Name, reader.GetName(i)))
+                    {
+                        DataReaderDelegateToGeneric<T>(reader, i, value, pi, expressPro);
+                        break;
+                    }
+                }
+            }
+            return value;
+        }
+
+        public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
+        {
+            List<T> items = new List<T>(64);
+            ExpressProperty<T> expressPro = new ExpressProperty<T>();
+            Type toType = expressPro.classType;
+
+            var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+
+            var pros=PropertyInfoToEx(pinfos);
+
+            while (reader.Read())
+            {
+                T value = Activator.CreateInstance<T>();
+
+                foreach (var pi in pros)
+                {
+                    for (int i = 0; i < reader.FieldCount; ++i)
+                    {
+                        if (NameEquals(pi.Name, reader.GetName(i)))
+                        {
+                            DataReaderDelegateToGeneric<T>(reader, i, value, pi, expressPro);
+                            break;
+                        }
+                    }
+                }
+                items.Add(value);
+            }
+            return items;
+        }
+    }
+
+    internal class DbReaderExpressionToGeneric : DbParseBase
+    {
+        public T FromDbDataReader<T>(DbDataReader reader)
+        {
+            ExpressProperty<T> expressPro = new ExpressProperty<T>();
+
+            Type toType = expressPro.classType;
+            var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+
+            T value = Activator.CreateInstance<T>();
+
+            var pros = PropertyInfoToEx(pinfos);
+
+            foreach (var pi in pros)
+            {
+                for (int i = 0; i < reader.FieldCount; ++i)
+                {
+                    if (NameEquals(pi.Name, reader.GetName(i)))
+                    {
+                        DataReaderExpToGeneric<T>(reader, i, value, pi, expressPro);
+                        break;
+                    }
+                }
+            }
+            return value;
+        }
+
+        public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
+        {
+            List<T> items = new List<T>(64);
+            IExpProperty<T> expressPro = new ExpressProperty<T>();
+            Type toType = expressPro.classType;
+
+            var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+
+            var pros = PropertyInfoToEx(pinfos);
+
+            while (reader.Read())
+            {
+                T value = Activator.CreateInstance<T>();
+
+                foreach (var pi in pros)
+                {
+                    for (int i = 0; i < reader.FieldCount; ++i)
+                    {
+                        if (NameEquals(pi.Name, reader.GetName(i)))
+                        {
+                            DataReaderExpToGeneric<T>(reader, i, value, pi, expressPro);
+                            break;
+                        }
+                    }
+                }
+                items.Add(value);
+            }
+            return items;
+        }
+    }
+
+    internal class PropertyInfoEx
+    {
+        public string Name { get; set; }
+
+        public ProType ProType { get; set; }
+    }
+
+    internal enum ProType:short
+    {
+        None = 0,
+        Bool = 1,
+        Byte = 2,
+        Char = 3,
+        Float = 5,
+        Short = 6,
+        Int = 7,
+        Long = 8,
+        Double = 9,
+        Decimal = 10,
+        DateTime = 11,
+        Guid = 12,
+        String=13
+    }
+
+    internal class ExpressProperty<T>:IExpProperty<T>
     {
         private Func<T, string, object> getValue = null;
         private Dictionary<string, Action<T, object>> setterExpressionCaching = null;
     
-        internal Type classType = null;
+        public Type classType { get; set; }
 
         public ExpressProperty()
         {
@@ -206,6 +353,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
 
             return (V)getValue(value, proName);
         }
+
         public object GetValue(T value, string proName)
         {
             if (getValue == null) getValue = GenerateGetExpress();
@@ -309,10 +457,20 @@ namespace Bouyei.DbFactoryCore.DbUtils
 
     }
 
+    internal interface IExpProperty<T>
+    {
+        Type classType { get; set; }
+        object GetValue(T value, string proName);
+        V GetValue<V>(T value, string proName);
+        void SetValue<V>(T value, string proName, V proValue);
+        void SetValue(T value, string proName, object proValue);
+    }
+
     internal class ExpressionProperty<Entity,Value>
     {
         internal Type tClassType = null;
         internal Type vClassType = null;
+        public static ExpressionProperty<Entity, Value> expProperty = new ExpressionProperty<Entity, Value>();
 
         public ExpressionProperty()
         {
@@ -320,20 +478,20 @@ namespace Bouyei.DbFactoryCore.DbUtils
             vClassType = typeof(Value);
         }
 
-        public Value GetGenericValue<V>(Entity value, string proName)
+        public Value GetValue<V>(Entity value, string proName)
         {
             var act = GenericGetExpression(proName);
             return act(value);
         }
 
-        public Entity SetGenericValue(Entity value, string proName, Value proValue)
+        public Entity SetValue(Entity value, string proName, Value proValue)
         {
             var act = GenericSetExpression(proName);
             act(value, proValue);
             return value;
         }
 
-        public Entity SetGenericValue(string proName, Value proValue)
+        public Entity SetValue(string proName, Value proValue)
         {
             Entity obj = Activator.CreateInstance<Entity>();
             var act = GenericSetExpression(proName);
@@ -372,7 +530,12 @@ namespace Bouyei.DbFactoryCore.DbUtils
         internal Type setClassType = null;
 
         internal Type tClassType = null;
-       
+
+
+        #region pre instance
+        public static DelegateProperty<Entity, Value> delegateProperty = new DelegateProperty<Entity, Value>();
+        #endregion
+
         public DelegateProperty()
         {
             getClassType = typeof(DelegateGetValue);
@@ -439,6 +602,256 @@ namespace Bouyei.DbFactoryCore.DbUtils
             }
 
             return values;
+        }
+
+        /// <summary>
+        /// 预处理类型
+        /// </summary>
+        /// <param name="infos"></param>
+        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos)
+        {
+            List<PropertyInfoEx> items = new List<PropertyInfoEx>();
+            foreach (var item in infos)
+            {
+                var _it = new PropertyInfoEx()
+                {
+                    Name = item.Name
+                };
+
+                if (item.PropertyType == typeof(int))
+                {
+                    _it.ProType = ProType.Int;
+                }
+                else if (item.PropertyType == typeof(short))
+                {
+                    _it.ProType = ProType.Short;
+                }
+                else if (item.PropertyType == typeof(long))
+                {
+                    _it.ProType = ProType.Long;
+                }
+                else if(item.PropertyType==typeof(string))
+                {
+                    _it.ProType = ProType.String;
+                }
+                else if (item.PropertyType == typeof(double))
+                {
+                    _it.ProType = ProType.Double;
+                }
+                else if (item.PropertyType == typeof(decimal))
+                {
+                    _it.ProType = ProType.Decimal;
+                }
+                else if (item.PropertyType == typeof(float))
+                {
+                    _it.ProType = ProType.Float;
+                }
+                else if(item.PropertyType==typeof(byte))
+                {
+                    _it.ProType = ProType.Byte;
+                }
+                else if (item.PropertyType == typeof(char))
+                {
+                    _it.ProType = ProType.Char;
+                }
+                else if (item.PropertyType == typeof(DateTime))
+                {
+                    _it.ProType = ProType.DateTime;
+                }
+                else if (item.PropertyType == typeof(Guid))
+                {
+                    _it.ProType = ProType.Guid;
+                }
+                else if(item.PropertyType==typeof(bool))
+                {
+                    _it.ProType = ProType.Bool;
+                }
+                items.Add(_it);
+            }
+
+            return items;
+        }
+
+        internal void DataReaderExpToGeneric<T>(DbDataReader reader, int i,
+         T value, PropertyInfoEx pi, IExpProperty<T> exp)
+        {
+            switch (pi.ProType)
+            {
+                case ProType.Int:
+                    {
+                        var val = reader.GetInt32(i);
+                        ExpressionProperty<T, int>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Decimal:
+                    {
+                        var val = reader.GetDecimal(i);
+                        ExpressionProperty<T, decimal>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.String:
+                    {
+                        var val = reader.GetString(i);
+                        ExpressionProperty<T, string>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Bool:
+                    {
+                        var val = reader.GetBoolean(i);
+                        ExpressionProperty<T, bool>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Double:
+                    {
+                        var val = reader.GetDouble(i);
+                        ExpressionProperty<T, double>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Float:
+                    {
+                        var val = reader.GetFloat(i);
+                        ExpressionProperty<T, float>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Byte:
+                    {
+                        var val = reader.GetByte(i);
+                        ExpressionProperty<T, byte>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Char:
+                    {
+                        var val = reader.GetChar(i);
+                        ExpressionProperty<T, char>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.DateTime:
+                    {
+                        var val = reader.GetDateTime(i);
+                        ExpressionProperty<T, DateTime>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Guid:
+                    {
+                        var val = reader.GetGuid(i);
+                        ExpressionProperty<T, Guid>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Long:
+                    {
+                        var val = reader.GetInt64(i);
+                        ExpressionProperty<T, long>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Short:
+                    {
+                        var val = reader.GetInt16(i);
+                        ExpressionProperty<T, short>.expProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.None:
+                default:
+                    {
+                        object dbValue = reader.GetValue(i);
+
+                        if (dbValue == null || dbValue == DBNull.Value)
+                            return;
+
+                        exp.SetValue(value, pi.Name, dbValue);
+                    }
+                    break;
+            }
+        }
+
+        internal void DataReaderDelegateToGeneric<T>(DbDataReader reader,int i,
+            T value,PropertyInfoEx pi,IExpProperty<T> exp)
+        {
+            switch (pi.ProType)
+            {
+                case ProType.Int:
+                    {
+                        var val = reader.GetInt32(i);
+                        DelegateProperty<T, int>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Decimal:
+                    {
+                        var val = reader.GetDecimal(i);
+                        DelegateProperty<T, decimal>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.String:
+                    {
+                        var val = reader.GetString(i);
+                        DelegateProperty<T, string>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Bool:
+                    {
+                        var val = reader.GetBoolean(i);
+                        DelegateProperty<T, bool>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Double:
+                    {
+                        var val = reader.GetDouble(i);
+                        DelegateProperty<T, double>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Float:
+                    {
+                        var val = reader.GetFloat(i);
+                        DelegateProperty<T, float>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Byte:
+                    {
+                        var val = reader.GetByte(i);
+                        DelegateProperty<T, byte>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Char:
+                    {
+                        var val = reader.GetChar(i);
+                        DelegateProperty<T, char>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.DateTime:
+                    {
+                        var val = reader.GetDateTime(i);
+                        DelegateProperty<T, DateTime>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Guid:
+                    {
+                        var val = reader.GetGuid(i);
+                        DelegateProperty<T, Guid>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Long:
+                    {
+                        var val = reader.GetInt64(i);
+                        DelegateProperty<T, long>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.Short:
+                    {
+                        var val = reader.GetInt16(i);
+                        DelegateProperty<T, short>.delegateProperty.SetValue(value, pi.Name, val);
+                    }
+                    break;
+                case ProType.None:
+                default:
+                    {
+                        object dbValue = reader.GetValue(i);
+
+                        if (dbValue == null || dbValue == DBNull.Value)
+                            return;
+
+                        exp.SetValue(value, pi.Name, dbValue);
+                    }
+                    break;
+            }
         }
     }
 }

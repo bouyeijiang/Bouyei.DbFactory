@@ -13,20 +13,23 @@ namespace DotNetCoreDemo
         static void Main(string[] args)
         {
             string connectionString = "Data Source=127.0.0.1;Initial Catalog=B;User ID=sa;Password=123456;";
-            //IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
-
-            //var users = adoProvider.Query<user>(x => 1==1);
-            //var rt = adoProvider.Query(new Parameter()
-            //{
-            //    CommandText = "select * from MemUser"
-            //});
-
-            //foreach (DataRow dr in rt.Result.Rows)
-            //{
-            //    Console.WriteLine(string.Join(",", dr.ItemArray));
-            //}
+           IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
 
 
+            int c = 100,b=3;
+            double sum = 0;
+            while ((b--) >= 0)
+            {
+                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+                while ((c--) > 0)
+                {
+                    var users = adoProvider.Query<DbEntity.User>(x => 1 == 1);
+                }
+                watch.Stop();
+                sum += watch.Elapsed.TotalMilliseconds;
+            }
+            Console.Write(sum / 3);
 
             //DataTable dt = new DataTable();
             //dt.TableName = "std_user";
