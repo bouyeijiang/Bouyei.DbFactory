@@ -100,8 +100,8 @@ namespace Bouyei.DbFactory
         bool IsPrimitType<T>();
         T FromDbDataReader<T>(DbDataReader reader);
         List<T> FromDbDataReaderToList<T>(DbDataReader reader);
-        T FromPrimitDataReader<T>(IDataReader reader, int index = 0);
-        List<T> FromPrimitDataReaderToList<T>(IDataReader reader, int index = 0);
+        T FromDbReaderToPrimit<T>(IDataReader reader, int index = 0);
+        List<T> FromDbReaderToPrimitList<T>(IDataReader reader, int index = 0);
     }
 
     internal class DbParseBase
@@ -121,13 +121,13 @@ namespace Bouyei.DbFactory
             return srcName == dstName;
         }
 
-        public T FromPrimitDataReader<T>(IDataReader reader, int index = 0)
+        public T FromDbReaderToPrimit<T>(IDataReader reader, int index = 0)
         {
             object value = reader.GetValue(index);
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
-        public List<T> FromPrimitDataReaderToList<T>(IDataReader reader, int index = 0)
+        public List<T> FromDbReaderToPrimitList<T>(IDataReader reader, int index = 0)
         {
             var vtype = typeof(T);
             List<T> values = new List<T>(32);

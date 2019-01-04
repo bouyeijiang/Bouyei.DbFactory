@@ -15,7 +15,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
         {
             if (dbReaderToGeneric.IsPrimitType<T>())
             {
-                return dbReaderToGeneric.FromPrimitDataReader<T>(dataReader);
+                return dbReaderToGeneric.FromDbReaderToPrimit<T>(dataReader);
             }
             else
             {
@@ -27,7 +27,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
         {
             if (dbReaderToGeneric.IsPrimitType<T>())
             {
-                return dbReaderToGeneric.FromPrimitDataReaderToList<T>(dataReader);
+                return dbReaderToGeneric.FromDbReaderToPrimitList<T>(dataReader);
             }
             else
             {
