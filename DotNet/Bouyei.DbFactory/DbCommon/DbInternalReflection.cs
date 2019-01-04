@@ -153,13 +153,11 @@ namespace Bouyei.DbFactory.DbUtils
         public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
         {
             List<T> items = new List<T>(64);
-            ExpressProperty<T> expressPro = new ExpressProperty<T>();
-            Type toType = expressPro.classType;
+            ExpressProperty<T> expPro = new ExpressProperty<T>();
+            Type toType = expPro.classType;
 
             var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
-
-            ExpressProperty<T> expPros = new ExpressProperty<T>();
 
             while (reader.Read())
             {
@@ -176,7 +174,7 @@ namespace Bouyei.DbFactory.DbUtils
                             if (dbValue == null || dbValue == DBNull.Value)
                                 continue;
 
-                            expressPro.SetValue(value, pi.Name, dbValue);
+                            expPro.SetValue(value, pi.Name, dbValue);
                             break;
                         }
                     }

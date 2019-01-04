@@ -11,7 +11,6 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Configuration.Json;
     using MySql.Data.EntityFrameworkCore.Infraestructure;
     using System.Data.Common;
 

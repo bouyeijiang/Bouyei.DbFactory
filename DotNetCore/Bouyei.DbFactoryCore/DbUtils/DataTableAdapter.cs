@@ -18,6 +18,8 @@ namespace Bouyei.DbFactoryCore.DbUtils
     {
         #region public
        static DbExpression expression = new DbExpression();
+        static DbReaderDelegateToGeneric dbDelToGeneric = new DbReaderDelegateToGeneric();
+        static DbReaderExpressionToGeneric dbExpToGeneric = new DbReaderExpressionToGeneric();
 
         public static T DataReaderTo<T>(this IDataReader dataReader)
         {
@@ -27,7 +29,9 @@ namespace Bouyei.DbFactoryCore.DbUtils
             }
             else
             {
-                return expression.FromDbDataReader<T>((DbDataReader)dataReader);
+               return dbDelToGeneric.FromDbDataReader<T>((DbDataReader)dataReader);
+              //return dbExpToGeneric.FromDbDataReader<T>((DbDataReader)dataReader);
+              // return expression.FromDbDataReader<T>((DbDataReader)dataReader);
             }
         }
 
@@ -39,7 +43,9 @@ namespace Bouyei.DbFactoryCore.DbUtils
             }
             else
             {
-                return expression.FromDbDataReaderToList<T>((DbDataReader)dataReader);
+              //  return expression.FromDbDataReaderToList<T>((DbDataReader)dataReader);
+               //return dbExpToGeneric.FromDbDataReaderToList<T>((DbDataReader)dataReader);
+              return dbDelToGeneric.FromDbDataReaderToList<T>((DbDataReader)dataReader);
             }
         }
 
