@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Reflection;
 
 namespace Bouyei.DbFactoryCore.DbUtils
@@ -17,37 +16,6 @@ namespace Bouyei.DbFactoryCore.DbUtils
     public static class DataTableAdapter
     {
         #region public
-       static DbExpression expression = new DbExpression();
-        static DbReaderDelegateToGeneric dbDelToGeneric = new DbReaderDelegateToGeneric();
-        static DbReaderExpressionToGeneric dbExpToGeneric = new DbReaderExpressionToGeneric();
-
-        public static T DataReaderTo<T>(this IDataReader dataReader)
-        {
-            if (expression.IsPrimitType<T>())
-            {
-                return expression.FromDataReader<T>(dataReader);
-            }
-            else
-            {
-               return dbDelToGeneric.FromDbDataReader<T>((DbDataReader)dataReader);
-              //return dbExpToGeneric.FromDbDataReader<T>((DbDataReader)dataReader);
-              // return expression.FromDbDataReader<T>((DbDataReader)dataReader);
-            }
-        }
-
-        public static List<T> DataReaderToList<T>(this IDataReader dataReader)
-        {
-            if (expression.IsPrimitType<T>())
-            {
-              return  expression.FromDataReaderToList<T>(dataReader);
-            }
-            else
-            {
-              //  return expression.FromDbDataReaderToList<T>((DbDataReader)dataReader);
-               //return dbExpToGeneric.FromDbDataReaderToList<T>((DbDataReader)dataReader);
-              return dbDelToGeneric.FromDbDataReaderToList<T>((DbDataReader)dataReader);
-            }
-        }
 
         /// <summary>
         /// 根据结构体创建DataTable数据集
@@ -71,7 +39,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
         /// <returns></returns>
         public static int CopyTo<T>(ref DataTable table, IList<T> list)
         {
-            ExpressProperty<T> expressPros = new ExpressProperty<T>();
+            ExpressionProperty<T> expressPros = new ExpressionProperty<T>();
             Type type = expressPros.classType;
 
             PropertyInfo[] properties =type.GetProperties(BindingFlags.Public|BindingFlags.Instance);
@@ -100,7 +68,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
         /// <returns></returns>
         public static DataTable ConvertTo<T>(this IList<T> list)
         {
-            ExpressProperty<T> expressPros = new ExpressProperty<T>();
+            ExpressionProperty<T> expressPros = new ExpressionProperty<T>();
             PropertyInfo[] properties = null;
             DataTable table = CreateTable<T>(out properties);
 
@@ -128,7 +96,7 @@ namespace Bouyei.DbFactoryCore.DbUtils
         /// <returns></returns>
         public static List<T> ConvertTo<T>(this DataTable table)
         {
-            ExpressProperty<T> expressPros = new ExpressProperty<T>();
+            ExpressionProperty<T> expressPros = new ExpressionProperty<T>();
             List<T> list = new List<T>(table.Rows.Count);
             Type type = expressPros.classType;
 

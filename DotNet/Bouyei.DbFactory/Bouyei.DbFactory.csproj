@@ -197,6 +197,7 @@
     <Compile Include="DbSqlProvider\SqlKeywords\Update.cs" />
     <Compile Include="DbSqlProvider\SqlKeywords\Values.cs" />
     <Compile Include="DbSqlProvider\SqlKeywords\Where.cs" />
+    <Compile Include="DbUtils\DataReaderAdapter.cs" />
     <Compile Include="DbUtils\DataTableAdapter.cs" />
     <Compile Include="DbAdoProvider\Entities\Structures.cs" />
     <Compile Include="DbAdoProvider\Entities\Enums.cs" />
