@@ -7,9 +7,9 @@ namespace Bouyei.DbFactoryCore.DbUtils
 {
    public static class DataReaderAdapter
     {
-       // static IDbReaderToGeneric dbReaderToGeneric = new DbReaderDelegateToGeneric();
+        static IDbReaderToGeneric dbReaderToGeneric = new DbReaderDelegateToGeneric();
         //static IDbReaderToGeneric dbReaderToGeneric = new DbReaderExpressionToGeneric();
-      static IDbReaderToGeneric dbReaderToGeneric = new DbReaderExpressionExToGeneric();
+      //static IDbReaderToGeneric dbReaderToGeneric = new DbReaderExpressionExToGeneric();
 
         public static T DataReaderTo<T>(this IDataReader dataReader)
         {

@@ -18,19 +18,19 @@ namespace Bouyei.DbFactory.DbAdoProvider
     {
         string DbConnectionString { get; set; }
         DbType DbType { get; set; }
-        ResultInfo<bool, string> Connect(string connString);
-        ResultInfo<DataTable, string> Query(Parameter dbParameter);
-        ResultInfo<List<T>, string> Query<T>(Parameter dbParameter);
-        ResultInfo<DataSet, string> QueryToSet(Parameter dbParameter);
-        ResultInfo<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction);
-        ResultInfo<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader,bool> rowAction);
-        ResultInfo<IDataReader, string> QueryToReader(Parameter dbParameter);
-        ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action);
-        ResultInfo<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable);
-        ResultInfo<int, string> ExecuteCmd(Parameter dbParameter);
-        ResultInfo<int, string> ExecuteTransaction(Parameter dbParameter);
-        ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> rowAction=null);
-        ResultInfo<T, string> ExecuteScalar<T>(Parameter dbParameter);
-        ResultInfo<int, string> BulkCopy(BulkParameter dbParameter);
+        DbResult<bool, string> Connect(string connString);
+        DbResult<DataTable, string> Query(Parameter dbParameter);
+        DbResult<List<T>, string> Query<T>(Parameter dbParameter);
+        DbResult<DataSet, string> QueryToSet(Parameter dbParameter);
+        DbResult<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction);
+        DbResult<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader,bool> rowAction);
+        DbResult<IDataReader, string> QueryToReader(Parameter dbParameter);
+        DbResult<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action);
+        DbResult<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable);
+        DbResult<int, string> ExecuteCmd(Parameter dbParameter);
+        DbResult<int, string> ExecuteTransaction(Parameter dbParameter);
+        DbResult<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> rowAction=null);
+        DbResult<T, string> ExecuteScalar<T>(Parameter dbParameter);
+        DbResult<int, string> BulkCopy(BulkParameter dbParameter);
     }
 }

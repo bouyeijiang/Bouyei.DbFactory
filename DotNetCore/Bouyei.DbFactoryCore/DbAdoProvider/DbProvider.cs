@@ -90,7 +90,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         #endregion
 
         #region public
-        public ResultInfo<bool, string> Connect(string ConnectionString)
+        public DbResult<bool, string> Connect(string ConnectionString)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -99,17 +99,17 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     {
-                        return new ResultInfo<bool, string>(true, string.Empty);
+                        return new DbResult<bool, string>(true, string.Empty);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return new ResultInfo<bool, string>(false, ex.ToString());
+                    return new DbResult<bool, string>(false, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<DataTable, string> Query(Parameter dbParameter)
+        public DbResult<DataTable, string> Query(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -127,17 +127,17 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                         if (dbParameter.IsTransaction)
                             trans.Commit();
 
-                        return new ResultInfo<DataTable, string>(dt, string.Empty);
+                        return new DbResult<DataTable, string>(dt, string.Empty);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return new ResultInfo<DataTable, string>(null, ex.ToString());
+                    return new DbResult<DataTable, string>(null, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<DataSet, string> QueryToSet(Parameter dbParameter)
+        public DbResult<DataSet, string> QueryToSet(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -155,17 +155,17 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                         if (dbParameter.IsTransaction)
                             trans.Commit();
 
-                        return ResultInfo<DataSet, string>.Create(ds, string.Empty);
+                        return DbResult<DataSet, string>.Create(ds, string.Empty);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return new ResultInfo<DataSet, string>(null, ex.ToString());
+                    return new DbResult<DataSet, string>(null, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader, bool> rowAction)
+        public DbResult<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader, bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -181,7 +181,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                             trans.Commit();
 
                         if (reader.HasRows == false)
-                            return ResultInfo<int, string>.Create(0, string.Empty);
+                            return DbResult<int, string>.Create(0, string.Empty);
 
                         bool isContinue = false;
 
@@ -192,16 +192,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                             ++rows;
                         }
                     }
-                    return ResultInfo<int, string>.Create(rows, string.Empty);
+                    return DbResult<int, string>.Create(rows, string.Empty);
                 }
                 catch (Exception ex)
                 {
-                    return new ResultInfo<int, string>(-1, ex.ToString());
+                    return new DbResult<int, string>(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction)
+        public DbResult<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -217,7 +217,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                             trans.Commit();
 
                         if (reader.HasRows == false)
-                            return ResultInfo<int, string>.Create(0, string.Empty);
+                            return DbResult<int, string>.Create(0, string.Empty);
 
                         bool isContinue = false;
                         while (reader.Read())
@@ -229,16 +229,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                         }
                     }
 
-                    return ResultInfo<int, string>.Create(rows, string.Empty);
+                    return DbResult<int, string>.Create(rows, string.Empty);
                 }
                 catch (Exception ex)
                 {
-                    return new ResultInfo<int, string>(-1, ex.ToString());
+                    return new DbResult<int, string>(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<List<T>, string> Query<T>(Expression<Func<T, bool>> predicate) where T : class
+        public DbResult<List<T>, string> Query<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider();
             var commandText = sql.Select<T>().From<T>().Where(predicate).SqlString;
@@ -247,7 +247,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             return rt;
         }
 
-        public ResultInfo<IDataReader, string> QueryToReader(Parameter dbParameter)
+        public DbResult<IDataReader, string> QueryToReader(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -256,16 +256,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     DbConnection conn = CreateConnection(DbConnectionString);
                     DbCommand cmd = CreateCommand(conn, dbParameter);
                     IDataReader reader = cmd.ExecuteReader();
-                    return ResultInfo<IDataReader, string>.Create(reader, string.Empty);
+                    return DbResult<IDataReader, string>.Create(reader, string.Empty);
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<IDataReader, string>.Create(null, ex.ToString());
+                    return DbResult<IDataReader, string>.Create(null, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> ExecuteCmd(Parameter dbParameter)
+        public DbResult<int, string> ExecuteCmd(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -282,18 +282,18 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
                         var rValue = GetReturnParameter(cmd);
 
-                        return ResultInfo<int, string>.Create(rt < 0 ? 0 : rt,
+                        return DbResult<int, string>.Create(rt < 0 ? 0 : rt,
                             rValue == null ? string.Empty : rValue.ToString());
                     }
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                    return DbResult<int, string>.Create(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable)
+        public DbResult<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -311,17 +311,17 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
                         dstTable.Load(dReader);
 
-                        return ResultInfo<int, string>.Create(dstTable.Rows.Count - oCnt, string.Empty);
+                        return DbResult<int, string>.Create(dstTable.Rows.Count - oCnt, string.Empty);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                    return DbResult<int, string>.Create(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> ExecuteTransaction(Parameter dbParameter)
+        public DbResult<int, string> ExecuteTransaction(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -339,25 +339,25 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
                                 var rValue = GetReturnParameter(cmd);
 
-                                return ResultInfo<int, string>.Create(rt < 0 ? 0 : rt,
+                                return DbResult<int, string>.Create(rt < 0 ? 0 : rt,
                                     rValue != null ? rValue.ToString() : string.Empty);
                             }
                         }
                         catch (Exception ex)
                         {
                             tran.Rollback();
-                            return ResultInfo<int, string>.Create(-1, ex.ToString());
+                            return DbResult<int, string>.Create(-1, ex.ToString());
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                    return DbResult<int, string>.Create(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> action = null)
+        public DbResult<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> action = null)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -400,23 +400,23 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                             {
                                 tran.Commit();
                             }
-                            return new ResultInfo<int, string>(rows, string.Empty);
+                            return new DbResult<int, string>(rows, string.Empty);
                         }
                         catch (Exception ex)
                         {
                             tran.Rollback();
-                            return new ResultInfo<int, string>(-1, ex.ToString());
+                            return new DbResult<int, string>(-1, ex.ToString());
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    return new ResultInfo<int, string>(-1, ex.ToString());
+                    return new DbResult<int, string>(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<T, string> ExecuteScalar<T>(Parameter dbParameter)
+        public DbResult<T, string> ExecuteScalar<T>(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -433,18 +433,18 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
                         var rValue = GetReturnParameter(cmd);
 
-                        return ResultInfo<T, string>.Create(obj == null ? default(T) : (T)Convert.ChangeType(obj, typeof(T)),
+                        return DbResult<T, string>.Create(obj == null ? default(T) : (T)Convert.ChangeType(obj, typeof(T)),
                           rValue == null ? string.Empty : rValue.ToString());
                     }
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<T, string>.Create(default(T), ex.ToString());
+                    return DbResult<T, string>.Create(default(T), ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> BulkCopy(BulkParameter dbParameter)
+        public DbResult<int, string> BulkCopy(BulkParameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -499,16 +499,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     }
 
                     if (temex != null) throw temex;
-                    return ResultInfo<int, string>.Create(cnt, string.Empty);
+                    return DbResult<int, string>.Create(cnt, string.Empty);
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                    return DbResult<int, string>.Create(-1, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<List<T>, string> Query<T>(Parameter dbParameter)
+        public DbResult<List<T>, string> Query<T>(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -523,21 +523,21 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                             trans.Commit();
 
                         if (reader.HasRows == false)
-                            return ResultInfo<List<T>, string>.Create(new List<T>(1), string.Empty);
+                            return DbResult<List<T>, string>.Create(new List<T>(1), string.Empty);
 
                         List<T> items = reader.DataReaderToList<T>();
 
-                        return ResultInfo<List<T>, string>.Create(items, string.Empty);
+                        return DbResult<List<T>, string>.Create(items, string.Empty);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<List<T>, string>.Create(null, ex.ToString());
+                    return DbResult<List<T>, string>.Create(null, ex.ToString());
                 }
             }
         }
 
-        public ResultInfo<int, string> QueryChanged(Parameter dbParameter, Func<DataTable, bool> action)
+        public DbResult<int, string> QueryChanged(Parameter dbParameter, Func<DataTable, bool> action)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -552,15 +552,15 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                         adapter.SelectCommand = cmd;
                         adapter.Fill(dt);
 
-                        if (dt.Rows.Count == 0) return ResultInfo<int, string>.Create(0, "无可更新的数据行");
+                        if (dt.Rows.Count == 0) return DbResult<int, string>.Create(0, "无可更新的数据行");
 
                         bool isContinue = action(dt);
-                        if (isContinue == false) return ResultInfo<int, string>.Create(0, string.Empty);
+                        if (isContinue == false) return DbResult<int, string>.Create(0, string.Empty);
 
                         DataTable changedt = dt.GetChanges(DataRowState.Added | DataRowState.Deleted | DataRowState.Modified);
 
                         if (changedt == null || changedt.Rows.Count == 0)
-                            return ResultInfo<int, string>.Create(0, string.Empty);
+                            return DbResult<int, string>.Create(0, string.Empty);
 
                         using (DbCommandBuilder dbBuilder = this.CreateCommandBuilder())
                         {
@@ -570,13 +570,13 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                             if (dbParameter.IsTransaction)
                                 trans.Commit();
 
-                            return ResultInfo<int, string>.Create(rt, string.Empty);
+                            return DbResult<int, string>.Create(rt, string.Empty);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    return ResultInfo<int, string>.Create(-1, ex.ToString());
+                    return DbResult<int, string>.Create(-1, ex.ToString());
                 }
             }
         }
@@ -604,7 +604,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
     public static class DbProviderExtensions
     {
-        public static ResultInfo<List<T>, string> Query<T>(this IDbProvider dbProvider,
+        public static DbResult<List<T>, string> Query<T>(this IDbProvider dbProvider,
             Expression<Func<T, bool>> predicate) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider();
@@ -616,7 +616,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             return rt;
         }
 
-        public static ResultInfo<int, string> Delete<T>(this IDbProvider dbProvider
+        public static DbResult<int, string> Delete<T>(this IDbProvider dbProvider
             , Expression<Func<T, bool>> predicate)
         {
             ISqlProvider sql = SqlProvider.CreateProvider();
@@ -628,7 +628,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             return rt;
         }
 
-        public static ResultInfo<int, string> Update<T>(this IDbProvider dbProvider,
+        public static DbResult<int, string> Update<T>(this IDbProvider dbProvider,
             T value, Expression<Func<T,bool>> predicate) where T:class
         {
             ISqlProvider sql = SqlProvider.CreateProvider();
@@ -641,7 +641,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             return rt;
         }
 
-        public static ResultInfo<int, string> Insert<T>(this IDbProvider dbProvider,params T[] value) where T : class
+        public static DbResult<int, string> Insert<T>(this IDbProvider dbProvider,params T[] value) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider();
             var commandText = sql.Insert<T>().Values<T>(value).SqlString;

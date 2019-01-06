@@ -133,35 +133,35 @@ namespace Bouyei.DbFactoryCore
     }
 
     [Serializable]
-    public class ResultInfo<R, I>
+    public class DbResult<R, I>
     {
         public R Result { get; set; }
 
         public I Info { get; set; }
 
-        public ResultInfo()
+        public DbResult()
         {
         }
 
-        public ResultInfo(R Result)
+        public DbResult(R Result)
         {
             this.Result = Result;
         }
 
-        public ResultInfo(I Info)
+        public DbResult(I Info)
         {
             this.Info = Info;
         }
 
-        public ResultInfo(R Result, I Info)
+        public DbResult(R Result, I Info)
         {
             this.Result = Result;
             this.Info = Info;
         }
 
-        public static ResultInfo<R, I> Create(R Result, I Info)
+        public static DbResult<R, I> Create(R Result, I Info)
         {
-            return new ResultInfo<R, I>(Result, Info);
+            return new DbResult<R, I>(Result, Info);
         }
     }
  
