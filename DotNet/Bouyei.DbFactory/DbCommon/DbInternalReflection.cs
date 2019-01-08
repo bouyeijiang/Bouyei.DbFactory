@@ -137,12 +137,13 @@ namespace Bouyei.DbFactory
 
             foreach (var pi in pros)
             {
-                if (pi.DbIndex == -1) continue;
+                if (pi.DbIndex == -1
+                    || reader.IsDBNull(pi.DbIndex)) continue;
 
                 object dbValue = reader.GetValue(pi.DbIndex);
 
-                if (dbValue == null || dbValue == DBNull.Value)
-                    continue;
+                //if (dbValue == null || dbValue == DBNull.Value)
+                //    continue;
 
                 expPro.SetValue(value, pi.Name, dbValue);
 
@@ -183,12 +184,13 @@ namespace Bouyei.DbFactory
 
                 foreach (var pi in pros)
                 {
-                    if (pi.DbIndex == -1) continue;
-
+                    if (pi.DbIndex == -1
+                        ||reader.IsDBNull(pi.DbIndex)) continue;
+                 
                     object dbValue = reader.GetValue(pi.DbIndex);
 
-                    if (dbValue == null || dbValue == DBNull.Value)
-                        continue;
+                    //if (dbValue == null || dbValue == DBNull.Value)
+                    //    continue;
 
                     expPro.SetValue(value, pi.Name, dbValue);
 
@@ -233,8 +235,9 @@ namespace Bouyei.DbFactory
 
             foreach (var pi in pros)
             {
-                if (pi.DbIndex == -1) continue;
-
+                if (pi.DbIndex == -1
+                    ||reader.IsDBNull(pi.DbIndex)) continue;
+                
                 DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
                 //for (int i = 0; i < reader.FieldCount; ++i)
                 //{
@@ -269,8 +272,9 @@ namespace Bouyei.DbFactory
                 foreach (var pi in pros)
                 {
                     //filter not mapping column
-                    if (pi.DbIndex == -1) continue;
-
+                    if (pi.DbIndex == -1
+                        ||reader.IsDBNull(pi.DbIndex)) continue;
+                     
                     DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
                     //for (int i = 0; i < reader.FieldCount; ++i)
                     //{
@@ -368,8 +372,8 @@ namespace Bouyei.DbFactory
                     {
                         object dbValue = reader.GetValue(i);
 
-                        if (dbValue == null || dbValue == DBNull.Value)
-                            return;
+                        //if (dbValue == null || dbValue == DBNull.Value)
+                        //    return;
 
                         exp.SetValue(value, pi.Name, dbValue);
                     }

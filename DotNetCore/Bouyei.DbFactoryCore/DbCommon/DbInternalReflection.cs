@@ -138,11 +138,12 @@ namespace Bouyei.DbFactoryCore
             foreach (var pi in pros)
             {
                 if (pi.DbIndex == -1) continue;
+                if (reader.IsDBNull(pi.DbIndex)) continue;
 
                 object dbValue = reader.GetValue(pi.DbIndex);
 
-                if (dbValue == null || dbValue == DBNull.Value)
-                    continue;
+                //if (dbValue == null || dbValue == DBNull.Value)
+                //    continue;
 
                 expPro.SetValue(value, pi.Name, dbValue);
 
@@ -184,11 +185,12 @@ namespace Bouyei.DbFactoryCore
                 foreach (var pi in pros)
                 {
                     if (pi.DbIndex == -1) continue;
+                    if (reader.IsDBNull(pi.DbIndex)) continue;
 
                     object dbValue = reader.GetValue(pi.DbIndex);
 
-                    if (dbValue == null || dbValue == DBNull.Value)
-                        continue;
+                    //if (dbValue == null || dbValue == DBNull.Value)
+                    //    continue;
 
                     expPro.SetValue(value, pi.Name, dbValue);
 
@@ -234,6 +236,7 @@ namespace Bouyei.DbFactoryCore
             foreach (var pi in pros)
             {
                 if (pi.DbIndex == -1) continue;
+                if (reader.IsDBNull(pi.DbIndex)) continue;
 
                 DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
                 //for (int i = 0; i < reader.FieldCount; ++i)
@@ -270,6 +273,7 @@ namespace Bouyei.DbFactoryCore
                 {
                     //filter not mapping column
                     if (pi.DbIndex == -1) continue;
+                    if (reader.IsDBNull(pi.DbIndex)) continue;
 
                     DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
                     //for (int i = 0; i < reader.FieldCount; ++i)
@@ -368,8 +372,8 @@ namespace Bouyei.DbFactoryCore
                     {
                         object dbValue = reader.GetValue(i);
 
-                        if (dbValue == null || dbValue == DBNull.Value)
-                            return;
+                        //if (dbValue == null || dbValue == DBNull.Value)
+                        //    return;
 
                         exp.SetValue(value, pi.Name, dbValue);
                     }
@@ -378,166 +382,169 @@ namespace Bouyei.DbFactoryCore
         }
     }
 
-    internal class DbReaderExpressionExToGeneric : DbParseBase, IDbReaderToGeneric
-    {
-        public T FromDbDataReader<T>(DbDataReader reader)
-        {
-            var schema = reader.GetColumnSchema();
+    //internal class DbReaderExpressionExToGeneric : DbParseBase, IDbReaderToGeneric
+    //{
+    //    public T FromDbDataReader<T>(DbDataReader reader)
+    //    {
+    //        var schema = reader.GetColumnSchema();
 
-            ExpressionProperty<T> expressPro = new ExpressionProperty<T>();
+    //        ExpressionProperty<T> expressPro = new ExpressionProperty<T>();
 
-            Type toType = expressPro.classType;
-            var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+    //        Type toType = expressPro.classType;
+    //        var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+    //            .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
-            T value = Activator.CreateInstance<T>();
+    //        T value = Activator.CreateInstance<T>();
 
-            var pros = PropertyInfoToEx(pinfos, schema);
+    //        var pros = PropertyInfoToEx(pinfos, schema);
 
-            foreach (var pi in pros)
-            {
-                if (pi.DbIndex == -1) continue;
+    //        foreach (var pi in pros)
+    //        {
+    //            if (pi.DbIndex == -1) continue;
+    //            if (reader.IsDBNull(pi.DbIndex)) continue;
 
-                DataReaderExpToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
-                //for (int i = 0; i < reader.FieldCount; ++i)
-                //{
-                //    if (NameEquals(pi.Name, reader.GetName(i)))
-                //    {
-                //        DataReaderExpToGeneric<T>(reader, i, value, pi, expressPro);
-                //        break;
-                //    }
-                //}
-            }
-            return value;
-        }
+    //            DataReaderExpToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
+    //            //for (int i = 0; i < reader.FieldCount; ++i)
+    //            //{
+    //            //    if (NameEquals(pi.Name, reader.GetName(i)))
+    //            //    {
+    //            //        DataReaderExpToGeneric<T>(reader, i, value, pi, expressPro);
+    //            //        break;
+    //            //    }
+    //            //}
+    //        }
+    //        return value;
+    //    }
 
-        public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
-        {
-            var schema = reader.GetColumnSchema();
+    //    public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
+    //    {
+    //        var schema = reader.GetColumnSchema();
 
-            IExpProperty<T> expressPro = new ExpressionProperty<T>();
-            Type toType = expressPro.classType;
+    //        IExpProperty<T> expressPro = new ExpressionProperty<T>();
+    //        Type toType = expressPro.classType;
 
-            var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+    //        var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+    //            .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
-            var pros = PropertyInfoToEx(pinfos, schema);
-            List<T> items = new List<T>(32);
+    //        var pros = PropertyInfoToEx(pinfos, schema);
+    //        List<T> items = new List<T>(32);
 
-            while (reader.Read())
-            {
-                T value = Activator.CreateInstance<T>();
+    //        while (reader.Read())
+    //        {
+    //            T value = Activator.CreateInstance<T>();
 
-                foreach (var pi in pros)
-                {
-                    if (pi.DbIndex == -1) continue;
-                    //优化性能
-                    DataReaderExpToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
-                    //for (int i = 0; i < reader.FieldCount; ++i)
-                    //{
-                    //    if (NameEquals(pi.Name, reader.GetName(i)))
-                    //    {
-                    //        DataReaderExpToGeneric<T>(reader, i, value, pi, expressPro);
-                    //        break;
-                    //    }
-                    //}
-                }
-                items.Add(value);
-            }
-            return items;
-        }
+    //            foreach (var pi in pros)
+    //            {
+    //                if (pi.DbIndex == -1) continue;
+    //                if (reader.IsDBNull(pi.DbIndex)) continue;
 
-        internal void DataReaderExpToGeneric<T>(DbDataReader reader, int i,
-        T value, PropertyInfoEx pi, IExpProperty<T> exp)
-        {
-            switch (pi.ProType)
-            {
-                case ProType.Int:
-                    {
-                        var val = reader.GetInt32(i);
-                        ExpressionPropertyEx<T, int>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Decimal:
-                    {
-                        var val = reader.GetDecimal(i);
-                        ExpressionPropertyEx<T, decimal>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.String:
-                    {
-                        var val = reader.GetString(i);
-                        ExpressionPropertyEx<T, string>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Bool:
-                    {
-                        var val = reader.GetBoolean(i);
-                        ExpressionPropertyEx<T, bool>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Double:
-                    {
-                        var val = reader.GetDouble(i);
-                        ExpressionPropertyEx<T, double>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Float:
-                    {
-                        var val = reader.GetFloat(i);
-                        ExpressionPropertyEx<T, float>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Byte:
-                    {
-                        var val = reader.GetByte(i);
-                        ExpressionPropertyEx<T, byte>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Char:
-                    {
-                        var val = reader.GetChar(i);
-                        ExpressionPropertyEx<T, char>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.DateTime:
-                    {
-                        var val = reader.GetDateTime(i);
-                        ExpressionPropertyEx<T, DateTime>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Guid:
-                    {
-                        var val = reader.GetGuid(i);
-                        ExpressionPropertyEx<T, Guid>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Long:
-                    {
-                        var val = reader.GetInt64(i);
-                        ExpressionPropertyEx<T, long>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.Short:
-                    {
-                        var val = reader.GetInt16(i);
-                        ExpressionPropertyEx<T, short>.expProperty.SetValue(value, pi.Name, val);
-                    }
-                    break;
-                case ProType.None:
-                default:
-                    {
-                        object dbValue = reader.GetValue(i);
+    //                //优化性能
+    //                DataReaderExpToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
+    //                //for (int i = 0; i < reader.FieldCount; ++i)
+    //                //{
+    //                //    if (NameEquals(pi.Name, reader.GetName(i)))
+    //                //    {
+    //                //        DataReaderExpToGeneric<T>(reader, i, value, pi, expressPro);
+    //                //        break;
+    //                //    }
+    //                //}
+    //            }
+    //            items.Add(value);
+    //        }
+    //        return items;
+    //    }
 
-                        if (dbValue == null || dbValue == DBNull.Value)
-                            return;
+    //    internal void DataReaderExpToGeneric<T>(DbDataReader reader, int i,
+    //    T value, PropertyInfoEx pi, IExpProperty<T> exp)
+    //    {
+    //        switch (pi.ProType)
+    //        {
+    //            case ProType.Int:
+    //                {
+    //                    var val = reader.GetInt32(i);
+    //                    ExpressionPropertyEx<T, int>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Decimal:
+    //                {
+    //                    var val = reader.GetDecimal(i);
+    //                    ExpressionPropertyEx<T, decimal>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.String:
+    //                {
+    //                    var val = reader.GetString(i);
+    //                    ExpressionPropertyEx<T, string>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Bool:
+    //                {
+    //                    var val = reader.GetBoolean(i);
+    //                    ExpressionPropertyEx<T, bool>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Double:
+    //                {
+    //                    var val = reader.GetDouble(i);
+    //                    ExpressionPropertyEx<T, double>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Float:
+    //                {
+    //                    var val = reader.GetFloat(i);
+    //                    ExpressionPropertyEx<T, float>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Byte:
+    //                {
+    //                    var val = reader.GetByte(i);
+    //                    ExpressionPropertyEx<T, byte>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Char:
+    //                {
+    //                    var val = reader.GetChar(i);
+    //                    ExpressionPropertyEx<T, char>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.DateTime:
+    //                {
+    //                    var val = reader.GetDateTime(i);
+    //                    ExpressionPropertyEx<T, DateTime>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Guid:
+    //                {
+    //                    var val = reader.GetGuid(i);
+    //                    ExpressionPropertyEx<T, Guid>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Long:
+    //                {
+    //                    var val = reader.GetInt64(i);
+    //                    ExpressionPropertyEx<T, long>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.Short:
+    //                {
+    //                    var val = reader.GetInt16(i);
+    //                    ExpressionPropertyEx<T, short>.expProperty.SetValue(value, pi.Name, val);
+    //                }
+    //                break;
+    //            case ProType.None:
+    //            default:
+    //                {
+    //                    object dbValue = reader.GetValue(i);
 
-                        exp.SetValue(value, pi.Name, dbValue);
-                    }
-                    break;
-            }
-        }
-    }
+    //                    //if (dbValue == null || dbValue == DBNull.Value)
+    //                    //    return;
+
+    //                    exp.SetValue(value, pi.Name, dbValue);
+    //                }
+    //                break;
+    //        }
+    //    }
+    //}
 
 
 
@@ -715,87 +722,87 @@ namespace Bouyei.DbFactoryCore
         }
     }
 
-    internal class ExpressionPropertyEx<Entity,Value>
-    {
-        internal Type tClassType = null;
-        internal Type vClassType = null;
+    //internal class ExpressionPropertyEx<Entity,Value>
+    //{
+    //    internal Type tClassType = null;
+    //    internal Type vClassType = null;
 
-        private Dictionary<string, Func<Entity, Value>> getCaching = null;
-        private Dictionary<string, Action<Entity, Value>> setCaching = null;
+    //    private Dictionary<string, Func<Entity, Value>> getCaching = null;
+    //    private Dictionary<string, Action<Entity, Value>> setCaching = null;
 
-        public static ExpressionPropertyEx<Entity, Value> expProperty = new ExpressionPropertyEx<Entity, Value>();
+    //    public static ExpressionPropertyEx<Entity, Value> expProperty = new ExpressionPropertyEx<Entity, Value>();
 
-        public ExpressionPropertyEx()
-        {
-            tClassType = typeof(Entity);
-            vClassType = typeof(Value);
+    //    public ExpressionPropertyEx()
+    //    {
+    //        tClassType = typeof(Entity);
+    //        vClassType = typeof(Value);
 
-            getCaching = new Dictionary<string, Func<Entity, Value>>();
-            setCaching = new Dictionary<string, Action<Entity, Value>>();
-        }
+    //        getCaching = new Dictionary<string, Func<Entity, Value>>();
+    //        setCaching = new Dictionary<string, Action<Entity, Value>>();
+    //    }
 
-        public Value GetValue<V>(Entity value, string proName)
-        {
-            string key = tClassType.FullName + proName;
-            Func<Entity, Value> act = null;
+    //    public Value GetValue<V>(Entity value, string proName)
+    //    {
+    //        string key = tClassType.FullName + proName;
+    //        Func<Entity, Value> act = null;
 
-            if (getCaching.TryGetValue(key, out act) == false)
-            {
-                act = GenericGetExpression(proName);
-                getCaching.Add(key, act);
-            }
-            return act(value);
-        }
+    //        if (getCaching.TryGetValue(key, out act) == false)
+    //        {
+    //            act = GenericGetExpression(proName);
+    //            getCaching.Add(key, act);
+    //        }
+    //        return act(value);
+    //    }
 
-        public Entity SetValue(Entity value, string proName, Value proValue)
-        {
-            string key = tClassType.FullName + proName;
-            Action<Entity, Value> act = null;
+    //    public Entity SetValue(Entity value, string proName, Value proValue)
+    //    {
+    //        string key = tClassType.FullName + proName;
+    //        Action<Entity, Value> act = null;
 
-            if (setCaching.TryGetValue(key, out act) == false)
-            {
-                act = GenericSetExpression(proName);
-                setCaching.Add(key, act);
-            }
+    //        if (setCaching.TryGetValue(key, out act) == false)
+    //        {
+    //            act = GenericSetExpression(proName);
+    //            setCaching.Add(key, act);
+    //        }
 
-            act(value, proValue);
-            return value;
-        }
+    //        act(value, proValue);
+    //        return value;
+    //    }
 
-        public Entity SetValue(string proName, Value proValue)
-        {
-            Entity obj = Activator.CreateInstance<Entity>();
-            string key = tClassType.FullName + proName;
-            Action<Entity, Value> act = null;
+    //    public Entity SetValue(string proName, Value proValue)
+    //    {
+    //        Entity obj = Activator.CreateInstance<Entity>();
+    //        string key = tClassType.FullName + proName;
+    //        Action<Entity, Value> act = null;
 
-            if(setCaching.TryGetValue(key,out act) == false)
-            {
-                act = GenericSetExpression(proName);
-                setCaching.Add(key, act);
-            }
-            act(obj, proValue);
+    //        if(setCaching.TryGetValue(key,out act) == false)
+    //        {
+    //            act = GenericSetExpression(proName);
+    //            setCaching.Add(key, act);
+    //        }
+    //        act(obj, proValue);
 
-            return obj;
-        }
+    //        return obj;
+    //    }
 
-        private Func<Entity, Value> GenericGetExpression(string proName)
-        {
-            var property = tClassType.GetProperty(proName);
-            var target = Expression.Parameter(property.DeclaringType);
-            var getPropertyValue = Expression.Property(target, property);
+    //    private Func<Entity, Value> GenericGetExpression(string proName)
+    //    {
+    //        var property = tClassType.GetProperty(proName);
+    //        var target = Expression.Parameter(property.DeclaringType);
+    //        var getPropertyValue = Expression.Property(target, property);
 
-            var exp = Expression.Lambda<Func<Entity, Value>>(getPropertyValue, target).Compile();
+    //        var exp = Expression.Lambda<Func<Entity, Value>>(getPropertyValue, target).Compile();
 
-            return exp;
-        }
+    //        return exp;
+    //    }
 
-        private Action<Entity, Value> GenericSetExpression(string proName)
-        {
-            var property = tClassType.GetProperty(proName);
-            var target = Expression.Parameter(property.DeclaringType);
-            var propertyValue = Expression.Parameter(vClassType);
-            var setPropertyValue = Expression.Call(target, property.GetSetMethod(), propertyValue);
-            return Expression.Lambda<Action<Entity, Value>>(setPropertyValue, target, propertyValue).Compile();
-        }
-    }   
+    //    private Action<Entity, Value> GenericSetExpression(string proName)
+    //    {
+    //        var property = tClassType.GetProperty(proName);
+    //        var target = Expression.Parameter(property.DeclaringType);
+    //        var propertyValue = Expression.Parameter(vClassType);
+    //        var setPropertyValue = Expression.Call(target, property.GetSetMethod(), propertyValue);
+    //        return Expression.Lambda<Action<Entity, Value>>(setPropertyValue, target, propertyValue).Compile();
+    //    }
+    //}   
 }
