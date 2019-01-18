@@ -21,7 +21,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
         public string ConnectionString { get { return base.Database.Connection.ConnectionString; } }
 
         public EntityContext(string NameOrConnectionString = null)
-            : base(string.Format("Name={0}", string.IsNullOrEmpty(NameOrConnectionString) ? "DbConnection" : NameOrConnectionString))
+            : base(string.IsNullOrEmpty(NameOrConnectionString) ? "Name=DbConnection" : NameOrConnectionString)
         {
             this.Configuration.LazyLoadingEnabled = false;
             this.Database.Initialize(false);
@@ -291,6 +291,7 @@ namespace Bouyei.DbFactory.DbEntityProvider
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
 
     public interface IDbEntity

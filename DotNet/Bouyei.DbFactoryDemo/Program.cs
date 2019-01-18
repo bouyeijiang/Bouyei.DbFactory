@@ -59,9 +59,7 @@ namespace Bouyei.DbFactoryDemo
 
         private static void AdoDemo(string connectionString)
         {
-           DataTable inverant=  DbProviderFactories.GetFactoryClasses();
-
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, DbFactory.DbType.MySql);
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString);
             var ext = dbProvider.Connect(connectionString);
             var adort = dbProvider.Query(new Parameter()
             {
@@ -94,7 +92,7 @@ namespace Bouyei.DbFactoryDemo
                 //     id=4,
                 //      name="bouyei"
                 //};//
-                ormProvider.GetById<User>(6);
+                ormProvider.GetById<User>(1);
                 UserDto ud = new UserDto()
                 {
                     UserName = "http://aileenyin.com/"
@@ -106,7 +104,7 @@ namespace Bouyei.DbFactoryDemo
 
                 ////使用mapper修改对象
                 User u = new User() {
-                     name="b",
+                    name="b",
                       id=1
                 };
 
