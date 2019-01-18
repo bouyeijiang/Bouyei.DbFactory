@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Bouyei.DbFactory.DbEntityProvider;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Bouyei.DbEntities
 {

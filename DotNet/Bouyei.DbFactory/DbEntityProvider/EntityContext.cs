@@ -275,10 +275,10 @@ namespace Bouyei.DbFactory.DbEntityProvider
             if (string.IsNullOrEmpty(path) || System.IO.File.Exists(path) == false)
                 throw new Exception("找不到数据库表实体映射配置路径:" + path);
 
-            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFile(path));
+            modelBuilder.Configurations.AddFromAssembly(Assembly.LoadFrom(path));
 
-            //var regTypes = Assembly.LoadFile(path).GetTypes()
-            //    .Where(type => typeof(DbEntity<>).IsAssignableFrom(type));
+            //var regTypes = Assembly.LoadFrom(path).GetTypes()
+            //    .Where(type => type.BaseType != null && type.BaseType.GetGenericTypeDefinition() == typeof(DbEntity<>));
 
             //if (regTypes.Count() == 0)
             //    throw new Exception("无实体映射,请添加实体映射" + path);
