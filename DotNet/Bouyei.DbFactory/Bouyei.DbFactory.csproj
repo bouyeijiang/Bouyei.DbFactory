@@ -79,7 +79,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>DbFactory.pfx</AssemblyOriginatorKeyFile>
@@ -234,6 +234,7 @@
     <None Include="App.config" />
     <None Include="Bouyei.DbFactory.nupkg" />
     <None Include="DbFactory.pfx" />
+    <None Include="DbFactoryTo.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
