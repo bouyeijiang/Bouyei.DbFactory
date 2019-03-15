@@ -40,6 +40,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 case DbType.DB2: invariantName = "IBM.Data.DB2"; break;
                 case DbType.Oracle: invariantName = "Oracle.DataAccess"; break;
+                //case DbType.MsOracle:invariantName = "System.Data.OracleClient";break;
                 case DbType.MySql: invariantName = "MySql.Data.MySqlClient"; break;
                 case DbType.SQLite: invariantName = "System.Data.SQLite"; break;
                 case DbType.OleDb: invariantName = "System.Data.OleDb"; break;
