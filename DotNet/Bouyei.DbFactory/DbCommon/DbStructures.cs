@@ -194,16 +194,16 @@ namespace Bouyei.DbFactory
                     }
                     break;
                 case DbType.Oracle:
-                case DbType.MsOracle:
-                    {
-                        if (DbPort <= 0) DbPort = 1521;
+                //case DbType.MsOracle:
+                //    {
+                //        if (DbPort <= 0) DbPort = 1521;
 
-                        if (string.IsNullOrEmpty(DbName))
-                            DbName = "ORCL";
-                        ConnectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
-                             DbIp, DbPort, DbName, DbUserName, DbPassword);
-                    }
-                    break;
+                //        if (string.IsNullOrEmpty(DbName))
+                //            DbName = "ORCL";
+                //        ConnectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
+                //             DbIp, DbPort, DbName, DbUserName, DbPassword);
+                //    }
+                //    break;
                 case DbType.DB2:
                     {
                         if (DbPort <= 0) DbPort = 50000;

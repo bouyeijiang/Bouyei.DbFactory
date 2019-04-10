@@ -229,25 +229,25 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 return GetAdapterFactory();
 
-                AssemblyFactoryInfo assemInfo = null;
-                AssemblyCache.TryGetValue(DbProviderType, out assemInfo);
-                if (assemInfo == null)
-                {
-                    assemInfo = GetDynamicDllProviderInfo(invariantName);
-                    assemInfo.FactoryName = GetAdapterName(DbProviderType);
-                    AssemblyCache.Add(DbProviderType, assemInfo);
-                }
+                //AssemblyFactoryInfo assemInfo = null;
+                //AssemblyCache.TryGetValue(DbProviderType, out assemInfo);
+                //if (assemInfo == null)
+                //{
+                //    assemInfo = GetDynamicDllProviderInfo(invariantName);
+                //    assemInfo.FactoryName = GetAdapterName(DbProviderType);
+                //    AssemblyCache.Add(DbProviderType, assemInfo);
+                //}
 
-                Type type = Type.GetType(assemInfo.ToString());
-                if (type == null) return null;
+                //Type type = Type.GetType(assemInfo.ToString());
+                //if (type == null) return null;
 
-                FieldInfo field = type.GetField("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-                if (field == null || !field.FieldType.IsSubclassOf(typeof(DbProviderFactory))) return null;
+                //FieldInfo field = type.GetField("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+                //if (field == null || !field.FieldType.IsSubclassOf(typeof(DbProviderFactory))) return null;
 
-                object obj = field.GetValue(null);
-                if (obj == null) return null;
+                //object obj = field.GetValue(null);
+                //if (obj == null) return null;
 
-                return (DbProviderFactory)obj;
+                //return (DbProviderFactory)obj;
             }
         }
 
