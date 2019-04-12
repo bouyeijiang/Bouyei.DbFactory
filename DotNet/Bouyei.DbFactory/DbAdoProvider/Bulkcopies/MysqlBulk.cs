@@ -44,13 +44,16 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                 mysqlBulkCopy.Connection.Close();
         }
 
-        public int WriteToServer(DataTable dt,int batchSize=10240)
+        public int WriteToServer(DataTable dt, int batchSize = 10240)
         {
             DbUtils.DataCsvAdapter dbCsvHelper = new DbUtils.DataCsvAdapter();
             string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName;
 
             bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
             if (isExport == false) return -1;
+
+
+            int writedCnt = 0;
 
             using (MySqlConnection conn = new MySqlConnection(ConnectionString))
             {
@@ -73,8 +76,12 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                     foreach (DataColumn col in dt.Columns)
                         mysqlBulkCopy.Columns.Add(col.ColumnName);
                 }
-                return mysqlBulkCopy.Load();
+                writedCnt = mysqlBulkCopy.Load();
             }
+
+            System.IO.File.Delete(path);
+
+            return writedCnt;
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)

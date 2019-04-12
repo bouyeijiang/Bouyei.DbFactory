@@ -6727,6 +6727,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Npgsql.Util.VersionExtensions.IsGreaterOrEqual(System.Version,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Allocation free helper function to find if version is greater than expected
+            </summary>
+        </member>
         <member name="T:Npgsql.VolatileResourceManager">
              <summary>
             

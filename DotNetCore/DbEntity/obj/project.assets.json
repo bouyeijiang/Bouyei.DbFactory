@@ -637,7 +637,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Npgsql/4.0.5": {
+      "Npgsql/4.0.6": {
         "type": "package",
         "dependencies": {
           "System.Memory": "4.5.2",
@@ -1655,7 +1655,7 @@
           "Mono.Data.OracleClientCore": "1.0.0",
           "MySql.Data": "8.0.15",
           "MySql.Data.EntityFrameworkCore": "8.0.15",
-          "Npgsql": "4.0.5",
+          "Npgsql": "4.0.6",
           "System.Data.SQLite.Core": "1.0.110"
         },
         "compile": {
@@ -2725,10 +2725,10 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "Npgsql/4.0.5": {
-      "sha512": "84PtCcrSTqx3j013bP9zGFSSjsf0UdoOfkTapM4es9kgGvtjZy49MCzOZfNDayNSRMNzGK0i5BsC5xv+beZtIA==",
+    "Npgsql/4.0.6": {
+      "sha512": "fOqH85tRp4RZXMdGZAMqpDsSxs32fNWAfwgXnF0ws6hrOnu9JJVsAnuUtbnEPXXesjje+/XI/3Pe+LABMJ/t7A==",
       "type": "package",
-      "path": "npgsql/4.0.5",
+      "path": "npgsql/4.0.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2741,7 +2741,7 @@
         "lib/netstandard2.0/Npgsql.dll",
         "lib/netstandard2.0/Npgsql.pdb",
         "lib/netstandard2.0/Npgsql.xml",
-        "npgsql.4.0.5.nupkg.sha512",
+        "npgsql.4.0.6.nupkg.sha512",
         "npgsql.nuspec"
       ]
     },
