@@ -395,6 +395,14 @@ namespace Bouyei.DbFactory
             setterExpressionCaching = new Dictionary<string, Action<T, object>>();
         }
 
+        public PropertyInfo[] GetFieldNames()
+        {
+            var pros = classType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+               .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+             
+            return pros.ToArray();
+        }
+
         public V GetValue<V>(T value, string proName)
         {
             if (getValue == null) getValue = GenerateGetExpress();
@@ -439,7 +447,7 @@ namespace Bouyei.DbFactory
             string key = classType.FullName + proName;
             Action<T, object> act = null;
             if (setterExpressionCaching.TryGetValue(key, out act) == false)
-            {
+            { 
                 act = GenerateSetExpress(proName);
                 setterExpressionCaching.Add(key, act);
             }

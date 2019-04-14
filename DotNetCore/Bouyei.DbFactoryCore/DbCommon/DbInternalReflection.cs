@@ -547,7 +547,6 @@ namespace Bouyei.DbFactoryCore
     //}
 
 
-
     internal class ExpressionProperty<T>:IExpProperty<T>
     {
         private Func<T, string, object> getValue = null;
@@ -559,6 +558,14 @@ namespace Bouyei.DbFactoryCore
         {
             classType = typeof(T);
             setterExpressionCaching = new Dictionary<string, Action<T, object>>();
+        }
+
+        public PropertyInfo[] GetFieldNames()
+        {
+            var pros = classType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+               .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+
+            return pros.ToArray();
         }
 
         public V GetValue<V>(T value, string proName)

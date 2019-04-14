@@ -43,18 +43,43 @@ namespace Bouyei.DbFactoryDemo
                 ,new User() { name="bouyei",age=23} }).SqlString;
 
             //////ado.net 使用例子
-             string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+             //string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
             //AdoDemo(connectionString);
 
             ////orm
-            OrmDemo(connectionString);
+            //OrmDemo(connectionString);
 
             //Data Sync Provider
             //SyncProviderDemo syncProvider = new SyncProviderDemo();
             //syncProvider.Execute();
 
             //AdoDemo("");
-            OrmDemo(connectionString);
+           // OrmDemo(connectionString);
+
+            Bulkcopy();
+        }
+
+        private static void Bulkcopy()
+        {
+            DataTable dt = new DataTable();
+            dt.TableName = "gz_weight";
+
+            dt.Columns.Add("sprovince",typeof(string));
+            dt.Columns.Add("sbiaotuzhidi",typeof(double));
+
+            dt.Rows.Add("贵州", 111.2);
+            dt.Rows.Add("贵州", 111.4);
+            dt.Rows.Add("贵州", 114.3);
+            dt.Rows.Add("贵州", 111.2);
+            dt.Rows.Add("贵州", 131.2);
+            dt.Rows.Add("贵州", 131.2);
+            dt.Rows.Add("贵州", 115.2);
+            dt.Rows.Add("贵州", 1141.2);
+
+            IAdoProvider dbprovider = AdoProvider.CreateProvider("PORT=5432;DATABASE=GDZL;HOST=localhost;PASSWORD=123456;USER ID=postgres",DbFactory.DbType.PostgreSQL);
+           var rt= dbprovider.BulkCopy(new BulkParameter(dt));
+
+            
         }
 
         private static void AdoDemo(string connectionString)

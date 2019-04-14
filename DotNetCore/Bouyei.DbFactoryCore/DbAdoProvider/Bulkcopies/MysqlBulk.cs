@@ -12,6 +12,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
 {
     using Factories;
     using MySql.Data.MySqlClient;
+    using System.IO;
 
     internal class MysqlBulk:BaseFactory,IFactory
     {
@@ -47,10 +48,11 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
         public int WriteToServer(DataTable dt,int batchSize=10240)
         {
             DbUtils.DbCsvHelper dbCsvHelper = new DbUtils.DbCsvHelper();
-            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName;
+            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName+DateTime.Now.ToString("yyyyMMddHHmmssfff");
 
             bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
             if (isExport == false) return -1;
+            int rows = -1;
 
             using (MySqlConnection conn = new MySqlConnection(ConnectionString))
             {
@@ -73,8 +75,13 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
                     foreach (DataColumn col in dt.Columns)
                         mysqlBulkCopy.Columns.Add(col.ColumnName);
                 }
-                return mysqlBulkCopy.Load();
+
+                rows= mysqlBulkCopy.Load();
             }
+
+            File.Delete(path);
+
+            return rows;
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
