@@ -61,23 +61,29 @@ namespace Bouyei.DbFactoryDemo
 
         private static void Bulkcopy()
         {
-            DataTable dt = new DataTable();
-            dt.TableName = "gz_weight";
+            //DataTable dt = new DataTable();
+            //dt.TableName = "gz_gwqhzs";
 
-            dt.Columns.Add("sprovince",typeof(string));
-            dt.Columns.Add("sbiaotuzhidi",typeof(double));
+            //dt.Columns.Add("sprovince",typeof(string));
+            //dt.Columns.Add("sbiaotuzhidi",typeof(double));
 
-            dt.Rows.Add("贵州", 111.2);
-            dt.Rows.Add("贵州", 111.4);
-            dt.Rows.Add("贵州", 114.3);
-            dt.Rows.Add("贵州", 111.2);
-            dt.Rows.Add("贵州", 131.2);
-            dt.Rows.Add("贵州", 131.2);
-            dt.Rows.Add("贵州", 115.2);
-            dt.Rows.Add("贵州", 1141.2);
+            //dt.Rows.Add("贵州", 111.2);
+            //dt.Rows.Add("贵州", 111.4);
+            //dt.Rows.Add("贵州", 114.3);
+            //dt.Rows.Add("贵州", 111.2);
+            //dt.Rows.Add("贵州", 131.2);
+            //dt.Rows.Add("贵州", 131.2);
+            //dt.Rows.Add("贵州", 115.2);
+            //dt.Rows.Add("贵州", 1141.2);
+            //rt.Result.TableName = "gz_gwqhzs";
+            //var brt = pgProvider.BulkCopy(new BulkParameter(rt.Result));
+            //if (string.IsNullOrEmpty(brt.Info) == false)
+            //    throw new Exception(brt.Info);
 
-            IAdoProvider dbprovider = AdoProvider.CreateProvider("PORT=5432;DATABASE=GDZL;HOST=localhost;PASSWORD=123456;USER ID=postgres",DbFactory.DbType.PostgreSQL);
-           var rt= dbprovider.BulkCopy(new BulkParameter(dt));
+           // rt.Result.TableName = "gz_weight";        
+
+           // IAdoProvider dbprovider = AdoProvider.CreateProvider("PORT=5432;DATABASE=GDZL;HOST=localhost;PASSWORD=123456;USER ID=postgres",DbFactory.DbType.PostgreSQL);
+           //var brt= dbprovider.BulkCopy(new BulkParameter(rt.Result));
 
             
         }
