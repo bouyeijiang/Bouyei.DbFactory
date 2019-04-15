@@ -48,7 +48,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
         public int WriteToServer(DataTable dt,int batchSize=10240)
         {
             DbUtils.DbCsvHelper dbCsvHelper = new DbUtils.DbCsvHelper();
-            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName+DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName+DateTime.Now.ToString("yyyyMMddHHmmssfff")+".csv";
 
             bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
             if (isExport == false) return -1;
@@ -80,8 +80,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
 
                     rows = mysqlBulkCopy.Load();
                 }
-
-                File.Delete(path);
             }
             catch(Exception ex)
             {
