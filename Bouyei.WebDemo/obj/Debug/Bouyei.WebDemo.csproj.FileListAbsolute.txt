@@ -202,3 +202,13 @@ E:\工作文件夹\Projects\DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.cs
 E:\工作文件夹\Projects\DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.csproj.CopyComplete
 E:\工作文件夹\Projects\DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.dll
 E:\工作文件夹\Projects\DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.pdb
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Memory.dll
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\Google.Protobuf.dll
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Numerics.Vectors.dll
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Buffers.dll
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Memory.xml
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\Google.Protobuf.xml
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Numerics.Vectors.xml
+C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Buffers.xml

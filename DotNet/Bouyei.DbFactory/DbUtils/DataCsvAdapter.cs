@@ -9,6 +9,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.IO;
+using System.Text;
 
 namespace Bouyei.DbFactory.DbUtils
 {
@@ -17,7 +18,7 @@ namespace Bouyei.DbFactory.DbUtils
         public MemoryStream ExportCsv(DataTable dt)
         {
             MemoryStream ms = new MemoryStream();
-            StreamWriter write = new StreamWriter(ms, System.Text.Encoding.Default);
+            StreamWriter write = new StreamWriter(ms, Encoding.Default);
             {
                 for (int i = 0; i < dt.Columns.Count; ++i)
                 {
@@ -38,7 +39,7 @@ namespace Bouyei.DbFactory.DbUtils
         {
             byte[] buffer = null;
             using (MemoryStream ms = new MemoryStream())
-            using (StreamWriter write = new StreamWriter(ms, System.Text.Encoding.Default))
+            using (StreamWriter write = new StreamWriter(ms, Encoding.Default))
             {
                 for (int i = 0; i < dt.Columns.Count; ++i)
                 {
@@ -58,26 +59,23 @@ namespace Bouyei.DbFactory.DbUtils
             return buffer;
         }
 
-        public bool ExportSvcToFile(DataTable dt,string saveFileName)
+        public bool ExportSvcToFile(DataTable dt, string saveFileName)
         {
-            using(FileStream f=new FileStream(saveFileName, FileMode.Create))
+            using (StreamWriter write = new StreamWriter(saveFileName, false, Encoding.Default))
             {
-               using(StreamWriter write=new StreamWriter(f))
+                for (int i = 0; i < dt.Columns.Count; ++i)
                 {
-                    for (int i = 0; i < dt.Columns.Count; ++i)
-                    {
-                        write.Write(dt.Columns[i].ColumnName + (i < dt.Columns.Count - 1 ? "," : ""));
-                    }
-                    write.WriteLine();
-
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        string item = string.Join(",", FilterSpecialSymbol(dr.ItemArray));
-                        write.WriteLine(item);
-                    }
-                    write.Flush();
-                    return true;
+                    write.Write(dt.Columns[i].ColumnName + (i < dt.Columns.Count - 1 ? "," : ""));
                 }
+                write.WriteLine();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string item = string.Join(",", FilterSpecialSymbol(dr.ItemArray));
+                    write.WriteLine(item);
+                }
+                write.Flush();
+                return true;
             }
         }
 

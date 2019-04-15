@@ -54,33 +54,44 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
             if (isExport == false) return -1;
             int rows = -1;
 
-            using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+            try
             {
-                conn.Open();
+                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                {
+                    conn.Open();
 
-                mysqlBulkCopy = new MySqlBulkLoader(conn)
-                {
-                    Timeout = ExecuteTimeout,
-                    TableName = dt.TableName,
-                    FieldTerminator = ",",
-                    FieldQuotationCharacter = '"',
-                    LineTerminator = "\r\n",
-                    FileName = path,
-                    EscapeCharacter = '"',
-                    CharacterSet = "utf-8",
-                    NumberOfLinesToSkip = 0,
-                };
-                if (dt.Columns != null)
-                {
-                    foreach (DataColumn col in dt.Columns)
-                        mysqlBulkCopy.Columns.Add(col.ColumnName);
+                    mysqlBulkCopy = new MySqlBulkLoader(conn)
+                    {
+                        Timeout = ExecuteTimeout,
+                        TableName = dt.TableName,
+                        FieldTerminator = ",",
+                        FieldQuotationCharacter = '"',
+                        LineTerminator = "\r\n",
+                        FileName = path,
+                        EscapeCharacter = '"',
+                        CharacterSet = "utf8",
+                        NumberOfLinesToSkip = 1,//must have column name row
+                    };
+                    if (dt.Columns != null)
+                    {
+                        foreach (DataColumn col in dt.Columns)
+                            mysqlBulkCopy.Columns.Add(col.ColumnName);
+                    }
+
+                    rows = mysqlBulkCopy.Load();
                 }
 
-                rows= mysqlBulkCopy.Load();
+                File.Delete(path);
             }
-
-            File.Delete(path);
-
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
             return rows;
         }
 

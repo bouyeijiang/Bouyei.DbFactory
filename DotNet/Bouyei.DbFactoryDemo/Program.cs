@@ -80,12 +80,27 @@ namespace Bouyei.DbFactoryDemo
             //if (string.IsNullOrEmpty(brt.Info) == false)
             //    throw new Exception(brt.Info);
 
-           // rt.Result.TableName = "gz_weight";        
+            // rt.Result.TableName = "gz_weight";        
 
-           // IAdoProvider dbprovider = AdoProvider.CreateProvider("PORT=5432;DATABASE=GDZL;HOST=localhost;PASSWORD=123456;USER ID=postgres",DbFactory.DbType.PostgreSQL);
-           //var brt= dbprovider.BulkCopy(new BulkParameter(rt.Result));
+            // IAdoProvider dbprovider = AdoProvider.CreateProvider("PORT=5432;DATABASE=GDZL;HOST=localhost;PASSWORD=123456;USER ID=postgres",DbFactory.DbType.PostgreSQL);
+            //var brt= dbprovider.BulkCopy(new BulkParameter(rt.Result));
 
-            
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("uname",typeof(string));
+            dt.Columns.Add("upwd", typeof(string));
+            dt.Columns.Add("age",typeof(int));
+            dt.Columns.Add("score", typeof(float));
+
+            dt.Rows.Add("bouyei", "232a", 12, 239.4);
+            dt.Rows.Add("hell哦", "232a", 12, 239.4);
+            dt.TableName = "luser";
+
+            string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.MySql);
+            var c = dbProvider.Connect(str);
+
+            var brt= dbProvider.BulkCopy(new BulkParameter(dt));
         }
 
         private static void AdoDemo(string connectionString)

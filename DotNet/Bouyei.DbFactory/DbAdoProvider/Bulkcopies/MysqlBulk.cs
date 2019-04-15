@@ -12,6 +12,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
 {
     using Factories;
     using MySql.Data.MySqlClient;
+    using System.IO;
 
     internal class MysqlBulk:BaseFactory,IFactory
     {
@@ -47,39 +48,47 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
         public int WriteToServer(DataTable dt, int batchSize = 10240)
         {
             DbUtils.DataCsvAdapter dbCsvHelper = new DbUtils.DataCsvAdapter();
-            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName + DateTime.Now.ToString("yyyyMMddHHmmssfff")+".csv";
 
             bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
             if (isExport == false) return -1;
              
             int rows = 0;
-
-            using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+            try
             {
-                conn.Open();
+                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                {
+                    conn.Open();
 
-                mysqlBulkCopy = new MySqlBulkLoader(conn)
-                {
-                    Timeout = ExecuteTimeout,
-                    TableName = dt.TableName,
-                    FieldTerminator = ",",
-                    FieldQuotationCharacter = '"',
-                    LineTerminator = "\r\n",
-                    FileName = path,
-                    EscapeCharacter = '"',
-                    CharacterSet = "utf-8",
-                    NumberOfLinesToSkip = 0,
-                };
-                if (dt.Columns != null)
-                {
-                    foreach (DataColumn col in dt.Columns)
-                        mysqlBulkCopy.Columns.Add(col.ColumnName);
+                    mysqlBulkCopy = new MySqlBulkLoader(conn)
+                    {
+                        Timeout = ExecuteTimeout,
+                        TableName = dt.TableName,
+                        FieldTerminator = ",",
+                        FieldQuotationCharacter = '"',
+                        LineTerminator = "\r\n",
+                        FileName = path,
+                        EscapeCharacter = '"',
+                        CharacterSet = "utf8",
+                        NumberOfLinesToSkip = 1,
+                    };
+                    if (dt.Columns != null)
+                    {
+                        foreach (DataColumn col in dt.Columns)
+                            mysqlBulkCopy.Columns.Add(col.ColumnName);
+                    }
+                    rows = mysqlBulkCopy.Load();
                 }
-                rows = mysqlBulkCopy.Load();
             }
-
-            System.IO.File.Delete(path);
-
+            catch(Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
             return rows;
         }
 
