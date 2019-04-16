@@ -7,12 +7,14 @@
 ---------------------------------------------------------------*/
 using System;
 using System.Data;
+using System.Linq;
 
 namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
 {
     using Factories;
     using MySql.Data.MySqlClient;
     using System.IO;
+    using System.Reflection;
 
     internal class MysqlBulk:BaseFactory,IFactory
     {
@@ -45,12 +47,12 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                 mysqlBulkCopy.Connection.Close();
         }
 
-        public int WriteToServer(DataTable dt, int batchSize = 10240)
+        public int WriteToServer(DataTable dataSource, int batchSize = 10240)
         {
             DbUtils.DataCsvAdapter dbCsvHelper = new DbUtils.DataCsvAdapter();
-            string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName + DateTime.Now.ToString("yyyyMMddHHmmssfff")+".csv";
+            string path = AppDomain.CurrentDomain.BaseDirectory + dataSource.TableName + DateTime.Now.ToString("yyyyMMddHHmmssfff")+".csv";
 
-            bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
+            bool isExport = dbCsvHelper.ExportCsvToFile(dataSource, path);
             if (isExport == false) return -1;
              
             int rows = 0;
@@ -63,18 +65,18 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                     mysqlBulkCopy = new MySqlBulkLoader(conn)
                     {
                         Timeout = ExecuteTimeout,
-                        TableName = dt.TableName,
+                        TableName = dataSource.TableName,
                         FieldTerminator = ",",
                         FieldQuotationCharacter = '"',
                         LineTerminator = "\r\n",
                         FileName = path,
                         EscapeCharacter = '"',
-                        CharacterSet = "utf8",
-                        NumberOfLinesToSkip = 1,
+                        CharacterSet =dbCsvHelper.encoding.BodyName,
+                        NumberOfLinesToSkip = 1
                     };
-                    if (dt.Columns != null)
+                    if (dataSource.Columns != null)
                     {
-                        foreach (DataColumn col in dt.Columns)
+                        foreach (DataColumn col in dataSource.Columns)
                             mysqlBulkCopy.Columns.Add(col.ColumnName);
                     }
                     rows = mysqlBulkCopy.Load();
@@ -94,12 +96,59 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
-        public void WriteToServer(IDataReader reader, string tableName, int batchSize = 10240)
+        public int WriteToServer(Array dataSource, string tableName, int batchSize = 10240)
         {
-            throw new Exception("no support");
+            DbUtils.DataCsvAdapter dbCsvHelper = new DbUtils.DataCsvAdapter();
+            string path = AppDomain.CurrentDomain.BaseDirectory + DateTime.Now.Ticks+ ".csv";
+
+            bool isExport = dbCsvHelper.ExportCsvToFile(dataSource, path);
+            if (isExport == false) return -1;
+
+            int rows = 0;
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    mysqlBulkCopy = new MySqlBulkLoader(conn)
+                    {
+                        Timeout = ExecuteTimeout,
+                        TableName = tableName,
+                        FieldTerminator = ",",
+                        FieldQuotationCharacter = '"',
+                        LineTerminator = "\r\n",
+                        FileName = path,
+                        EscapeCharacter = '"',
+                        CharacterSet = dbCsvHelper.encoding.BodyName,
+                        NumberOfLinesToSkip = 1
+                    };
+
+                    var pros = dataSource.GetValue(0).GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                    mysqlBulkCopy.Columns.AddRange(pros.Select(x => x.Name));
+
+                    rows = mysqlBulkCopy.Load();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            return rows;
+        }
+
+        public void WriteToServer(IDataReader dataSource, string tableName, int batchSize = 10240)
+        {
+            throw new Exception("not support");
         }
 
         public int WriteToServer(MysqlBulkLoaderInfo bulkLoaderInfo)
@@ -120,6 +169,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                     EscapeCharacter = bulkLoaderInfo.EscapeCharacter,
                     CharacterSet = bulkLoaderInfo.CharacterSet,
                     NumberOfLinesToSkip = bulkLoaderInfo.NumberOfLinesToSkip,
+                    Local=true
                 };
                 if (bulkLoaderInfo.Columns != null)
                 {
@@ -137,7 +187,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
         public string LineTerminator { get; set; } = "\n";
         public string LinePrefix { get; set; }
         public string FileName { get; set; }
-        public string CharacterSet { get; set; } = "utf-8";
+        public string CharacterSet { get; set; } = "utf8";
         public char EscapeCharacter { get; set; }
 
         public char FieldQuotationCharacter { get; set; }

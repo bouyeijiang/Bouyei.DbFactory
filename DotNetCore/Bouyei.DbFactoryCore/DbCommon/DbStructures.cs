@@ -131,7 +131,39 @@ namespace Bouyei.DbFactoryCore
 
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
     }
+    public class CopyParameter<T> : BaseParameter
+    {
+        public CopyParameter()
+            : base()
+        { }
 
+        public CopyParameter(T dataSource,
+            int BatchSize = 10240,
+            int ExecuteTimeout = 1800)
+            : base(ExecuteTimeout)
+        {
+            this.dataSource = dataSource;
+            this.BatchSize = BatchSize;
+
+            if (dataSource is DataTable)
+                TableName = (dataSource as DataTable).TableName;
+            else if (dataSource is Array)
+                this.TableName = ((dataSource as Array).GetValue(0)).GetType().Name;
+            else if (dataSource is IDataReader)
+                this.TableName = (dataSource as IDataReader).GetSchemaTable().TableName;
+            else throw new Exception("not support data type");
+        }
+
+        public int BatchSize { get; set; } = 1024;
+
+        public string TableName { get; set; }
+
+        public T dataSource { get; set; }
+
+        public BulkCopiedArgs BulkCopiedHandler { get; set; }
+
+        public Action<IDbTransaction, int> TransactionCallback { get; set; }
+    }
     [Serializable]
     public class DbResult<R, I>
     {

@@ -18,17 +18,20 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Factories
 
         public int WriteToServer(DataTable dataSource, int batchSize = 10240)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
-
+        public int WriteToServer(Array dataSource, string tableName, int batchSize = 10240)
+        {
+            throw new Exception("not support");
+        }
         public void WriteToServer(IDataReader reaader,string tableName,int batchSize=10240)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
     }
 }

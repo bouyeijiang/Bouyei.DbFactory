@@ -35,11 +35,39 @@ namespace Bouyei.WebDemo.Controllers
 
             string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
             IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.MySql);
-            var c = dbProvider.Connect(str);
 
-            var brt = dbProvider.BulkCopy(new BulkParameter(dt));
+            //var brt = dbProvider.BulkCopy(new CopyParameter<DataTable>(dt));
+
+            List<luser> ls = new List<luser>();
+            ls.Add(new luser()
+            {
+                uname = "bouyei",
+                age = 28,
+                score = 34.4f,
+                upwd = "dfs"
+            });
+            ls.Add(new luser()
+            {
+                uname = "hkj",
+                age = 30,
+                score = 34.56f,
+                upwd = "地方"
+            });
+
+           var arraybrt= dbProvider.BulkCopy(new CopyParameter<Array>(ls.ToArray()));
 
             return View();
         }
+    }
+
+    public class luser
+    {
+        public string uname { get; set; }
+
+        public string upwd { get; set; }
+
+        public int age { get; set; }
+
+        public float score { get; set; }
     }
 }

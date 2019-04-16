@@ -12,7 +12,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
 {
     using Factories;
     using MySql.Data.MySqlClient;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
 
     internal class MysqlBulk:BaseFactory,IFactory
     {
@@ -47,10 +50,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
 
         public int WriteToServer(DataTable dt,int batchSize=10240)
         {
-            DbUtils.DbCsvHelper dbCsvHelper = new DbUtils.DbCsvHelper();
+            DbUtils.DbCsvAdapter dbCsvHelper = new DbUtils.DbCsvAdapter();
             string path = AppDomain.CurrentDomain.BaseDirectory + dt.TableName+DateTime.Now.ToString("yyyyMMddHHmmssfff")+".csv";
 
-            bool isExport = dbCsvHelper.ExportSvcToFile(dt, path);
+            bool isExport = dbCsvHelper.ExportCsvToFile(dt, path);
             if (isExport == false) return -1;
             int rows = -1;
 
@@ -69,7 +72,8 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
                         LineTerminator = "\r\n",
                         FileName = path,
                         EscapeCharacter = '"',
-                        CharacterSet = "utf8",
+                        CharacterSet =dbCsvHelper.encoding.BodyName,
+                        //Local=true,
                         NumberOfLinesToSkip = 1,//must have column name row
                     };
                     if (dt.Columns != null)
@@ -93,14 +97,61 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
             return rows;
         }
 
+        public int WriteToServer(Array dataSource, string tableName, int batchSize = 10240)
+        {
+            DbUtils.DbCsvAdapter dbCsvHelper = new DbUtils.DbCsvAdapter();
+            string path = AppDomain.CurrentDomain.BaseDirectory + DateTime.Now.Ticks + ".csv";
+
+            bool isExport = dbCsvHelper.ExportCsvToFile(dataSource, path);
+            if (isExport == false) return -1;
+
+            int rows = 0;
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    mysqlBulkCopy = new MySqlBulkLoader(conn)
+                    {
+                        Timeout = ExecuteTimeout,
+                        TableName = tableName,
+                        FieldTerminator = ",",
+                        FieldQuotationCharacter = '"',
+                        LineTerminator = "\r\n",
+                        FileName = path,
+                        EscapeCharacter = '"',
+                        CharacterSet = dbCsvHelper.encoding.BodyName,
+                        NumberOfLinesToSkip = 1
+                    };
+
+                    var pros = dataSource.GetValue(0).GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                    mysqlBulkCopy.Columns.AddRange(pros.Select(x => x.Name));
+
+                    rows = mysqlBulkCopy.Load();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            return rows;
+        }
+
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
         public void WriteToServer(IDataReader reader, string tableName, int batchSize = 10240)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
         public int WriteToServer(MysqlBulkLoaderInfo bulkLoaderInfo)
@@ -121,6 +172,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
                     EscapeCharacter = bulkLoaderInfo.EscapeCharacter,
                     CharacterSet = bulkLoaderInfo.CharacterSet,
                     NumberOfLinesToSkip = bulkLoaderInfo.NumberOfLinesToSkip,
+                    //Local=true
                 };
                 if (bulkLoaderInfo.Columns != null)
                 {
@@ -138,7 +190,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
         public string LineTerminator { get; set; } = "\n";
         public string LinePrefix { get; set; }
         public string FileName { get; set; }
-        public string CharacterSet { get; set; } = "utf-8";
+        public string CharacterSet { get; set; } = "utf8";
         public char EscapeCharacter { get; set; }
 
         public char FieldQuotationCharacter { get; set; }

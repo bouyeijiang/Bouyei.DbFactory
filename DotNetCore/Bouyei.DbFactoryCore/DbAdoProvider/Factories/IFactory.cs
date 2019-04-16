@@ -13,6 +13,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Factories
         DbProviderFactory GetFactory();
 
         int WriteToServer(DataTable dataSource, int batchSize = 10240);
+        int WriteToServer(Array dataSource, string tableName, int batchSize = 10240);
 
         void WriteToServer(IDataReader iDataReader, string tableName, int batchSize = 10240);
 

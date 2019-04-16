@@ -41,24 +41,27 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
             return dataSource.Rows.Count;
         }
 
-        public int WriteToServer<T>(List<T> dataList, int batchSize = -1)
+        public int WriteToServer(Array dataSource,string tableName,int batchSize = -1)
         {
-            ExpressionProperty<T> exp = new ExpressionProperty<T>();
-            var types = exp.GetFieldNames();
+            var type = dataSource.GetValue(0).GetType();
+            var pros = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+     
             int rows = 0;
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-                using (var import = conn.BeginBinaryImport(ToImportFormat(exp.classType.Name, types.Select(x => x.Name))))
+                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, pros.Select(x => x.Name))))
                 {
-                    foreach (var item in dataList)
+                    foreach (var item in dataSource)
                     {
-                        foreach (var col in types)
+                        var ps = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                        foreach (var col in ps)
                         {
-                            object val = exp.GetValue(item, col.Name);
+                            object val = col.GetValue(item, null);
                             if (val == null) continue;
 
-                            WriteValue(val, col.DeclaringType.Name, import);
+                            WriteValue(val, col.DeclaringType.Name,import);
                             ++rows;
                         }
                     }
@@ -71,7 +74,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
 
         public void WriteToServer(IDataReader reader,string tableName,int batchSize = 10240)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
@@ -145,7 +148,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
             }
         }
 
-        private void WriteValue(object value, string typeName, NpgsqlBinaryImporter importer)
+        private void WriteValue(object value, string typeName,NpgsqlBinaryImporter importer)
         {
             switch (typeName)
             {
