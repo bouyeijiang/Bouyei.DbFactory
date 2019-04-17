@@ -71,7 +71,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                         LineTerminator = "\r\n",
                         FileName = path,
                         EscapeCharacter = '"',
-                        CharacterSet =dbCsvHelper.encoding.BodyName,
+                        CharacterSet =dbCsvHelper.encoding.BodyName.Replace("-",""),
                         NumberOfLinesToSkip = 1
                     };
                     if (dataSource.Columns != null)
@@ -123,7 +123,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                         LineTerminator = "\r\n",
                         FileName = path,
                         EscapeCharacter = '"',
-                        CharacterSet = dbCsvHelper.encoding.BodyName,
+                        CharacterSet = dbCsvHelper.encoding.BodyName.Replace("-",""),
                         NumberOfLinesToSkip = 1
                     };
 
