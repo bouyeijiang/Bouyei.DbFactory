@@ -1,0 +1,14 @@
+{
+  "ProjectFilePath": "e:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+  "TargetFramework": "netcoreapp2.2",
+  "TagHelpers": [],
+  "Configuration": {
+    "ConfigurationName": "UnsupportedRazor",
+    "LanguageVersion": "1.0",
+    "Extensions": [
+      {
+        "ExtensionName": "UnsupportedRazorExtension"
+      }
+    ]
+  }
+}

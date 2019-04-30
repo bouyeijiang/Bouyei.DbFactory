@@ -1,0 +1,218 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj": {}
+  },
+  "projects": {
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+      "version": "1.2.2.2",
+      "restore": {
+        "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+        "projectName": "Bouyei.DbFactoryCore",
+        "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+        "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
+        "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "G:\\Users\\45384\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "G:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "G:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "IBM.Data.DB2.Core": {
+              "target": "Package",
+              "version": "[1.3.0.100, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Mono.Data.OracleClientCore": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.13, )"
+            },
+            "MySql.Data.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.13, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[4.0.4, )"
+            },
+            "System.Data.SQLite.Core": {
+              "target": "Package",
+              "version": "[1.0.109.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "projectName": "DbEntity",
+        "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
+        "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "G:\\Users\\45384\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "G:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "G:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+                "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+        "projectName": "DotNetCoreDemo",
+        "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+        "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
+        "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "G:\\Users\\45384\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "G:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "G:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+                "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+              },
+              "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+                "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

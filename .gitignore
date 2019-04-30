@@ -6,3 +6,7 @@
 /.vs/Bouyei.DbFactory/v15/sqlite3
 /.vs/Bouyei.DbFactory/v15/.suo
 /.vs/config/applicationhost.config
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
