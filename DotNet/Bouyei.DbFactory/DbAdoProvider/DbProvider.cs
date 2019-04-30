@@ -71,20 +71,20 @@ namespace Bouyei.DbFactory.DbAdoProvider
         #region  structure
         public DbProvider(
             string connectionString,
-            DbType providerType = DbType.SqlServer,
+            DbType dbType = DbType.SqlServer,
             bool isSingleton = false)
-            : base(providerType, isSingleton)
+            : base(dbType, isSingleton)
         {
-            this.DbType = providerType;
+            this.DbType = dbType;
             this.DbConnectionString = connectionString;
         }
 
         public DbProvider(
-            DbType providerType = DbType.SqlServer,
+            DbType dbType = DbType.SqlServer,
             bool isSingleton = false)
-            : base(providerType, isSingleton)
+            : base(dbType, isSingleton)
         {
-            this.DbType = providerType;
+            this.DbType = dbType;
         }
 
         #endregion

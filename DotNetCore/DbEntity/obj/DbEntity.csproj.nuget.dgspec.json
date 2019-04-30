@@ -1,31 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {}
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-      "version": "1.2.2.2",
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+      "version": "1.2.2.3",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+        "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
         "projectName": "Bouyei.DbFactoryCore",
-        "projectPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
-        "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
+        "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+        "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
+        "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\bouyei\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "G:\\Users\\45384\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "G:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "G:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "netcoreapp2.2": {
@@ -73,11 +74,11 @@
             },
             "MySql.Data": {
               "target": "Package",
-              "version": "[8.0.15, )"
+              "version": "[8.0.16, )"
             },
             "MySql.Data.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.15, )"
+              "version": "[8.0.16, )"
             },
             "Npgsql": {
               "target": "Package",
@@ -96,34 +97,35 @@
         }
       }
     },
-    "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+    "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "projectUniqueName": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
         "projectName": "DbEntity",
-        "projectPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
-        "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\DbEntity\\obj\\",
+        "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "packagesPath": "G:\\Users\\45384\\.nuget\\packages\\",
+        "outputPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "G:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\bouyei\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "G:\\Users\\45384\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "G:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "G:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-                "projectPath": "C:\\Users\\bouyei\\source\\repos\\dbproviderfactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+              "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+                "projectPath": "E:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
               }
             }
           }

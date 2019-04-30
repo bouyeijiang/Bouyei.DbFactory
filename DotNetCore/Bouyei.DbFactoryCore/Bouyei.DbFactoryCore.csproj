@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -8,13 +8,13 @@
     <PackageLicenseUrl>http://bouyeijiang.com</PackageLicenseUrl>
     <PackageIconUrl>http://anystore.bouyeijiang.com</PackageIconUrl>
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.2.2.2</Version>
+    <Version>1.2.2.3</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/dbproviderfactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/dbproviderfactory</RepositoryUrl>
-    <AssemblyVersion>1.2.2.2</AssemblyVersion>
-    <FileVersion>1.2.2.2</FileVersion>
+    <AssemblyVersion>1.2.2.3</AssemblyVersion>
+    <FileVersion>1.2.2.3</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,8 +24,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Mono.Data.OracleClientCore" Version="1.0.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.15" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
+    <PackageReference Include="MySql.Data" Version="8.0.16" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
     <PackageReference Include="Npgsql" Version="4.0.6" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
   </ItemGroup>

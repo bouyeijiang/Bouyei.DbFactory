@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Bouyei.DbFactoryCore</id>
-    <version>1.2.2.2</version>
+    <version>1.2.2.3</version>
     <authors>Bouyei.DbFactoryCore</authors>
     <owners>Bouyei.DbFactoryCore</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -21,8 +21,8 @@
         <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="2.2.4" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Configuration.Json" version="2.2.0" exclude="Build,Analyzers" />
         <dependency id="Mono.Data.OracleClientCore" version="1.0.0" exclude="Build,Analyzers" />
-        <dependency id="MySql.Data" version="8.0.15" exclude="Build,Analyzers" />
-        <dependency id="MySql.Data.EntityFrameworkCore" version="8.0.15" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data" version="8.0.16" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data.EntityFrameworkCore" version="8.0.16" exclude="Build,Analyzers" />
         <dependency id="Npgsql" version="4.0.6" exclude="Build,Analyzers" />
         <dependency id="System.Data.SQLite.Core" version="1.0.110" exclude="Build,Analyzers" />
       </group>
