@@ -43,18 +43,64 @@ namespace Bouyei.DbFactoryDemo
                 ,new User() { name="bouyei",age=23} }).SqlString;
 
             //////ado.net 使用例子
-             string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+             //string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
             //AdoDemo(connectionString);
 
             ////orm
-            OrmDemo(connectionString);
+            //OrmDemo(connectionString);
 
             //Data Sync Provider
             //SyncProviderDemo syncProvider = new SyncProviderDemo();
             //syncProvider.Execute();
 
             //AdoDemo("");
-            OrmDemo(connectionString);
+           // OrmDemo(connectionString);
+
+            Bulkcopy();
+        }
+
+        private static void Bulkcopy()
+        {
+            //DataTable dt = new DataTable();
+            //dt.TableName = "gz_gwqhzs";
+
+            //dt.Columns.Add("sprovince",typeof(string));
+            //dt.Columns.Add("sbiaotuzhidi",typeof(double));
+
+            //dt.Rows.Add("贵州", 111.2);
+            //dt.Rows.Add("贵州", 111.4);
+            //dt.Rows.Add("贵州", 114.3);
+            //dt.Rows.Add("贵州", 111.2);
+            //dt.Rows.Add("贵州", 131.2);
+            //dt.Rows.Add("贵州", 131.2);
+            //dt.Rows.Add("贵州", 115.2);
+            //dt.Rows.Add("贵州", 1141.2);
+            //rt.Result.TableName = "gz_gwqhzs";
+            //var brt = pgProvider.BulkCopy(new BulkParameter(rt.Result));
+            //if (string.IsNullOrEmpty(brt.Info) == false)
+            //    throw new Exception(brt.Info);
+
+            // rt.Result.TableName = "gz_weight";        
+
+            // IAdoProvider dbprovider = AdoProvider.CreateProvider("PORT=5432;DATABASE=GDZL;HOST=localhost;PASSWORD=123456;USER ID=postgres",DbFactory.DbType.PostgreSQL);
+            //var brt= dbprovider.BulkCopy(new BulkParameter(rt.Result));
+
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("uname",typeof(string));
+            dt.Columns.Add("upwd", typeof(string));
+            dt.Columns.Add("age",typeof(int));
+            dt.Columns.Add("score", typeof(float));
+
+            dt.Rows.Add("bouyei", "232a", 12, 239.4);
+            dt.Rows.Add("hell哦", "232a", 12, 239.4);
+            dt.TableName = "luser";
+
+            string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.MySql);
+            var c = dbProvider.Connect(str);
+
+            var brt= dbProvider.BulkCopy(new BulkParameter(dt));
         }
 
         private static void AdoDemo(string connectionString)

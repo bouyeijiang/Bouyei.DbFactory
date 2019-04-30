@@ -7,10 +7,6 @@
  *   guid: 9d334263-66e6-4107-9e09-361f1b5df138
 ---------------------------------------------------------------*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -93,18 +89,18 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                 bulkCopy.Close();
         }
 
-        private void InitBulkCopy(DataTable dt, int batchSize)
+        private void InitBulkCopy(DataTable dataSource, int batchSize)
         {
             if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
-            bulkCopy.ColumnMappings.Capacity = dt.Columns.Count;
-            bulkCopy.DestinationTableName = dt.TableName;
+            bulkCopy.ColumnMappings.Capacity = dataSource.Columns.Count;
+            bulkCopy.DestinationTableName = dataSource.TableName;
             bulkCopy.BatchSize = batchSize;
 
-            for (int i = 0; i < dt.Columns.Count; ++i)
+            for (int i = 0; i < dataSource.Columns.Count; ++i)
             {
-                bulkCopy.ColumnMappings.Add(dt.Columns[i].ColumnName,
-                    dt.Columns[i].ColumnName);
+                bulkCopy.ColumnMappings.Add(dataSource.Columns[i].ColumnName,
+                    dataSource.Columns[i].ColumnName);
             }
             if (BulkCopiedHandler != null)
             {
@@ -154,28 +150,34 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             }
         }
 
-        public int WriteToServer(DataTable dt, int batchSize = 102400)
+        public int WriteToServer(DataTable dataSource, int batchSize = 102400)
         {
-            InitBulkCopy(dt, batchSize);
-            bulkCopy.WriteToServer(dt);
+            InitBulkCopy(dataSource, batchSize);
+            bulkCopy.WriteToServer(dataSource);
 
-            return dt.Rows.Count;
+            return dataSource.Rows.Count;
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
-        public void WriteToServer(IDataReader iDataReader, string tableName, int batchSize = 10240)
+        public void WriteToServer(IDataReader dataSource, string tableName, int batchSize = 10240)
         {
-            string[] columnNames = new string[iDataReader.FieldCount];
+            string[] columnNames = new string[dataSource.FieldCount];
             for (int i = 0; i < columnNames.Length; ++i)
             {
-                columnNames[i] = iDataReader.GetName(i);
+                columnNames[i] = dataSource.GetName(i);
             }
             InitBulkCopy(tableName, columnNames, batchSize);
-            bulkCopy.WriteToServer(iDataReader);
+            bulkCopy.WriteToServer(dataSource);
+        }
+
+        public int WriteToServer(Array dataSource, string tableName, int batchSize = 10240)
+        {
+            var data = ArrayToDataTable(dataSource, tableName);
+            return WriteToServer(data, batchSize);
         }
 
         public void WriteToServer(string tableName, DataRow[] rows)
@@ -184,10 +186,10 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             bulkCopy.WriteToServer(rows);
         }
 
-        public void WriteToServer(DataTable dt, DataRowState rowState, int batchSize = 102400)
+        public void WriteToServer(DataTable dataSource, DataRowState rowState, int batchSize = 102400)
         {
-            InitBulkCopy(dt, batchSize);
-            bulkCopy.WriteToServer(dt, rowState);
+            InitBulkCopy(dataSource, batchSize);
+            bulkCopy.WriteToServer(dataSource, rowState);
         }
 
         public void WriteToServer(DataRow[] rows, int batchSize = 102400)

@@ -97,7 +97,7 @@ namespace Bouyei.DbFactory
         {
             this.DataSource = dataSource;
             this.TableName = dataSource.TableName;
-            this.batchSize = BatchSize;
+            this.BatchSize = BatchSize;
         }
 
         public BulkParameter(string tableName, IDataReader iDataReader,
@@ -108,7 +108,7 @@ namespace Bouyei.DbFactory
         {
             this.IDataReader = iDataReader;
             this.TableName = tableName;
-            this.batchSize = batchSize;
+            this.BatchSize = batchSize;
         }
 
         public string TableName { get; private set; }
@@ -119,17 +119,51 @@ namespace Bouyei.DbFactory
 
         public IDataReader IDataReader { get; set; }
 
-        private int batchSize = 10240;
         /// <summary>
         /// 批量大小,默认10240
         /// </summary>
-        public int BatchSize { get { return batchSize; } set { batchSize = value; } }
+        public int BatchSize { get; set; } = 1024;
 
         public bool IsAutoDispose { get; set; }
 
         public Action<IDbTransaction, int> TransactionCallback { get; set; }
 
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
+    }
+
+
+    public class CopyParameter<T>:BaseParameter
+    {
+        public CopyParameter()
+            :base()
+        { }
+
+        public CopyParameter(T dataSource,
+            int BatchSize = 10240,
+            int ExecuteTimeout = 1800)
+            : base(ExecuteTimeout)
+        {
+            this.dataSource = dataSource;
+            this.BatchSize = BatchSize;
+
+            if (dataSource is DataTable)
+                TableName = (dataSource as DataTable).TableName;
+            else if (dataSource is Array)
+                this.TableName = ((dataSource as Array).GetValue(0)).GetType().Name;
+            else if (dataSource is IDataReader)
+                this.TableName = (dataSource as IDataReader).GetSchemaTable().TableName;
+            else throw new Exception("not support data type");
+        }
+
+        public int BatchSize { get; set; } = 1024;
+
+        public string TableName { get; set; }
+
+        public T dataSource { get; set; }
+
+        public BulkCopiedArgs BulkCopiedHandler { get; set; }
+
+        public Action<IDbTransaction, int> TransactionCallback { get; set; }
     }
 
     [Serializable]
@@ -194,16 +228,16 @@ namespace Bouyei.DbFactory
                     }
                     break;
                 case DbType.Oracle:
-                case DbType.MsOracle:
-                    {
-                        if (DbPort <= 0) DbPort = 1521;
+                //case DbType.MsOracle:
+                //    {
+                //        if (DbPort <= 0) DbPort = 1521;
 
-                        if (string.IsNullOrEmpty(DbName))
-                            DbName = "ORCL";
-                        ConnectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
-                             DbIp, DbPort, DbName, DbUserName, DbPassword);
-                    }
-                    break;
+                //        if (string.IsNullOrEmpty(DbName))
+                //            DbName = "ORCL";
+                //        ConnectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
+                //             DbIp, DbPort, DbName, DbUserName, DbPassword);
+                //    }
+                //    break;
                 case DbType.DB2:
                     {
                         if (DbPort <= 0) DbPort = 50000;

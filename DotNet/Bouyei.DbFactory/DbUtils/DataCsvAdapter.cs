@@ -9,15 +9,18 @@ using System;
 using System.Data;
 using System.Linq;
 using System.IO;
+using System.Text;
+using System.Reflection;
 
 namespace Bouyei.DbFactory.DbUtils
 {
     public class DataCsvAdapter
     {
+        public Encoding encoding { get; set; } = Encoding.Default;
         public MemoryStream ExportCsv(DataTable dt)
         {
             MemoryStream ms = new MemoryStream();
-            StreamWriter write = new StreamWriter(ms, System.Text.Encoding.Default);
+            StreamWriter write = new StreamWriter(ms,encoding);
             {
                 for (int i = 0; i < dt.Columns.Count; ++i)
                 {
@@ -38,7 +41,7 @@ namespace Bouyei.DbFactory.DbUtils
         {
             byte[] buffer = null;
             using (MemoryStream ms = new MemoryStream())
-            using (StreamWriter write = new StreamWriter(ms, System.Text.Encoding.Default))
+            using (StreamWriter write = new StreamWriter(ms, encoding))
             {
                 for (int i = 0; i < dt.Columns.Count; ++i)
                 {
@@ -58,26 +61,48 @@ namespace Bouyei.DbFactory.DbUtils
             return buffer;
         }
 
-        public bool ExportSvcToFile(DataTable dt,string saveFileName)
+        public bool ExportCsvToFile(DataTable dt, string saveFileName)
         {
-            using(FileStream f=new FileStream(saveFileName, FileMode.Create))
+            using (StreamWriter write = new StreamWriter(saveFileName, false, encoding))
             {
-               using(StreamWriter write=new StreamWriter(f))
+                for (int i = 0; i < dt.Columns.Count; ++i)
                 {
-                    for (int i = 0; i < dt.Columns.Count; ++i)
-                    {
-                        write.Write(dt.Columns[i].ColumnName + (i < dt.Columns.Count - 1 ? "," : ""));
-                    }
-                    write.WriteLine();
-
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        string item = string.Join(",", FilterSpecialSymbol(dr.ItemArray));
-                        write.WriteLine(item);
-                    }
-                    write.Flush();
-                    return true;
+                    write.Write(dt.Columns[i].ColumnName + (i < dt.Columns.Count - 1 ? "," : ""));
                 }
+                write.WriteLine();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string item = string.Join(",", FilterSpecialSymbol(dr.ItemArray));
+                    write.WriteLine(item);
+                }
+                write.Flush();
+                return true;
+            }
+        }
+
+       public bool ExportCsvToFile(Array array,string saveFileName)
+        {
+            var first = array.GetValue(0).GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            using (StreamWriter write = new StreamWriter(saveFileName, false, encoding))
+            {
+                //列名
+                write.Write(string.Join(",", first.Select(x => x.Name)));
+ 
+                write.WriteLine();
+                //数据行
+
+                foreach (var row in array)
+                {
+                    var pros = row.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                    var cols = pros.Select(x => x.GetValue(row, null)).ToArray();
+
+                    string item = string.Join(",", FilterSpecialSymbol(cols));
+                    write.WriteLine(item);
+                }
+                write.Flush();
+                return true;
             }
         }
 

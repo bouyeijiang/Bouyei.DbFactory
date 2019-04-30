@@ -221,6 +221,19 @@ namespace Bouyei.DbFactory.DbAdoProvider
             return dbBulkCopy;
         }
 
+        protected DbCommonBulkCopy CreateBulkCopy<T>(string ConnectionString,CopyParameter<T> parameter)
+        {
+            if (dbBulkCopy != null) dbBulkCopy.Dispose();
+
+            if (parameter.IsTransaction)
+                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString, CreateConnection(ConnectionString),
+                    dbBulkCopyOption: (BulkCopyOptions)parameter.IsolationLevel, isTransaction: parameter.IsTransaction);
+            else
+                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString);
+
+            return dbBulkCopy;
+        }
+
         private DbProviderFactory GetDbFactory(string invariantName)
         {
             if (ExistsDbProviderFactories(invariantName))
@@ -229,25 +242,25 @@ namespace Bouyei.DbFactory.DbAdoProvider
             {
                 return GetAdapterFactory();
 
-                AssemblyFactoryInfo assemInfo = null;
-                AssemblyCache.TryGetValue(DbProviderType, out assemInfo);
-                if (assemInfo == null)
-                {
-                    assemInfo = GetDynamicDllProviderInfo(invariantName);
-                    assemInfo.FactoryName = GetAdapterName(DbProviderType);
-                    AssemblyCache.Add(DbProviderType, assemInfo);
-                }
+                //AssemblyFactoryInfo assemInfo = null;
+                //AssemblyCache.TryGetValue(DbProviderType, out assemInfo);
+                //if (assemInfo == null)
+                //{
+                //    assemInfo = GetDynamicDllProviderInfo(invariantName);
+                //    assemInfo.FactoryName = GetAdapterName(DbProviderType);
+                //    AssemblyCache.Add(DbProviderType, assemInfo);
+                //}
 
-                Type type = Type.GetType(assemInfo.ToString());
-                if (type == null) return null;
+                //Type type = Type.GetType(assemInfo.ToString());
+                //if (type == null) return null;
 
-                FieldInfo field = type.GetField("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-                if (field == null || !field.FieldType.IsSubclassOf(typeof(DbProviderFactory))) return null;
+                //FieldInfo field = type.GetField("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+                //if (field == null || !field.FieldType.IsSubclassOf(typeof(DbProviderFactory))) return null;
 
-                object obj = field.GetValue(null);
-                if (obj == null) return null;
+                //object obj = field.GetValue(null);
+                //if (obj == null) return null;
 
-                return (DbProviderFactory)obj;
+                //return (DbProviderFactory)obj;
             }
         }
 
@@ -285,20 +298,20 @@ namespace Bouyei.DbFactory.DbAdoProvider
             return DbProviderFactories.GetFactoryClasses().Rows.Contains(invariantName);
         }
 
-        private AssemblyFactoryInfo GetDynamicDllProviderInfo(string invariantName)
-        {
-            string path = string.Empty;
-            try
-            {
-                path = AppDomain.CurrentDomain.BaseDirectory + invariantName + ".dll";
-                Assembly assem = Assembly.LoadFile(path);
+        //private AssemblyFactoryInfo GetDynamicDllProviderInfo(string invariantName)
+        //{
+        //    string path = string.Empty;
+        //    try
+        //    {
+        //        path = AppDomain.CurrentDomain.BaseDirectory + invariantName + ".dll";
+        //        Assembly assem = Assembly.LoadFile(path);
 
-                return new AssemblyFactoryInfo(assem.FullName);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("path:" + path + ";" + ex.ToString());
-            }
-        }
+        //        return new AssemblyFactoryInfo(assem.FullName);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("path:" + path + ";" + ex.ToString());
+        //    }
+        //}
     }
 }

@@ -198,18 +198,23 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             if (dbConn.State != ConnectionState.Open) dbConn.Open();
         }
 
-        public void WriteToServer(DataTable sourceTable)
+        public void WriteToServer(DataTable dataSource)
         {
-            DestinationTableName = sourceTable.TableName;
+            DestinationTableName = dataSource.TableName;
 
-            factory.WriteToServer(sourceTable, BatchSize);
+            factory.WriteToServer(dataSource, BatchSize);
         }
-
-        public void WriteToServer(IDataReader iDataReader, string sourceTableName)
+        public void WriteToServer(Array dataSource,string tableName)
         {
-            DestinationTableName = sourceTableName;
+            DestinationTableName =tableName;
 
-            factory.WriteToServer(iDataReader,sourceTableName, BatchSize);
+            factory.WriteToServer(dataSource,tableName, BatchSize);
+        }
+        public void WriteToServer(IDataReader iDataReader, string tableName)
+        {
+            DestinationTableName = tableName;
+
+            factory.WriteToServer(iDataReader,tableName, BatchSize);
         }
     }
 }

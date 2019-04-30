@@ -443,6 +443,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
+        [Obsolete("方法已过时,请使用泛型方法代替")]
         public DbResult<int, string> BulkCopy(BulkParameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
@@ -476,6 +477,78 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                                 bulkCopy.WriteToServer(dbParameter.DataSource);
                                 cnt = dbParameter.DataSource.Rows.Count;
                             }
+
+                            //use transaction
+                            if (dbParameter.IsTransaction)
+                            {
+                                //有事务回调则由外边控制事务提交,否则直接提交事务
+                                if (dbParameter.TransactionCallback != null)
+                                    dbParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
+                                else
+                                    bulkCopy.dbTrans.Commit();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            temex = ex;
+                            if (dbParameter.IsTransaction && bulkCopy.dbTrans != null)
+                            {
+                                bulkCopy.dbTrans.Rollback();
+                            }
+                        }
+                    }
+
+                    if (temex != null) throw temex;
+                    return DbResult<int, string>.Create(cnt, string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    return DbResult<int, string>.Create(-1, ex.ToString());
+                }
+            }
+        }
+ 
+        public DbResult<int, string> BulkCopy<T>(CopyParameter<T> dbParameter)
+        {
+            using (LockWait lwait = new LockWait(ref lParam))
+            {
+                try
+                {
+                    Exception temex = null;
+                    int cnt = 0;
+                    using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbParameter))
+                    {
+                        bulkCopy.Open();
+                        bulkCopy.BulkCopiedHandler = dbParameter.BulkCopiedHandler;
+
+                        bulkCopy.BatchSize = dbParameter.BatchSize;
+                        bulkCopy.BulkCopyTimeout = dbParameter.ExecuteTimeout;
+
+                        try
+                        {
+                            if (dbParameter.dataSource is DataTable)
+                            {
+                                var data = dbParameter.dataSource as DataTable;
+                                if (dbParameter.BatchSize > data.Rows.Count)
+                                    dbParameter.BatchSize = data.Rows.Count;
+
+                                bulkCopy.WriteToServer(data);
+                                cnt = data.Rows.Count;
+                            }
+                            else if (dbParameter.dataSource is IDataReader)
+                            {
+                                bulkCopy.WriteToServer(dbParameter.dataSource as IDataReader, dbParameter.TableName);
+                                cnt = 1;
+                            }
+                            else if (dbParameter.dataSource is Array)
+                            {
+                                var array = dbParameter.dataSource as Array;
+
+                                bulkCopy.WriteToServer(array, dbParameter.TableName);
+                                cnt = array.Length;
+                            }
+                            else
+                                throw new Exception("not support data type");
 
                             //use transaction
                             if (dbParameter.IsTransaction)

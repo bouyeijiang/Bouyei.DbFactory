@@ -156,5 +156,18 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
             return dbBulkCopy;
         }
+
+        protected DbCommonBulkCopy CreateBulkCopy<T>(string ConnectionString, CopyParameter<T> parameter)
+        {
+            if (dbBulkCopy != null) dbBulkCopy.Dispose();
+
+            if (parameter.IsTransaction)
+                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString, CreateConnection(ConnectionString),
+                    dbBulkCopyOption: (BulkCopyOptions)parameter.IsolationLevel, isTransaction: parameter.IsTransaction);
+            else
+                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString);
+
+            return dbBulkCopy;
+        }
     }
 }

@@ -31,6 +31,9 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         DbResult<int, string> ExecuteTransaction(Parameter dbParameter);
         DbResult<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> rowAction=null);
         DbResult<T, string> ExecuteScalar<T>(Parameter dbParameter);
+        [Obsolete("方法已过时,请使用泛型方法代替")]
         DbResult<int, string> BulkCopy(BulkParameter dbParameter);
+
+        DbResult<int, string> BulkCopy<T>(CopyParameter<T> dbParameter);
     }
 }

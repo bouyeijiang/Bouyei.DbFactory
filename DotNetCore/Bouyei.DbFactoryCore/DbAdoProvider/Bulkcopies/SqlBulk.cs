@@ -154,17 +154,24 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
             }
         }
 
-        public int WriteToServer(DataTable dt, int batchSize = 102400)
+        public int WriteToServer(DataTable dataSource, int batchSize = 102400)
         {
-            InitBulkCopy(dt, batchSize);
-            bulkCopy.WriteToServer(dt);
+            InitBulkCopy(dataSource, batchSize);
+            bulkCopy.WriteToServer(dataSource);
 
-            return dt.Rows.Count;
+            return dataSource.Rows.Count;
+        }
+        public int WriteToServer(Array dataSource, string tableName, int batchSize = 102400)
+        {
+            var data = ArrayToDataTable(dataSource, tableName);
+            bulkCopy.WriteToServer(data);
+
+            return data.Rows.Count;
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
 
         public void WriteToServer(IDataReader iDataReader, string tableName, int batchSize = 10240)

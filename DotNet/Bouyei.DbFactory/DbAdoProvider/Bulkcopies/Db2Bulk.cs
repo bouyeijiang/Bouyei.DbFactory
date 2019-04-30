@@ -8,11 +8,13 @@
 ---------------------------------------------------------------*/
 using System;
 using System.Data;
+using System.Linq;
 
 namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
 {
     using Factories;
     using IBM.Data.DB2;
+
     internal class Db2Bulk :BaseFactory,IFactory
     {
         DB2BulkCopy bulkCopy = null;
@@ -82,17 +84,17 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                 bulkCopy.Close();
         }
 
-        private void InitBulkCopy(DataTable dt, int batchSize)
+        private void InitBulkCopy(DataTable dataSource, int batchSize)
         {
             if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
-            bulkCopy.ColumnMappings.Capacity = dt.Columns.Count;
-            bulkCopy.DestinationTableName = dt.TableName;
+            bulkCopy.ColumnMappings.Capacity = dataSource.Columns.Count;
+            bulkCopy.DestinationTableName = dataSource.TableName;
 
-            for (int i = 0; i < dt.Columns.Count; ++i)
+            for (int i = 0; i < dataSource.Columns.Count; ++i)
             {
-                bulkCopy.ColumnMappings.Add(dt.Columns[i].ColumnName,
-                    dt.Columns[i].ColumnName);
+                bulkCopy.ColumnMappings.Add(dataSource.Columns[i].ColumnName,
+                    dataSource.Columns[i].ColumnName);
             }
             if (BulkCopiedHandler != null)
             {
@@ -140,28 +142,34 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             }
         }
 
-        public int WriteToServer(DataTable dt, int batchSize = 10240)
+        public int WriteToServer(DataTable dataSource, int batchSize = 10240)
         {
-            InitBulkCopy(dt, batchSize);
-            bulkCopy.WriteToServer(dt);
+            InitBulkCopy(dataSource, batchSize);
+            bulkCopy.WriteToServer(dataSource);
 
             if (bulkCopy.Errors.Count > 0)
             {
                 throw new Exception(string.Format("入库失败条数:{0}信息;{1}", bulkCopy.Errors.Count, bulkCopy.Errors[0].Message));
             }
 
-            return dt.Rows.Count;
+            return dataSource.Rows.Count;
         }
 
-        public void WriteToServer(IDataReader iDataReader,string tableName, int batchSize = 10240)
+        public int WriteToServer(Array dataSource, string tableName, int batchSize = 10240)
         {
-            string[] columnNames = new string[iDataReader.FieldCount];
+            var data = ArrayToDataTable(dataSource, tableName);
+            return WriteToServer(data, batchSize);
+        }
+
+        public void WriteToServer(IDataReader dataSource,string tableName, int batchSize = 10240)
+        {
+            string[] columnNames = new string[dataSource.FieldCount];
             for (int i = 0; i < columnNames.Length; ++i)
             {
-                columnNames[i] = iDataReader.GetName(i);
+                columnNames[i] = dataSource.GetName(i);
             }
             InitBulkCopy(tableName, columnNames, batchSize);
-            bulkCopy.WriteToServer(iDataReader);
+            bulkCopy.WriteToServer(dataSource);
             if (bulkCopy.Errors.Count > 0)
             {
                 throw new Exception(string.Format("入库失败条数:{0}信息;{1}", bulkCopy.Errors.Count, bulkCopy.Errors[0].Message));
@@ -179,10 +187,10 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             }
         }
 
-        public void WriteToServer(DataTable dt, DataRowState rowState, int batchSize = 10240)
+        public void WriteToServer(DataTable dataSource, DataRowState rowState, int batchSize = 10240)
         {
-            InitBulkCopy(dt, batchSize);
-            bulkCopy.WriteToServer(dt, rowState);
+            InitBulkCopy(dataSource, batchSize);
+            bulkCopy.WriteToServer(dataSource, rowState);
 
             if (bulkCopy.Errors.Count > 0)
             {
@@ -203,7 +211,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)
         {
-            throw new Exception("no support");
+            throw new Exception("not support");
         }
     }
 }
