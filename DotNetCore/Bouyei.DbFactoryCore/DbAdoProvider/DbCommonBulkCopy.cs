@@ -26,7 +26,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
                 public string ConnectionString { get; private set; }
 
-                public DbType ProviderName { get; private set; }
+                public DbType DbType { get; private set; }
 
                 public BulkCopyOptions DbBulkCopyOption { get; set; }
 
@@ -63,25 +63,25 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        protected DbCommonBulkCopy(DbType providerType,
+        protected DbCommonBulkCopy(DbType dbType,
            string connectionString)
         {
             this.ConnectionString = connectionString;
-            this.ProviderName = providerType;
+            this.DbType = dbType;
         }
 
-        public DbCommonBulkCopy(DbType providerType, 
+        public DbCommonBulkCopy(DbType dbType, 
             string connectionString,
             int bulkcopyTimeout = 1800,
             int batchSize = 102400,
             BulkCopyOptions dbBulkCopyOption = BulkCopyOptions.KeepIdentity)
-            : this(providerType, connectionString)
+            : this(dbType, connectionString)
         {
             this.BatchSize = batchSize;
             this.BulkCopyTimeout = bulkcopyTimeout;
             this.DbBulkCopyOption = dbBulkCopyOption;
 
-            if (ProviderName == DbType.SqlServer)
+            if (DbType == DbType.SqlServer)
             {
                 if (factory == null || this.ConnectionString != ConnectionString)
                 {
@@ -102,24 +102,24 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             //        oracleBulkCopy = new OracleBulk(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
             //    }
             //}
-            else if (ProviderName == DbType.MySql)
+            else if (DbType == DbType.MySql)
             {
                 factory = new MysqlFactory(ConnectionString, BulkCopyTimeout);
             }
-            else if (providerType == DbType.PostgreSQL)
+            else if (dbType == DbType.PostgreSQL)
             {
                 factory = new NpgFactory(ConnectionString, bulkcopyTimeout);
             }
         }
 
-        public DbCommonBulkCopy(DbType providerType,
+        public DbCommonBulkCopy(DbType dbType,
             string connectionString, 
             IDbConnection dbConnection,
             int bulkcopyTimeout = 1800,
             int batchSize = 102400,
             BulkCopyOptions dbBulkCopyOption = BulkCopyOptions.KeepIdentity,
             bool isTransaction = true)
-            : this(providerType, connectionString)
+            : this(dbType, connectionString)
         {
             this.BatchSize = batchSize;
             this.BulkCopyTimeout = bulkcopyTimeout;
@@ -127,7 +127,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             this.IsTransaction = isTransaction;
             this.dbConn = dbConnection;
 
-            if (ProviderName == DbType.SqlServer)
+            if (DbType == DbType.SqlServer)
             {
                 if (factory != null || this.ConnectionString != connectionString)
                 {
@@ -176,7 +176,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
             //    oracleBulkCopy = new OracleBulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
             //}
-            else if (ProviderName == DbType.MySql)
+            else if (DbType == DbType.MySql)
             {
                 if(factory != null || this.ConnectionString != connectionString)
                 {
@@ -185,7 +185,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 }
                 factory = new MysqlFactory(ConnectionString, BulkCopyTimeout);
             }
-            else if (providerType == DbType.PostgreSQL)
+            else if (dbType == DbType.PostgreSQL)
             {
                 factory = new NpgFactory(ConnectionString, bulkcopyTimeout);
             }

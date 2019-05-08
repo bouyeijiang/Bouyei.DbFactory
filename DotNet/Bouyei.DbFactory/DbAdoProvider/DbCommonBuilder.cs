@@ -25,34 +25,31 @@ namespace Bouyei.DbFactory.DbAdoProvider
         protected DbTransaction dbTransaction = null;
         protected DbCommonBulkCopy dbBulkCopy = null;
         protected DbCommandBuilder dbCommandBuilder = null;
-        protected DbType DbProviderType { get; private set; }
 
         protected bool IsSingleton { get; private set; }
 
         protected string ConnectionString { get; private set; }
 
         //默认预设的工厂提供动态实例，可以直接在app.config配置
-        private static Dictionary<DbType, AssemblyFactoryInfo> AssemblyCache
-            = new Dictionary<DbType, AssemblyFactoryInfo>();
+        //private static Dictionary<DbType, AssemblyFactoryInfo> AssemblyCache
+        //    = new Dictionary<DbType, AssemblyFactoryInfo>();
 
         /// <summary>
         /// 构造
         /// </summary>
-        /// <param name="dbProviderType"></param>
+        /// <param name="dbType"></param>
         /// <param name="IsSingleton"></param>
-        protected DbCommonBuilder(DbType dbProviderType,
-             bool IsSingleton):
-            base(dbProviderType)
+        protected DbCommonBuilder(DbType dbType,
+             bool IsSingleton):base(dbType)
         {
             this.IsSingleton = IsSingleton;
-            this.DbProviderType = dbProviderType;
 
-            string invariantName = GetAdapterName(dbProviderType);
+            string invariantName = GetAdapterName(dbType);
 
             dbProviderFactory = GetDbFactory(invariantName);
 
             if (dbProviderFactory == null)
-                throw new Exception("不提供支持该" + dbProviderType.ToString() + "类型的实例");
+                throw new Exception("不提供支持该" + dbType.ToString() + "类型的实例");
         }
 
         protected DbConnection CreateConnection(string ConnectionString)
@@ -153,7 +150,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         protected DbParameter CreateParameter(CmdParameter dbProviderParameter)
         {
-            switch (DbProviderType)
+            switch (DbType)
             {
                 case DbType.SqlServer:
                     return new System.Data.SqlClient.SqlParameter()
@@ -213,10 +210,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
             if (dbBulkCopy != null) dbBulkCopy.Dispose();
 
             if (parameter.IsTransaction)
-                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString, CreateConnection(ConnectionString),
+                dbBulkCopy = new DbCommonBulkCopy(DbType, ConnectionString, CreateConnection(ConnectionString),
                     dbBulkCopyOption: (BulkCopyOptions)parameter.IsolationLevel, isTransaction: parameter.IsTransaction);
             else
-                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString);
+                dbBulkCopy = new DbCommonBulkCopy(DbType, ConnectionString);
 
             return dbBulkCopy;
         }
@@ -226,10 +223,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
             if (dbBulkCopy != null) dbBulkCopy.Dispose();
 
             if (parameter.IsTransaction)
-                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString, CreateConnection(ConnectionString),
+                dbBulkCopy = new DbCommonBulkCopy(DbType, ConnectionString, CreateConnection(ConnectionString),
                     dbBulkCopyOption: (BulkCopyOptions)parameter.IsolationLevel, isTransaction: parameter.IsTransaction);
             else
-                dbBulkCopy = new DbCommonBulkCopy(DbProviderType, ConnectionString);
+                dbBulkCopy = new DbCommonBulkCopy(DbType, ConnectionString);
 
             return dbBulkCopy;
         }

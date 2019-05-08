@@ -13,7 +13,7 @@ namespace Bouyei.DbFactoryCore
 
         public static IOrmProvider Clone(IOrmProvider ormProvider)
         {
-            return new OrmProvider(ormProvider.ProviderType, ormProvider.DbConnectionString);
+            return new OrmProvider(ormProvider.DbType, ormProvider.DbConnectionString);
         }
 
         public OrmProvider(DbType providerType,string DbConnectionString = null)

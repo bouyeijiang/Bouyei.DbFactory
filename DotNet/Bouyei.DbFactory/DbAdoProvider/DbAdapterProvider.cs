@@ -7,15 +7,16 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
     public class DbAdapterProvider
     {
-        DbType providerType;
-        public DbAdapterProvider(DbType providerType)
+       public DbType DbType { get; set; }
+
+        public DbAdapterProvider(DbType dbType)
         {
-            this.providerType = providerType;
+            this.DbType = dbType;
         }
 
         public DbProviderFactory GetAdapterFactory()
         {
-            switch (providerType)
+            switch (DbType)
             {
                 case DbType.SqlServer:
                     return new SqlFactory().GetFactory();
@@ -33,10 +34,10 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public string GetAdapterName(DbType providerType)
+        public string GetAdapterName(DbType dbType)
         {
             string invariantName = string.Empty;
-            switch (providerType)
+            switch (dbType)
             {
                 case DbType.DB2: invariantName = "IBM.Data.DB2"; break;
                 case DbType.Oracle: invariantName = "Oracle.DataAccess"; break;

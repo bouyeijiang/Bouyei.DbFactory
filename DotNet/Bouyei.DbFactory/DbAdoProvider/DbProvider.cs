@@ -29,8 +29,6 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         public string DbConnectionString { get; set; }
         
-        public DbType DbType { get; set; }
-
         public int LockTimeout
         {
             get { return lParam.LockTimeout; }

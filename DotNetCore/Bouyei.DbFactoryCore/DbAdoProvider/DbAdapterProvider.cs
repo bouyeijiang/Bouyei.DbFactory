@@ -7,15 +7,15 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
     public class DbAdapterProvider
     {
-        DbType providerType;
-        public DbAdapterProvider(DbType providerType)
+       public DbType DbType { get; set; }
+        public DbAdapterProvider(DbType dbType)
         {
-            this.providerType = providerType;
+            this.DbType = dbType;
         }
 
         public DbProviderFactory GetAdapterFactory()
         {
-            switch (providerType)
+            switch (DbType)
             {
                 case DbType.SqlServer:
                     return new SqlFactory().GetFactory();

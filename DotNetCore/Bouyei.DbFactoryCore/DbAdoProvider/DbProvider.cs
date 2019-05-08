@@ -28,8 +28,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
         public string DbConnectionString { get; set; }
 
-        public DbType DbType { get; set; }
-
         public int LockTimeout
         {
             get { return lParam.LockTimeout; }
@@ -74,7 +72,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             bool isSingleton = false)
             : base(dbType, isSingleton)
         {
-            this.DbType = dbType;
             this.DbConnectionString = connectionString;
         }
 
@@ -83,7 +80,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             bool isSingleton = false)
             : base(dbType, isSingleton)
         {
-            this.DbType = dbType;
+            
         }
 
         #endregion
