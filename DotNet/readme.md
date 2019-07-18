@@ -1,31 +1,33 @@
 .net 异构数据库通用访问库，支持db2、sql server、oracle、mysql、acess等多种类型的数据库操作，使用统一的简洁接口调用，并提供db2、sqlserver、oracle的百万级高性能批量入库方法bulkcopy，并提供给entity framework的封装使用模块，接口简洁简单；
 
 Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
-
-ado.net访问数据库例子：
+#1、Ado使用例子
  
-	string connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+	string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
 
-	IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString,ProviderType.SqlServer);
-  	var adort = dbProvider.Query(new Parameter()
- 	{
-  	   CommandText = "select * from [user]"
- 	});
+	IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
 
-	//批量入库
- 	    DataTable dt = new DataTable();
-            dt.Columns.Add("uname");
-            dt.Columns.Add("age");
+	var rt = adoProvider.Query(new Parameter()
+	{
+		CommandText = "select * from MemUser"
+	});
 
-            dt.Rows.Add(new object[] { "bouyei", 27 });
-            dt.Rows.Add(new object[] { "aileenyin", 25 });
-            dt.Rows.Add(new object[] { "hhhh", 13 });
-            dt.TableName = "user";
+	//删除
+	var del= adoProvider.Delete<user>(x => x.name == "hello");
 
-            var rt = dbProvider.BulkCopy(new Parameter()
-            {
-                DataSource= dt
+	//插入
+	  var insert = adoProvider.Insert<user>(new user() {
+                 name="bouyei",
+                 age=30
             });
+
+	//查询
+	var users = adoProvider.Query<user>(x => 1 == 1);
+
+	foreach (DataRow dr in rt.Result.Rows)
+	{
+		Console.WriteLine(string.Join(",", dr.ItemArray));
+	}
 
 
 //entity framework 使用例子：
@@ -70,7 +72,6 @@ ado.net访问数据库例子：
                     new SyncColumnName("age"){DataType="int",Size=4 }
                 }
             });
-
 
             string sourceConnString = "Server=127.0.0.1;Database=A;User Id=sa;Password=bouyei;";
             string targetConnString = "Server=127.0.0.1;Database=B;User Id=sa;Password=bouyei;";
