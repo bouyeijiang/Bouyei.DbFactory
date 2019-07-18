@@ -31,6 +31,7 @@ Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
 	}
 
 
+#1、EF使用例子
 //entity framework 使用例子：
 //  <connectionStrings>
 //  <add name="DbConnection" connectionString="Data Source=127.0.0.1;Initial //Catalog=dbprovider;uid=sa;pwd=123456;MultipleActiveResultSets=True" //providerName="System.Data.SqlClient"/>
@@ -41,6 +42,8 @@ Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
 //<appSettings>
 //  <add key="mappingDLL" value="Bouyei.DbEntities.dll"/>
 //</appSettings>
+
+
 
 	   IOrmProvider ormProvider = OrmProvider.CreateProvider("DbConnection");
             try
