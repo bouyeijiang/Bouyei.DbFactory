@@ -31,13 +31,14 @@ Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
 	}
 
 
-#1、EF使用例子
+#2、EF使用例子
+
+
 //entity framework 使用例子：
 //  <connectionStrings>
 //  <add name="DbConnection" connectionString="Data Source=127.0.0.1;Initial //Catalog=dbprovider;uid=sa;pwd=123456;MultipleActiveResultSets=True" //providerName="System.Data.SqlClient"/>
 //</connectionStrings>
   <appSettings>
-
 //使用entity framework 模块必需配置：
 //<appSettings>
 //  <add key="mappingDLL" value="Bouyei.DbEntities.dll"/>
@@ -63,7 +64,7 @@ Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
                 //int rt = ormProvider.SaveChanges();
 
 
-//数据库表同步
+#3、数据库表同步
 
             List<SyncTableSchema> tableSchema = new List<SyncTableSchema>();
             tableSchema.Add(new SyncTableSchema()
@@ -99,3 +100,4 @@ Install-Package Bouyei.DbFactory -Version 1.1.6601.28462
             {
                 Direction = SyncDirectionType.Upload,
             });
+
