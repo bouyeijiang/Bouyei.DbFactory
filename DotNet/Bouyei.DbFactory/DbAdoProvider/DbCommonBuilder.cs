@@ -26,24 +26,15 @@ namespace Bouyei.DbFactory.DbAdoProvider
         protected DbCommonBulkCopy dbBulkCopy = null;
         protected DbCommandBuilder dbCommandBuilder = null;
 
-        protected bool IsSingleton { get; private set; }
-
         protected string ConnectionString { get; private set; }
-
-        //默认预设的工厂提供动态实例，可以直接在app.config配置
-        //private static Dictionary<DbType, AssemblyFactoryInfo> AssemblyCache
-        //    = new Dictionary<DbType, AssemblyFactoryInfo>();
 
         /// <summary>
         /// 构造
         /// </summary>
         /// <param name="dbType"></param>
         /// <param name="IsSingleton"></param>
-        protected DbCommonBuilder(DbType dbType,
-             bool IsSingleton):base(dbType)
+        protected DbCommonBuilder(DbType dbType):base(dbType)
         {
-            this.IsSingleton = IsSingleton;
-
             string invariantName = GetAdapterName(dbType);
 
             dbProviderFactory = GetDbFactory(invariantName);
@@ -54,16 +45,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         protected DbConnection CreateConnection(string ConnectionString)
         {
-            if (IsSingleton)
-            {
-                if (dbConn == null)
-                    dbConn = dbProviderFactory.CreateConnection();
-            }
-            else
-            {
-                if (dbConn != null) dbConn.Dispose();
-                dbConn = dbProviderFactory.CreateConnection();
-            }
+            if (dbConn != null) dbConn.Dispose();
+            dbConn = dbProviderFactory.CreateConnection();
+
             if (dbConn.ConnectionString != ConnectionString)
             {
                 if (dbConn.State != ConnectionState.Closed) dbConn.Close();
@@ -78,46 +62,24 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         protected DbDataAdapter CreateAdapter()
         {
-            if (IsSingleton)
-            {
-                if (dbDataAdapter == null)
-                    dbDataAdapter = dbProviderFactory.CreateDataAdapter();
-            }
-            else
-            {
-                if (dbDataAdapter != null) dbDataAdapter.Dispose();
-                dbDataAdapter = dbProviderFactory.CreateDataAdapter();
-            }
+            if (dbDataAdapter != null) dbDataAdapter.Dispose();
+            dbDataAdapter = dbProviderFactory.CreateDataAdapter();
+
             return dbDataAdapter;
         }
 
         protected DbCommandBuilder CreateCommandBuilder()
         {
-            if (IsSingleton)
-            {
-                if (dbCommandBuilder == null)
-                    dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
-            }
-            else
-            {
-                if (dbCommandBuilder != null) dbCommandBuilder.Dispose();
-                dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
-            }
+            if (dbCommandBuilder != null) dbCommandBuilder.Dispose();
+            dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
+
             return dbCommandBuilder;
         }
 
         protected DbCommand CreateCommand(DbConnection dbConn, Parameter dbParameter, DbTransaction dbTrans = null)
         {
-            if (IsSingleton)
-            {
-                if (dbCommand == null)
-                    dbCommand = dbProviderFactory.CreateCommand();
-            }
-            else
-            {
-                if (dbCommand != null) dbCommand.Dispose();
-                dbCommand = dbProviderFactory.CreateCommand();
-            }
+            if (dbCommand != null) dbCommand.Dispose();
+            dbCommand = dbProviderFactory.CreateCommand();
 
             dbCommand.Connection = dbConn;
 
@@ -164,18 +126,18 @@ namespace Bouyei.DbFactory.DbAdoProvider
                         SourceVersion = dbProviderParameter.SourceVersion,
                         SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
                     };
-                //case ProviderType.DB2:
-                //    return new IBM.Data.DB2.DB2Parameter()
-                //    {
-                //        DbType = dbProviderParameter.DbType,
-                //        ParameterName = dbProviderParameter.ParameterName,
-                //        Value = dbProviderParameter.Value,
-                //        Size = dbProviderParameter.Size,
-                //        Direction = dbProviderParameter.Direction,
-                //        SourceColumn = dbProviderParameter.SourceColumn,
-                //        SourceVersion = dbProviderParameter.SourceVersion,
-                //        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
-                //    };
+                case DbType.DB2:
+                    return new IBM.Data.DB2.DB2Parameter()
+                    {
+                        DbType = dbProviderParameter.DbType,
+                        ParameterName = dbProviderParameter.ParameterName,
+                        Value = dbProviderParameter.Value,
+                        Size = dbProviderParameter.Size,
+                        Direction = dbProviderParameter.Direction,
+                        SourceColumn = dbProviderParameter.SourceColumn,
+                        SourceVersion = dbProviderParameter.SourceVersion,
+                        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
+                    };
                 case DbType.Oracle:
                     return new Oracle.DataAccess.Client.OracleParameter()
                     {

@@ -8,17 +8,15 @@ namespace Bouyei.DbFactoryCore
     public class AdoProvider : DbProvider,IAdoProvider
     {
         public AdoProvider(string ConnectionString,
-            DbType ProviderType = DbType.SqlServer,
-            bool IsSingleton = false)
-            : base(ConnectionString, ProviderType, IsSingleton)
+            DbType DbType = DbType.SqlServer)
+            : base(ConnectionString, DbType)
         {
         }
 
         public static IAdoProvider CreateProvider(string ConnectionString,
-            DbType providerType=DbType.SqlServer, 
-            bool IsSingleton = false)
+            DbType providerType=DbType.SqlServer)
         {
-            return new AdoProvider(ConnectionString, providerType, IsSingleton);
+            return new AdoProvider(ConnectionString, providerType);
         }
 
         public static IAdoProvider Clone(IAdoProvider adoProvider)

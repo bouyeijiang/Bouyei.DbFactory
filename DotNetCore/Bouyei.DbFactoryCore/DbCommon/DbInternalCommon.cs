@@ -151,7 +151,7 @@ namespace Bouyei.DbFactoryCore
         /// </summary>
         /// <param name="infos"></param>
         ///  <param name="schema"></param>
-        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos, ReadOnlyCollection<DbColumn> schema)
+        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos,List<string> schema)
         {
             List<PropertyInfoEx> items = new List<PropertyInfoEx>(infos.Count());
             foreach (var item in infos)
@@ -217,7 +217,7 @@ namespace Bouyei.DbFactoryCore
         }
 
         internal List<PropertyInfoEx> ToMappingPropertyEx(IEnumerable<PropertyInfo> infos, 
-            ReadOnlyCollection<DbColumn> schema)
+            List<string> schema)
         {
             List<PropertyInfoEx> items = new List<PropertyInfoEx>(infos.Count());
             foreach (var item in infos)
@@ -232,14 +232,34 @@ namespace Bouyei.DbFactoryCore
             return items;
         }
 
-        private int FindSchemaIndex(string proName, ReadOnlyCollection<DbColumn> schema)
+        private int FindSchemaIndex(string proName, List<string> schema)
         {
             for (int i = 0; i < schema.Count; ++i)
             {
-                if (NameEquals(proName, schema[i].ColumnName))
+                if (NameEquals(proName, schema[i]))
                     return i;
             }
             return -1;
+        }
+
+        protected List<string> GetSchemasFromDbReader(DbDataReader reader)
+        {
+            List<string> schemas = null;
+
+            if (reader.CanGetColumnSchema())
+            {
+                schemas = reader.GetSchemaTable().Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToList();
+            }
+            else
+            {
+                schemas = new List<string>(reader.FieldCount);
+                for (int i = 0; i < reader.FieldCount; ++i)
+                {
+                    schemas[i] = reader.GetName(i);
+                }
+            }
+
+            return schemas;
         }
     }
 }

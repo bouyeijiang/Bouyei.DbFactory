@@ -124,8 +124,6 @@ namespace Bouyei.DbFactoryCore
     {
         public T FromDbDataReader<T>(DbDataReader reader)
         {
-            var schema = reader.GetColumnSchema();
-
             ExpressionProperty<T> expPro = new ExpressionProperty<T>();
             Type toType = expPro.classType;
             T value = Activator.CreateInstance<T>();
@@ -133,7 +131,8 @@ namespace Bouyei.DbFactoryCore
             var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
-            var pros = ToMappingPropertyEx(pinfos, schema);
+            var schemas = GetSchemasFromDbReader(reader);
+            var pros = ToMappingPropertyEx(pinfos, schemas);
 
             foreach (var pi in pros)
             {
@@ -165,16 +164,15 @@ namespace Bouyei.DbFactoryCore
         }
 
         public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
-        {
-            var schema = reader.GetColumnSchema();
-          
+        {          
             ExpressionProperty<T> expPro = new ExpressionProperty<T>();
             Type toType = expPro.classType;
 
             var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
-            var pros = ToMappingPropertyEx(pinfos, schema);
+            var schemas = GetSchemasFromDbReader(reader);
+            var pros = ToMappingPropertyEx(pinfos, schemas);
 
             List<T> items = new List<T>(32);
 
@@ -221,15 +219,14 @@ namespace Bouyei.DbFactoryCore
 
         public T FromDbDataReader<T>(DbDataReader reader)
         {
-            var schema = reader.GetColumnSchema();
-
             ExpressionProperty<T> expressPro = new ExpressionProperty<T>();
 
             Type toType = expressPro.classType;
             var pinfos = toType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
-            var pros = PropertyInfoToEx(pinfos, schema);
+            var schemas = GetSchemasFromDbReader(reader);
+            var pros = PropertyInfoToEx(pinfos, schemas);
 
             T value = Activator.CreateInstance<T>();
 
@@ -253,15 +250,14 @@ namespace Bouyei.DbFactoryCore
 
         public List<T> FromDbDataReaderToList<T>(DbDataReader reader)
         {
-            var schema = reader.GetColumnSchema();
-
             ExpressionProperty<T> expressPro = new ExpressionProperty<T>();
             Type toType = expressPro.classType;
 
             var pinfos = toType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
 
-            var pros=PropertyInfoToEx(pinfos,schema);
+            var schemas = GetSchemasFromDbReader(reader);
+            var pros=PropertyInfoToEx(pinfos,schemas);
 
             List<T> items = new List<T>(32);
 

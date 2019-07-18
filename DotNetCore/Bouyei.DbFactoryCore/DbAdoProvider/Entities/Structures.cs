@@ -11,41 +11,41 @@ using System.Data.Common;
 
 namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
-    internal class AssemblyFactoryInfo
-    {
-        public string FactoryName { get; set; }
+    //internal class AssemblyFactoryInfo
+    //{
+    //    public string FactoryName { get; set; }
 
-        public string InvariantName { get; set; }
+    //    public string InvariantName { get; set; }
 
-        public string Culture { get; set; }
+    //    public string Culture { get; set; }
 
-        public string Version { get; set; }
+    //    public string Version { get; set; }
 
-        public string PublicKeyToken { get; set; }
+    //    public string PublicKeyToken { get; set; }
 
-        public string AssemblyName { get; private set; }
+    //    public string AssemblyName { get; private set; }
 
-        public AssemblyFactoryInfo()
-        { }
+    //    public AssemblyFactoryInfo()
+    //    { }
 
-        public AssemblyFactoryInfo(string AssemblyFullName)
-        {
-            this.AssemblyName = AssemblyFullName;
-            string[] infos = AssemblyFullName.Split(',');
-            this.InvariantName = infos[0];
-            this.Version = infos[1].Split('=')[1];
-            this.Culture = infos[2].Split('=')[1];
-            this.PublicKeyToken = infos[3].Split('=')[1];
-        }
+    //    public AssemblyFactoryInfo(string AssemblyFullName)
+    //    {
+    //        this.AssemblyName = AssemblyFullName;
+    //        string[] infos = AssemblyFullName.Split(',');
+    //        this.InvariantName = infos[0];
+    //        this.Version = infos[1].Split('=')[1];
+    //        this.Culture = infos[2].Split('=')[1];
+    //        this.PublicKeyToken = infos[3].Split('=')[1];
+    //    }
 
-        public override string ToString()
-        {
-            return string.Format("{0},{1},Version={2},Culture={3},PublicKeyToken={4}",
-                FactoryName,
-                InvariantName,
-                Version,
-                Culture,
-                PublicKeyToken);
-        }
-    }
+    //    public override string ToString()
+    //    {
+    //        return string.Format("{0},{1},Version={2},Culture={3},PublicKeyToken={4}",
+    //            FactoryName,
+    //            InvariantName,
+    //            Version,
+    //            Culture,
+    //            PublicKeyToken);
+    //    }
+    //}
 }

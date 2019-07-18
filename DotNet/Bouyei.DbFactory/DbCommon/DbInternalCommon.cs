@@ -153,7 +153,7 @@ namespace Bouyei.DbFactory
         /// </summary>
         /// <param name="infos"></param>
         ///  <param name="schema"></param>
-        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos, ReadOnlyCollection<DbColumn> schema)
+        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos, List<string> schemas)
         {
             List<PropertyInfoEx> items = new List<PropertyInfoEx>(infos.Count());
             foreach (var item in infos)
@@ -161,7 +161,7 @@ namespace Bouyei.DbFactory
                 var _it = new PropertyInfoEx()
                 {
                     Name = item.Name,
-                    DbIndex = FindSchemaIndex(item.Name, schema)
+                    DbIndex = FindSchemaIndex(item.Name, schemas)
                 };
 
                 if (item.PropertyType == typeof(int))
@@ -219,7 +219,7 @@ namespace Bouyei.DbFactory
         }
 
         internal List<PropertyInfoEx> ToMappingPropertyEx(IEnumerable<PropertyInfo> infos,
-            ReadOnlyCollection<DbColumn> schema)
+            List<string> schemas)
         {
             List<PropertyInfoEx> items = new List<PropertyInfoEx>(infos.Count());
             foreach (var item in infos)
@@ -227,21 +227,41 @@ namespace Bouyei.DbFactory
                 var _it = new PropertyInfoEx()
                 {
                     Name = item.Name,
-                    DbIndex = FindSchemaIndex(item.Name, schema)
+                    DbIndex = FindSchemaIndex(item.Name, schemas)
                 };
                 items.Add(_it);
             }
             return items;
         }
 
-        private int FindSchemaIndex(string proName, ReadOnlyCollection<DbColumn> schema)
+        private int FindSchemaIndex(string proName, List<string> schemas)
         {
-            for (int i = 0; i < schema.Count; ++i)
+            for (int i = 0; i < schemas.Count; ++i)
             {
-                if (NameEquals(proName, schema[i].ColumnName))
+                if (NameEquals(proName, schemas[i]))
                     return i;
             }
             return -1;
+        }
+
+        protected List<string> GetSchemasFromDbReader(DbDataReader reader)
+        {
+            List<string> schemas = null;
+
+            if(reader.CanGetColumnSchema())
+            {
+                schemas = reader.GetSchemaTable().Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToList();
+            }
+            else
+            {
+                schemas = new List<string>(reader.FieldCount);
+                for(int i=0;i<reader.FieldCount;++i)
+                {
+                    schemas[i] = reader.GetName(i);
+                }
+            }
+
+            return schemas;
         }
     }
 }

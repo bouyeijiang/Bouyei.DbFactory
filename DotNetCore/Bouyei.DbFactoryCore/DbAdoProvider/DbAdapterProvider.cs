@@ -29,20 +29,20 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        public string GetAdapterName(DbType providerType)
-        {
-            string invariantName = string.Empty;
-            switch (providerType)
-            {
-                case DbType.DB2: invariantName = "IBM.Data.DB2"; break;
-                case DbType.Oracle: invariantName = "Oracle.DataAccess"; break;
-                case DbType.MySql: invariantName = "MySql.Data.MySqlClient"; break;
-                case DbType.SQLite: invariantName = "System.Data.SQLite"; break;
-                case DbType.PostgreSQL:invariantName = "Npgsql"; break;
-                case DbType.SqlServer: invariantName = "System.Data.SqlClient";break;
-                default: break;
-            }
-            return invariantName;
-        }
+        //public string GetAdapterName(DbType providerType)
+        //{
+        //    string invariantName = string.Empty;
+        //    switch (providerType)
+        //    {
+        //        case DbType.DB2: invariantName = "IBM.Data.DB2"; break;
+        //        case DbType.Oracle: invariantName = "Oracle.DataAccess"; break;
+        //        case DbType.MySql: invariantName = "MySql.Data.MySqlClient"; break;
+        //        case DbType.SQLite: invariantName = "System.Data.SQLite"; break;
+        //        case DbType.PostgreSQL:invariantName = "Npgsql"; break;
+        //        case DbType.SqlServer: invariantName = "System.Data.SqlClient";break;
+        //        default: break;
+        //    }
+        //    return invariantName;
+        //}
     }
 }

@@ -187,6 +187,11 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
             else if (dbType == DbType.PostgreSQL)
             {
+                if (factory != null || this.ConnectionString != connectionString)
+                {
+                    if (factory != null)
+                        factory.Dispose();
+                }
                 factory = new NpgFactory(ConnectionString, bulkcopyTimeout);
             }
         }

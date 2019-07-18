@@ -346,3 +346,11 @@ E:\工作文件夹\Projects\DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcor
 E:\工作文件夹\Projects\DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csproj.CopyComplete
 E:\工作文件夹\Projects\DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.dll
 E:\工作文件夹\Projects\DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.pdb
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csprojAssemblyReference.cache
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.Properties.Resources.resources
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csproj.GenerateResource.cache
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csproj.CoreCompileInputs.cache
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.AssemblyInfoInputs.cache
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.AssemblyInfo.cs
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.dll
+E:\Projects\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.pdb

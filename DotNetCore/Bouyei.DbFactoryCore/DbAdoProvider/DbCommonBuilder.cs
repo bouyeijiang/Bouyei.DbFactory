@@ -24,8 +24,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         protected DbCommonBulkCopy dbBulkCopy = null;
         protected DbCommandBuilder dbCommandBuilder = null;
 
-        protected bool IsSingleton { get; private set; }
-
         protected string ConnectionString { get; private set; }
 
   
@@ -34,11 +32,8 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         /// </summary>
         /// <param name="dbType"></param>
         /// <param name="IsSingleton"></param>
-        protected DbCommonBuilder(DbType dbType,
-             bool IsSingleton):base(dbType)
+        protected DbCommonBuilder(DbType dbType):base(dbType)
         {
-            this.IsSingleton = IsSingleton;
-            
             dbProviderFactory =  GetAdapterFactory();
           
             if (dbProviderFactory == null)
@@ -47,16 +42,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
         protected DbConnection CreateConnection(string ConnectionString)
         {
-            if (IsSingleton)
-            {
-                if (dbConn == null)
-                    dbConn = dbProviderFactory.CreateConnection();
-            }
-            else
-            {
-                if (dbConn != null) dbConn.Dispose();
-                dbConn = dbProviderFactory.CreateConnection();
-            }
+
+            if (dbConn != null) dbConn.Dispose();
+            dbConn = dbProviderFactory.CreateConnection();
+
             if (dbConn.ConnectionString != ConnectionString)
             {
                 if (dbConn.State != ConnectionState.Closed) dbConn.Close();
@@ -71,46 +60,24 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
         protected DbDataAdapter CreateAdapter()
         {
-            if (IsSingleton)
-            {
-                if (dbDataAdapter == null)
-                    dbDataAdapter = dbProviderFactory.CreateDataAdapter();
-            }
-            else
-            {
-                if (dbDataAdapter != null) dbDataAdapter.Dispose();
-                dbDataAdapter = dbProviderFactory.CreateDataAdapter();
-            }
+
+            if (dbDataAdapter != null) dbDataAdapter.Dispose();
+            dbDataAdapter = dbProviderFactory.CreateDataAdapter();
+
             return dbDataAdapter;
         }
 
         protected DbCommandBuilder CreateCommandBuilder()
         {
-            if (IsSingleton)
-            {
-                if (dbCommandBuilder == null)
-                    dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
-            }
-            else
-            {
-                if (dbCommandBuilder != null) dbCommandBuilder.Dispose();
-                dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
-            }
+            if (dbCommandBuilder != null) dbCommandBuilder.Dispose();
+            dbCommandBuilder = dbProviderFactory.CreateCommandBuilder();
             return dbCommandBuilder;
         }
 
         protected DbCommand CreateCommand(DbConnection dbConn, Parameter dbParameter, DbTransaction dbTrans = null)
         {
-            if (IsSingleton)
-            {
-                if (dbCommand == null)
-                    dbCommand = dbProviderFactory.CreateCommand();
-            }
-            else
-            {
-                if (dbCommand != null) dbCommand.Dispose();
-                dbCommand = dbProviderFactory.CreateCommand();
-            }
+            if (dbCommand != null) dbCommand.Dispose();
+            dbCommand = dbProviderFactory.CreateCommand();
 
             dbCommand.Connection = dbConn;
 

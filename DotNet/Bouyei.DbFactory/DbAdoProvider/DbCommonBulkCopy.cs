@@ -85,24 +85,15 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
             if (DbType == DbType.SqlServer)
             {
-                if (factory == null || this.ConnectionString != ConnectionString)
-                {
-                    factory = new SqlFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
-                }
+                factory = new SqlFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
             }
             else if (DbType == DbType.DB2)
             {
-                if (factory == null || this.ConnectionString != ConnectionString)
-                {
-                    factory = new Db2Factory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
-                }
+                factory = new Db2Factory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
             }
             else if (DbType == DbType.Oracle)
             {
-                if (factory == null || this.ConnectionString != ConnectionString)
-                {
-                    factory = new OracleFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
-                }
+                factory = new OracleFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
             }
             else if (DbType == DbType.MySql)
             {
@@ -189,6 +180,11 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
             else if (DbType == DbType.PostgreSQL)
             {
+                if (factory != null || this.ConnectionString != connectionString)
+                {
+                    if (factory != null)
+                        factory.Dispose();
+                }
                 factory = new NpgFactory(ConnectionString, bulkcopyTimeout);
             }
         }
