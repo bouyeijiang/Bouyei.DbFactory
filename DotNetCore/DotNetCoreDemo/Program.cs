@@ -12,6 +12,14 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
+            string connstr = "server=139.9.145.31;Port=5432;Database=postgres;uid=postgres;pwd=BOUYEI;";
+            using(DbProvider provider=new DbProvider(connstr,Bouyei.DbFactoryCore.DbType.PostgreSQL))
+            {
+                var param = new Parameter("select umobile from dbuser");
+                var brt = provider.Query<dbuser>(x => true);
+
+            }
+
             string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
             IAdoProvider dbProvider = AdoProvider.CreateProvider(str,Bouyei.DbFactoryCore.DbType.MySql);
             List<luser> ls = new List<luser>();
@@ -94,5 +102,10 @@ namespace DotNetCoreDemo
         public int age { get; set; }
 
         public float score { get; set; }
+    }
+
+    public class dbuser
+    {
+        public string umobile { get; set; }
     }
 }

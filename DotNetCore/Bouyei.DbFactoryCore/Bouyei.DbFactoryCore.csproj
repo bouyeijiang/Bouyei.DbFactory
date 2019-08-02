@@ -8,13 +8,13 @@
     <PackageLicenseUrl>http://bouyeijiang.com</PackageLicenseUrl>
     <PackageIconUrl>http://anystore.bouyeijiang.com</PackageIconUrl>
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.2.3.4</Version>
+    <Version>1.2.3.5</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/dbproviderfactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/dbproviderfactory</RepositoryUrl>
-    <AssemblyVersion>1.2.3.4</AssemblyVersion>
-    <FileVersion>1.2.3.4</FileVersion>
+    <AssemblyVersion>1.2.3.5</AssemblyVersion>
+    <FileVersion>1.2.3.5</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -15,8 +15,8 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         {
             this.ColumnNames = columnNames;
 
-            _in = string.Format("[{0}] In(", ColumnNames.Length > 1?
-                string.Format("({0}) ", string.Join("],[", ColumnNames)) : ColumnNames[0]);
+            _in = string.Format("{0} In(", ColumnNames.Length > 1?
+                string.Format("({0}) ", string.Join(",", ColumnNames)) : ColumnNames[0]);
         }
 
         public string ToString<T>(T value)

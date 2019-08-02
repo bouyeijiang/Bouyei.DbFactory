@@ -17,7 +17,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
         public override string ToString()
         {
-            return string.Format("Group By [{0}] ", string.Join("],[", ColumnNames));
+            return string.Format("Group By {0} ", string.Join(",", ColumnNames));
         }
     }
 }

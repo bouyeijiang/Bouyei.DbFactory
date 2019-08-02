@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\DotNetCore",
+    "\\DotNetCore\\DbEntity"
   ],
-  "SelectedNode": "\\Bouyei.DbFactory.sln",
+  "SelectedNode": "\\DotNetCore\\DbEntity\\User.cs",
   "PreviewInSolutionExplorer": false
 }
