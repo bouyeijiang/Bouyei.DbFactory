@@ -248,7 +248,7 @@ namespace Bouyei.DbFactoryCore
 
             if (reader.CanGetColumnSchema())
             {
-                schemas = reader.GetSchemaTable().Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToList();
+                schemas = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(x => x[0].ToString()).ToList();
             }
             else
             {

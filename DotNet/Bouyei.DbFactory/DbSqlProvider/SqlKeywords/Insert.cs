@@ -17,14 +17,14 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
         public override string ToString(string[] columnNames)
         {
-            return string.Format("Insert Into [{0}]({1}) ", TableName, base.ToString(columnNames));
+            return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(columnNames));
         }
 
         public string ToString<T>()
         {
            string[] ColumnNames = ToColumns<T>();
 
-            return string.Format("Insert Into [{0}]({1}) ", typeof(T).Name, base.ToString(ColumnNames));
+            return string.Format("Insert Into {0}({1}) ", typeof(T).Name, base.ToString(ColumnNames));
         }
     }
 }

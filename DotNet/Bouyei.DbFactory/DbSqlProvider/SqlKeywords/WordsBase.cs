@@ -17,7 +17,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
         public virtual string ToString(string[] columnNames)
         {
-            return "["+string.Join("],[", columnNames)+"]";
+            return string.Join(",", columnNames);
         }
 
         protected virtual string[] ToColumns<T>()

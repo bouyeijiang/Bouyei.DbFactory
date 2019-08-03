@@ -12,12 +12,12 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
         public string ToString(string tableName)
         {
-            return string.Format("Update [{0}] ", tableName);
+            return string.Format("Update {0} ", tableName);
         }
 
         public string ToString<T>()
         {
-            return string.Format("Update [{0}] ", typeof(T).Name);
+            return string.Format("Update {0} ", typeof(T).Name);
         }
     }
 }

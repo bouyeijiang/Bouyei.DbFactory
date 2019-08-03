@@ -17,14 +17,14 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
         public override string ToString()
         {
-            return string.Format("From [{0}] ",TableName);
+            return string.Format("From {0} ",TableName);
         }
 
         public virtual string ToString<T>()
         {
             TableName = typeof(T).Name;
 
-            return string.Format("From [{0}] ", TableName);
+            return string.Format("From {0} ", TableName);
         }
     }
 }
