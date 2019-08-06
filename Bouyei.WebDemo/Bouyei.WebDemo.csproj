@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bouyei.DbFactory, Version=1.2.6957.19659, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bouyei.DbFactory.1.2.6957.19659\lib\Bouyei.DbFactory.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -118,10 +121,6 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNet\Bouyei.DbFactory\Bouyei.DbFactory.csproj">
-      <Project>{e7e05c1e-9623-4180-9ea1-ab851f6213d3}</Project>
-      <Name>Bouyei.DbFactory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNet\DbEntities\Bouyei.DbEntities.csproj">
       <Project>{7df8dda5-d22e-442d-b9da-623e2cc30d4a}</Project>
       <Name>Bouyei.DbEntities</Name>
