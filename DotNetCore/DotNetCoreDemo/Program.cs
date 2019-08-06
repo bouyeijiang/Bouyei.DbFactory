@@ -15,7 +15,6 @@ namespace DotNetCoreDemo
             string connstr = "server=139.9.145.31;Port=5432;Database=postgres;uid=postgres;pwd=BOUYEI;";
             using(DbProvider provider=new DbProvider(connstr,Bouyei.DbFactoryCore.DbType.PostgreSQL))
             {
-                var param = new Parameter("select umobile from dbuser");
                 var brt = provider.Query<dbuser>(x => true);
 
             }
