@@ -151,7 +151,7 @@ namespace Bouyei.DbFactoryCore
         /// </summary>
         /// <param name="infos"></param>
         ///  <param name="schema"></param>
-        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos,List<string> schema)
+        internal List<PropertyInfoEx> PropertyInfoToEx(IEnumerable<PropertyInfo> infos,string[] schema)
         {
             List<PropertyInfoEx> items = new List<PropertyInfoEx>(infos.Count());
             foreach (var item in infos)
@@ -217,7 +217,7 @@ namespace Bouyei.DbFactoryCore
         }
 
         internal List<PropertyInfoEx> ToMappingPropertyEx(IEnumerable<PropertyInfo> infos, 
-            List<string> schema)
+            string[] schema)
         {
             List<PropertyInfoEx> items = new List<PropertyInfoEx>(infos.Count());
             foreach (var item in infos)
@@ -232,9 +232,9 @@ namespace Bouyei.DbFactoryCore
             return items;
         }
 
-        private int FindSchemaIndex(string proName, List<string> schema)
+        private int FindSchemaIndex(string proName, string[] schema)
         {
-            for (int i = 0; i < schema.Count; ++i)
+            for (int i = 0; i < schema.Length; ++i)
             {
                 if (NameEquals(proName, schema[i]))
                     return i;
@@ -242,17 +242,17 @@ namespace Bouyei.DbFactoryCore
             return -1;
         }
 
-        protected List<string> GetSchemasFromDbReader(DbDataReader reader)
+        protected string[] GetSchemasFromDbReader(DbDataReader reader)
         {
-            List<string> schemas = null;
+            string[] schemas = null;
 
             if (reader.CanGetColumnSchema())
             {
-                schemas = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(x => x[0].ToString()).ToList();
+                schemas = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(x => x[0].ToString()).ToArray();
             }
             else
             {
-                schemas = new List<string>(reader.FieldCount);
+                schemas = new string[reader.FieldCount];
                 for (int i = 0; i < reader.FieldCount; ++i)
                 {
                     schemas[i] = reader.GetName(i);

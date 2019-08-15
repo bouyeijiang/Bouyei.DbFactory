@@ -2,17 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Bouyei.DbFactoryCore</id>
-    <version>1.2.3.5</version>
+    <version>1.2.3.6</version>
     <authors>Bouyei.DbFactoryCore</authors>
     <owners>Bouyei.DbFactoryCore</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://bouyeijiang.com/</licenseUrl>
-    <projectUrl>https://gitee.com/bouyei/dbproviderfactory</projectUrl>
+    <projectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</projectUrl>
     <iconUrl>http://anystore.bouyeijiang.com/</iconUrl>
     <description>Multiple database universal access interface</description>
     <releaseNotes>open source no limit</releaseNotes>
     <copyright>bouyei</copyright>
-    <repository url="https://gitee.com/bouyei/dbproviderfactory" />
+    <repository url="https://gitee.com/bouyei/Bouyei.DbFactory" />
     <dependencies>
       <group targetFramework=".NETCoreApp2.2">
         <dependency id="IBM.Data.DB2.Core" version="1.3.0.100" exclude="Build,Analyzers" />
@@ -29,6 +29,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.2\Bouyei.DbFactoryCore.dll" />
+    <file src="E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Release\netcoreapp2.2\Bouyei.DbFactoryCore.dll" target="lib\netcoreapp2.2\Bouyei.DbFactoryCore.dll" />
   </files>
 </package>
