@@ -20,14 +20,6 @@ namespace Bouyei.DbFactoryDemo
     {
         static void Main(string[] args)
         {
-              string connStr = "server=172.9.0.21;Port=5432;Database=tdlyjyjysjb;uid=postgres;pwd=salis;";
-
-              IAdoProvider dbProvider = AdoProvider.CreateProvider(connStr, Bouyei.DbFactory.DbType.PostgreSQL);
-       
-            var sqlParam = new Parameter(@"select kfq_type,kfq_weight,kfq_target,kfq_target_weight,kfq_subtarget,
-            kfq_subtarget_weight,kfq_index,kfq_index_weight,kfq_name from kfq_weight");
-            var rt = dbProvider.Query<TdWeight>(sqlParam);
-
             //生成简单查询脚本
             ISqlProvider sqlProvider = SqlProvider.CreateProvider();
 
