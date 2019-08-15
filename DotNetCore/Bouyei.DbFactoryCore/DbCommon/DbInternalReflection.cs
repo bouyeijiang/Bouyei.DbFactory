@@ -236,14 +236,6 @@ namespace Bouyei.DbFactoryCore
                 if (reader.IsDBNull(pi.DbIndex)) continue;
 
                 DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
-                //for (int i = 0; i < reader.FieldCount; ++i)
-                //{
-                //    if (NameEquals(pi.Name, reader.GetName(i)))
-                //    {
-                //        DataReaderDelegateToGeneric<T>(reader, i, value, pi, expressPro);
-                //        break;
-                //    }
-                //}
             }
             return value;
         }
@@ -272,14 +264,6 @@ namespace Bouyei.DbFactoryCore
                     if (reader.IsDBNull(pi.DbIndex)) continue;
 
                     DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
-                    //for (int i = 0; i < reader.FieldCount; ++i)
-                    //{
-                    //    if (NameEquals(pi.Name, reader.GetName(i)))
-                    //    {
-                    //        DataReaderDelegateToGeneric<T>(reader, i, value, pi, expressPro);
-                    //        break;
-                    //    }
-                    //}
                 }
                 items.Add(value);
             }

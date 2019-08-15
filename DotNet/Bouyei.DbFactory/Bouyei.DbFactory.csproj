@@ -79,10 +79,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>DbFactory.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
@@ -247,7 +248,6 @@
     <None Include="App.config" />
     <None Include="Bouyei.DbFactory.nupkg" />
     <None Include="Bouyei.DbFactory.pfx" />
-    <None Include="DbFactory.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
