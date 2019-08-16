@@ -21,8 +21,8 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         DbResult<bool, string> Connect(string connString);
         DbResult<DataTable, string> Query(Parameter dbParameter);
         DbResult<List<T>, string> Query<T>(Parameter dbParameter);
-        DbResult<DataSet, string> QueryToSet(Parameter dbParameter);
-        DbResult<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction);
+        DbResult<DataSet, string> Querys(Parameter dbParameter);
+        DbResult<int, string> Query<T>(Parameter dbParameter, Func<T, bool> rowAction);
         DbResult<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader,bool> rowAction);
         DbResult<IDataReader, string> QueryToReader(Parameter dbParameter);
         DbResult<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action);

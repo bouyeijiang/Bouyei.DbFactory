@@ -133,7 +133,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public DbResult<DataSet, string> QueryToSet(Parameter dbParameter)
+        public DbResult<DataSet, string> Querys(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -197,7 +197,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
         }
 
-        public DbResult<int,string> QueryTo<T>(Parameter dbParameter,Func<T,bool> rowAction)
+        public DbResult<int,string> Query<T>(Parameter dbParameter,Func<T,bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
