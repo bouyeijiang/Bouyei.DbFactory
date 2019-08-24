@@ -131,7 +131,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        public DbResult<DataSet, string> QueryToSet(Parameter dbParameter)
+        public DbResult<DataSet, string> Querys(Parameter dbParameter)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
@@ -139,17 +139,17 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 {
                     using (DbConnection conn = CreateConnection(DbConnectionString))
                     using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
-                    using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
-                    using (DbDataAdapter adapter = CreateAdapter())
+                    using (DbCommand cmd = this.CreateCommand(conn, dbParameter, trans))
+                    using (DbDataAdapter adapter = this.CreateAdapter())
                     {
-                        DataSet ds = new DataSet();
+                        DataSet ds = new  DataSet();
                         adapter.SelectCommand = cmd;
                         adapter.Fill(ds);
 
                         if (dbParameter.IsTransaction)
                             trans.Commit();
 
-                        return DbResult<DataSet, string>.Create(ds, string.Empty);
+                        return new DbResult<DataSet, string>(ds, string.Empty);
                     }
                 }
                 catch (Exception ex)
@@ -195,7 +195,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             }
         }
 
-        public DbResult<int, string> QueryTo<T>(Parameter dbParameter, Func<T, bool> rowAction)
+        public DbResult<int, string> Query<T>(Parameter dbParameter, Func<T, bool> rowAction)
         {
             using (LockWait lwait = new LockWait(ref lParam))
             {
