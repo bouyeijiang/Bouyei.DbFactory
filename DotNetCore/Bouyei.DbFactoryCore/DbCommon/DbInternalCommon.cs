@@ -248,15 +248,18 @@ namespace Bouyei.DbFactoryCore
 
             if (reader.CanGetColumnSchema())
             {
-                schemas = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(x => x[0].ToString()).ToArray();
-            }
-            else
-            {
-                schemas = new string[reader.FieldCount];
-                for (int i = 0; i < reader.FieldCount; ++i)
+                var rows = reader.GetSchemaTable().Rows;
+                if (rows.Count > 0)
                 {
-                    schemas[i] = reader.GetName(i);
+                    schemas = rows.Cast<DataRow>().Select(x => x[0].ToString()).ToArray();
+                    return schemas;
                 }
+            }
+
+            schemas = new string[reader.FieldCount];
+            for (int i = 0; i < reader.FieldCount; ++i)
+            {
+                schemas[i] = reader.GetName(i);
             }
 
             return schemas;

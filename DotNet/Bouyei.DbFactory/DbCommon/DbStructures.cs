@@ -228,16 +228,16 @@ namespace Bouyei.DbFactory
                     }
                     break;
                 case DbType.Oracle:
-                //case DbType.MsOracle:
-                //    {
-                //        if (DbPort <= 0) DbPort = 1521;
+                    //case DbType.MsOracle:
+                    {
+                        if (DbPort <= 0) DbPort = 1521;
 
-                //        if (string.IsNullOrEmpty(DbName))
-                //            DbName = "ORCL";
-                //        ConnectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
-                //             DbIp, DbPort, DbName, DbUserName, DbPassword);
-                //    }
-                //    break;
+                        if (string.IsNullOrEmpty(DbName))
+                            DbName = "ORCL";
+                        ConnectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
+                             DbIp, DbPort, DbName, DbUserName, DbPassword);
+                    }
+                    break;
                 case DbType.DB2:
                     {
                         if (DbPort <= 0) DbPort = 50000;
@@ -254,11 +254,26 @@ namespace Bouyei.DbFactory
                     }
                     break;
                 case DbType.SQLite:
-                    ConnectionString = string.Format("Data Source={0};Version=3;Password={1};", DbIp, DbPassword);
+                    {
+                        ConnectionString = string.Format("Data Source={0};Version=3;", DbIp);
+                        if (string.IsNullOrEmpty(DbPassword) == false)
+                            ConnectionString += "Password=" + DbPassword;
+                    }
+                    break;
+                case DbType.PostgreSQL:
+                    ConnectionString = $"Server={DbIp};Port={DbPort};UserId={DbUserName};Password={DbPort};Database={DbName};";
                     break;
                 case DbType.Odbc:
+                    ConnectionString = $"Driver={{DbName}};Server={DbIp};Database={DbName}; Uid={DbUserName};Pwd={DbPassword};";
+                    break;
                 case DbType.OleDb:
-                    ConnectionString = "未定义该连接类型字符串";
+                    {
+                        ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DbName};";
+                        if (string.IsNullOrEmpty(DbUserName) == false)
+                            ConnectionString += $"User ID={DbUserName};";
+                        if (string.IsNullOrEmpty(DbPassword) == false)
+                            ConnectionString += $"Password={DbPassword};";
+                    }
                     break;
                 default:
                     ConnectionString = "未知连接类型";
