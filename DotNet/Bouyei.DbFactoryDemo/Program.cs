@@ -125,6 +125,12 @@ namespace Bouyei.DbFactoryDemo
             {
                 DataSource = dt
             });
+
+
+            var rt= dbProvider.Query<User>(x => x.age >= 20);
+
+            dbProvider.Delete<User>(x => x.name == "bouyei");
+
         }
 
         private static void OrmDemo(string connectionString)

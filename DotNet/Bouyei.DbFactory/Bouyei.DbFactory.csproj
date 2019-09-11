@@ -224,6 +224,7 @@
     <Compile Include="DbAdoProvider\Bulkcopies\OracleBulk.cs" />
     <Compile Include="DbAdoProvider\Bulkcopies\SqlBulk.cs" />
     <Compile Include="DbSqlProvider\Models.cs" />
+    <Compile Include="Providers\AdoProviderExtension.cs" />
     <Compile Include="Providers\DbSyncProvider.cs" />
     <Compile Include="Providers\IAdoProvider.cs" />
     <Compile Include="Providers\IDbSyncProvider.cs" />
