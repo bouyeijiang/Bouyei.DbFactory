@@ -92,6 +92,7 @@ namespace DotNetCoreDemo
 
     }
 
+    [MappedName("db_user")]
     public class luser
     {
         public string uname { get; set; }
@@ -99,7 +100,7 @@ namespace DotNetCoreDemo
         public string upwd { get; set; }
 
         public int age { get; set; }
-
+        [Ignore]
         public float score { get; set; }
     }
 

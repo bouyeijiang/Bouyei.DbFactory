@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 
 namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 {
+    public class From<T> : WordsBase
+    {
+        public string TableName { get; private set; }
+
+        public From() : base(typeof(T))
+        {
+            TableName = GetTableName();
+        }
+
+        public override string ToString()
+        {
+            return "From " + TableName + " ";
+        }
+    }
+
     public class From:WordsBase
     {
         public string TableName { get; private set; }
@@ -17,14 +32,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
         public override string ToString()
         {
-            return string.Format("From {0} ",TableName);
-        }
-
-        public virtual string ToString<T>()
-        {
-            TableName = typeof(T).Name;
-
-            return string.Format("From {0} ", TableName);
+            return "From " + TableName + " ";
         }
     }
 }

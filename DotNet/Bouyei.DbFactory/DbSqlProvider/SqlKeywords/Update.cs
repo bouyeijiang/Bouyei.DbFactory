@@ -14,10 +14,15 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         {
             return string.Format("Update {0} ", tableName);
         }
+    }
 
-        public string ToString<T>()
+    public class Update<T> : WordsBase
+    {
+        public Update():base(typeof(T)) { }
+
+        public override string ToString()
         {
-            return string.Format("Update {0} ", typeof(T).Name);
+            return string.Format("Update {0} ", GetTableName());
         }
     }
 }

@@ -12,21 +12,43 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
         public string SqlString { get; set; }
 
+        private Type type = null;
+
         public WordsBase()
         { }
+
+        public WordsBase(Type type)
+        {
+            this.type = type;
+        }
 
         public virtual string ToString(string[] columnNames)
         {
             return string.Join(",", columnNames);
         }
 
-        protected virtual string[] ToColumns<T>()
+        public virtual string ToString(IEnumerable<string> columnNames)
         {
-            var columnType = typeof(T);
+            return string.Join(",", columnNames);
+        }
 
-            var items = columnType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            return items.Where(x => ExistIgnoreAttribute(x) == false)
-                .Select(x => x.Name).ToArray();
+        public virtual string GetTableName()
+        {
+            string tabName = GetMappedAttributeName();
+            if (tabName == string.Empty) tabName = type.Name;
+
+            return tabName;
+        }
+
+        protected virtual IEnumerable<string> GetColumns()
+        {
+            return GetProperties().Select(x => x.Name);
+        }
+
+        protected virtual IEnumerable<PropertyInfo> GetProperties()
+        {
+            var items = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            return items.Where(x => ExistIgnoreAttribute(x) == false);
         }
 
         protected string ParameterFormat(params object[] param)
@@ -45,7 +67,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             return string.Join(",", values);
         }
 
-        protected string ParameterFormat<T>(PropertyInfo[] pInfo,T value)
+        protected string ParameterFormat(PropertyInfo[] pInfo,object value)
         {
             var pInfos = pInfo;// typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
             List<string> values = new List<string>(pInfos.Length);
@@ -79,6 +101,14 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             return Regex.IsMatch(value.ToString(), numericReg);
         }
 
+        protected string GetMappedAttributeName()
+        {
+            var attr = type.GetCustomAttributes<MappedNameAttribute>(false).FirstOrDefault();
+
+            if (attr == null) return string.Empty;
+
+            return attr.Name;
+        }
 
         protected string GetColumnAttributeName(PropertyInfo pInfo)
         {

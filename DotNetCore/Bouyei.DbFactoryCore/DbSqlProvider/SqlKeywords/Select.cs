@@ -21,10 +21,17 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         {
             return string.Format("Select {0} ", base.ToString(ColumnNames));
         }
+    }
 
-        public virtual string ToString<T>()
+    public class Select<T> : WordsBase
+    {
+        public Select():base(typeof(T)) {
+
+        }
+
+        public override string ToString()
         {
-            ColumnNames = ToColumns<T>();
+            var ColumnNames = GetColumns();
 
             return string.Format("Select {0} ", base.ToString(ColumnNames));
         }

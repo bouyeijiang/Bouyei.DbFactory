@@ -23,22 +23,28 @@ namespace Bouyei.DbFactoryDemo
             //生成简单查询脚本
             ISqlProvider sqlProvider = SqlProvider.CreateProvider();
 
+            //MappedName 测试
+           var sqls= sqlProvider.Insert<UserDto>().Values(new UserDto[] { new UserDto() {
+                 Pwd="ds",
+                  UserName="d"
+            } }).SqlString;
+
             //查询
            var sql= sqlProvider.Select<User>()
-                .From<User>().Where<User>(x => x.id == 1).SqlString;
+                .From().Where(x => x.id == 1).SqlString;
 
             //修改
             sql = sqlProvider.Update<User>()
-                .Set<User>(new User() { name = "bouyei"})
+                .Set(new User() { name = "bouyei"})
                 .Where<User>(x => x.id == 1).SqlString;
 
             //删除
             sql = sqlProvider.Delete()
-                .From<User>().Where<User>(x => x.name == "bouyei").SqlString;
+                .From<User>().Where(x => x.name == "bouyei").SqlString;
 
             //插入
             sql = sqlProvider.Insert<User>()
-                .Values<User>(new User[] {
+                .Values(new User[] {
                 new User() { name ="hello", age=12 }
                 ,new User() { name="bouyei",age=23} }).SqlString;
 
@@ -174,10 +180,12 @@ namespace Bouyei.DbFactoryDemo
             }
         }
 
+        [MappedName("db_user")]
         class UserDto
         {
             public string UserName { get; set; }
 
+            [Ignore]
             public string Pwd { get; set; }
         }
     }

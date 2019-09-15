@@ -18,9 +18,9 @@ namespace Bouyei.DbFactory
             return val;
         }
 
-        public static Values Values<T>(this Insert insert,T[] values)
+        public static Values<T> Values<T>(this Insert<T> insert,T[] values)
         {
-            Values val = new Values();
+            Values<T> val = new Values<T>();
             val.SqlString = insert.SqlString + val.ToString(values);
 
             return val;

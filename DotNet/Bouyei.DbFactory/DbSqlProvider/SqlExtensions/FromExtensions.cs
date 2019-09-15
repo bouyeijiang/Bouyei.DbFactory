@@ -11,17 +11,17 @@ namespace Bouyei.DbFactory
     public static class FromExtensions
     {
         #region select  
-        public static From From(this Select select, string tableName)
+        public static From From<T>(this Select<T> select, string tableName)
         {
             From from = new From(tableName);
             from.SqlString = select.SqlString + from.ToString();
             return from;
         }
 
-        public static From From<T>(this Select select)
+        public static From<T> From<T>(this Select<T> select)
         {
-            From from = new From(string.Empty);
-            from.SqlString = select.SqlString + from.ToString<T>();
+            From<T> from = new From<T>();
+            from.SqlString = select.SqlString + from.ToString();
             return from;
         }
 
@@ -35,10 +35,10 @@ namespace Bouyei.DbFactory
             return from;
         }
 
-        public static From From<T>(this Delete delete)
+        public static From<T> From<T>(this Delete delete)
         {
-            From from = new From(string.Empty);
-            from.SqlString = delete.SqlString + from.ToString<T>();
+            From<T> from = new From<T>();
+            from.SqlString = delete.SqlString + from.ToString();
             return from;
         }
         #endregion

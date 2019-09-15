@@ -19,11 +19,19 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         {
             return string.Format("From {0} ",TableName);
         }
+    }
 
-        public virtual string ToString<T>()
+    public class From<T>:WordsBase
+    {
+        public string TableName { get; private set; }
+
+        public From():base(typeof(T))
         {
-            TableName = typeof(T).Name;
+            this.TableName = GetTableName();
+        }
 
+        public override string ToString()
+        {
             return string.Format("From {0} ", TableName);
         }
     }

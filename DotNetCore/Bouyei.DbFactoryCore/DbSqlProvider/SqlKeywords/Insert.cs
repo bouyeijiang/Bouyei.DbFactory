@@ -19,12 +19,22 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         {
             return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(columnNames));
         }
+    }
 
-        public string ToString<T>()
+    public class Insert<T> : WordsBase
+    {
+        public string TableName { get; private set; }
+
+        public Insert():base(typeof(T))
         {
-           string[] ColumnNames = ToColumns<T>();
+            this.TableName = GetTableName();
+        }
 
-            return string.Format("Insert Into {0}({1}) ", typeof(T).Name, base.ToString(ColumnNames));
+        public override string ToString()
+        {
+            var ColumnNames = GetColumns();
+
+            return string.Format("Insert Into {0}({1}) ",TableName, base.ToString(ColumnNames));
         }
     }
 }

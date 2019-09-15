@@ -24,17 +24,24 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             }
             return builder.Append(" ").ToString();
         }
+    }
 
-        public string ToString<T>(params T[] value)
+    public class Values<T> : WordsBase
+    {
+        public Values():base(typeof(T))
+        {
+
+        }
+
+        public string ToString(params T[] value)
         {
             StringBuilder builder = new StringBuilder("Values ");
-            var pros = typeof(T).GetProperties(BindingFlags.Public
-                | BindingFlags.Instance);
+            var pros = GetProperties();
 
             for (int i = 0; i < value.Length; ++i)
             {
                 builder.AppendFormat("({0}){1}",
-                    base.ParameterFormat<T>(pros,value[i]), i < value.Length - 1 ? "," : "");
+                    base.ParameterFormat(pros, value[i]), i < value.Length - 1 ? "," : "");
             }
             return builder.Append(" ").ToString();
         }

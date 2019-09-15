@@ -6,7 +6,24 @@ using System.Threading.Tasks;
 
 namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 {
-   public class Insert:WordsBase
+    public class Insert<T> : WordsBase
+    {
+        public string TableName { get; private set; }
+
+        public Insert() : base(typeof(T))
+        {
+            this.TableName = GetTableName();
+        }
+
+        public override string ToString()
+        {
+            var ColumnNames = GetColumns();
+
+            return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(ColumnNames));
+        }
+    }
+
+    public class Insert:WordsBase
     {
         public string TableName { get; private set; }
 
@@ -18,13 +35,6 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         public override string ToString(string[] columnNames)
         {
             return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(columnNames));
-        }
-
-        public string ToString<T>()
-        {
-           string[] ColumnNames = ToColumns<T>();
-
-            return string.Format("Insert Into {0}({1}) ", typeof(T).Name, base.ToString(ColumnNames));
         }
     }
 }
