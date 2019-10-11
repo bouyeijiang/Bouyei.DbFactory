@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bouyei.DbFactoryCore\Bouyei.DbFactoryCore.csproj" />
+    <PackageReference Include="Bouyei.DbFactoryCore" Version="1.2.3.7" />
   </ItemGroup>
 
 </Project>

@@ -51,13 +51,15 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, pros.Select(x => x.Name))))
+                var names = pros.Select(x => x.Name).ToArray();
+
+                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, names)))
                 {
                     foreach (var item in dataSource)
                     {
-                        var ps = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        //var ps = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-                        foreach (var col in ps)
+                        foreach (var col in pros)
                         {
                             object val = col.GetValue(item, null);
                             if (val == null) continue;
