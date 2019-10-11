@@ -109,7 +109,6 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
             return attr.Name;
         }
 
-
         protected string GetColumnAttributeName(PropertyInfo pInfo)
         {
             var bAttr = pInfo.GetCustomAttribute<BaseAttribute>(false);
