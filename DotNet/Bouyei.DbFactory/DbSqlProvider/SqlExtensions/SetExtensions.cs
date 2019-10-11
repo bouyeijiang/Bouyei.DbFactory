@@ -17,10 +17,10 @@ namespace Bouyei.DbFactory
             return set;
         }
 
-        public static Set Set<T>(this Update update, T value)
+        public static Set<T> Set<T>(this Update<T> update, T value)
         {
-            Set set = new Set();
-            set.SqlString = update.SqlString + set.ToString<T>(value);
+            Set<T> set = new Set<T>();
+            set.SqlString = update.SqlString + set.ToString(value);
             return set;
         }
     }

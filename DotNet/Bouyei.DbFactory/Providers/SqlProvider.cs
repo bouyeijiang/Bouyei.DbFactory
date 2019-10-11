@@ -29,17 +29,17 @@ namespace Bouyei.DbFactory
             return _select;
         }
 
-        public Select Select<T>() where T : class
+        public Select<T> Select<T>() where T : class
         {
-            Select _select = new Select();
-            _select.SqlString = _select.ToString<T>();
+            Select<T> _select = new Select<T>();
+            _select.SqlString = _select.ToString();
             return _select;
         }
 
-        public Insert Insert<T>() where T : class
+        public Insert<T> Insert<T>() where T : class
         {
-            Insert  insert = new Insert(string.Empty);
-            insert.SqlString = insert.ToString<T>();
+            Insert<T> insert = new Insert<T>();
+            insert.SqlString = insert.ToString();
 
             return insert;
         }
@@ -59,10 +59,10 @@ namespace Bouyei.DbFactory
             return up;
         }
 
-        public Update Update<T>() where T:class
+        public Update<T> Update<T>() where T:class
         {
-            Update up = new Update();
-            up.SqlString = up.ToString<T>();
+            Update<T> up = new Update<T>();
+            up.SqlString = up.ToString();
             return up;
         }
 
