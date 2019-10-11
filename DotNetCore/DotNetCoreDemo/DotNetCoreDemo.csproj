@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bouyei.DbFactoryCore\Bouyei.DbFactoryCore.csproj" />
+    <PackageReference Include="Bouyei.DbFactoryCore" Version="1.2.3.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DbEntity\DbEntity.csproj" />
   </ItemGroup>
 
