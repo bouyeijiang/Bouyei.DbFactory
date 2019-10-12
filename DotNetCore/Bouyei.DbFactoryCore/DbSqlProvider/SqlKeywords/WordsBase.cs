@@ -51,7 +51,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
             return items.Where(x => ExistIgnoreAttribute(x) == false);
         }
 
-        protected string ParameterFormat(params object[] param)
+        protected string ParameterFormat(object[] param)
         {
             if (param == null || param.Length == 0) return string.Empty;
 

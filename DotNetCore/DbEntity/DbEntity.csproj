@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bouyei.DbFactoryCore" Version="1.2.3.7" />
+    <ProjectReference Include="..\Bouyei.DbFactoryCore\Bouyei.DbFactoryCore.csproj" />
   </ItemGroup>
 
 </Project>
