@@ -140,25 +140,9 @@ namespace Bouyei.DbFactory
                     || reader.IsDBNull(pi.DbIndex)) continue;
 
                 object dbValue = reader.GetValue(pi.DbIndex);
-
-                //if (dbValue == null || dbValue == DBNull.Value)
-                //    continue;
-
+ 
                 expPro.SetValue(value, pi.Name, dbValue);
-
-                //for (int i = 0; i < reader.FieldCount; ++i)
-                //{
-                //    if (NameEquals(pi.Name, reader.GetName(i)))
-                //    {
-                //        object dbValue = reader.GetValue(i);
-
-                //        if (dbValue == null || dbValue == DBNull.Value)
-                //            continue;
-
-                //        expressPro.SetValue(value, pi.Name, dbValue);
-                //        break;
-                //    }
-                //}
+ 
             }
             return value;
         }
@@ -186,25 +170,9 @@ namespace Bouyei.DbFactory
                         ||reader.IsDBNull(pi.DbIndex)) continue;
                  
                     object dbValue = reader.GetValue(pi.DbIndex);
-
-                    //if (dbValue == null || dbValue == DBNull.Value)
-                    //    continue;
-
+ 
                     expPro.SetValue(value, pi.Name, dbValue);
-
-                    //for (int i = 0; i < reader.FieldCount; ++i)
-                    //{
-                    //if (NameEquals(pi.Name, reader.GetName(i)))
-                    //{
-                    //    object dbValue = reader.GetValue(i);
-
-                    //    if (dbValue == null || dbValue == DBNull.Value)
-                    //        continue;
-
-                    //    expPro.SetValue(value, pi.Name, dbValue);
-                    //    break;
-                    //}
-                    // }
+ 
                 }
                 items.Add(value);
             }
@@ -272,14 +240,7 @@ namespace Bouyei.DbFactory
                         ||reader.IsDBNull(pi.DbIndex)) continue;
                      
                     DataReaderDelegateToGeneric<T>(reader, pi.DbIndex, value, pi, expressPro);
-                    //for (int i = 0; i < reader.FieldCount; ++i)
-                    //{
-                    //    if (NameEquals(pi.Name, reader.GetName(i)))
-                    //    {
-                    //        DataReaderDelegateToGeneric<T>(reader, i, value, pi, expressPro);
-                    //        break;
-                    //    }
-                    //}
+ 
                 }
                 items.Add(value);
             }

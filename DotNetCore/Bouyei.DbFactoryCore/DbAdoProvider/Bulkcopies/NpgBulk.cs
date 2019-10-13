@@ -58,7 +58,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
                         for(int i=0;i<cols.Length;++i)
                         {
                             cols[i] = pros[i].GetValue(item, null);
-                           // WriteValue(val, col.DeclaringType.Name,import);
                         }
                         import.WriteRow(cols);
                         ++rows;
