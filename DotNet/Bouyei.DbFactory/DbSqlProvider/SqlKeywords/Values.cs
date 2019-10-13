@@ -36,7 +36,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         public string ToString(params T[] value)
         {
             StringBuilder builder = new StringBuilder("Values ");
-            var pros = GetProperties();
+            var pros = GetProperties().ToArray();
 
             for (int i = 0; i < value.Length; ++i)
             {

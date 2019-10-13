@@ -14,30 +14,28 @@ namespace DotNetCoreDemo
         {
             string connstr = "server=127.0.0.1;Port=5432;Database=postgres;uid=postgres;pwd=bouyei;";
             DbProvider dbProvider = new DbProvider(connstr, Bouyei.DbFactoryCore.DbType.PostgreSQL);
-
+     
             //string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
             //IAdoProvider dbProvider = AdoProvider.CreateProvider(str,Bouyei.DbFactoryCore.DbType.MySql);
             List<luser> ls = new List<luser>();
             ls.Add(new luser()
             {
                 uname = "bouyei",
-                age = 28,
+                uage = 28,
                 score = 34.4f,
                 upwd = "dfs"
             });
             ls.Add(new luser()
             {
                 uname = "hkj",
-                age = 30,
+                uage = 30,
                 score = 34.56f,
                 upwd = "地方"
             });
 
             var param = new CopyParameter<Array>(ls.ToArray());
-
             var arraybrt = dbProvider.BulkCopy(param);
             Console.WriteLine(arraybrt.Info);
-
             // string connectionString = "Data Source=127.0.0.1;Initial Catalog=B;User ID=sa;Password=123456;";
             //IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
 
@@ -106,7 +104,7 @@ namespace DotNetCoreDemo
 
         public string upwd { get; set; }
 
-        public int age { get; set; }
+        public int uage { get; set; }
         [Ignore]
         public float score { get; set; }
     }

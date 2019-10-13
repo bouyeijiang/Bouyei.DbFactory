@@ -51,19 +51,14 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-
-                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName,pros.Select(x => x.Name) )))
+                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, pros.Select(x => x.Name))))
                 {
                     foreach (var item in dataSource)
                     {
-                        //var ps = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-                        foreach (var col in pros)
+                        object[] cols = new object[pros.Length];
+                        for (int i = 0; i < cols.Length; ++i)
                         {
-                            object val = col.GetValue(item, null);
-                            if (val == null) continue;
-
-                            WriteValue(val, col.PropertyType.Name, import);
+                            cols[i] = pros[i].GetValue(item, null);
                         }
                         ++rows;
                     }
@@ -149,46 +144,46 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             }
         }
 
-        private void WriteValue(object value,string typeName,NpgsqlBinaryImporter importer)
-        {
-            switch (typeName)
-            {
-                case "String":
-                    importer.Write(value.ToString());
-                    break; 
-                case "Int":
-                case "Int32":
-                    importer.Write((int)value);
-                    break;
-                case "Long":
-                case "Int64":
-                    importer.Write((long)value);
-                    break;
-                case "Decimal":
-                    importer.Write((decimal)value);
-                    break;
-                case "Double":
-                    importer.Write((double)value);
-                    break;
-                case "Float":
-                    importer.Write((float)value);
-                    break;
-                case "Byte":
-                    importer.Write((byte)value);
-                    break;
-                case "Char":
-                    importer.Write((char)value);
-                    break;
-                case "Boolean":
-                    importer.Write((bool)value);
-                    break;
-                case "DateTime":
-                    importer.Write((DateTime)value);
-                    break;
-                default:
-                    importer.Write(value.ToString());
-                    break;
-            }
-        }
+        //private void WriteValue(object value,string typeName,NpgsqlBinaryImporter importer)
+        //{
+        //    switch (typeName)
+        //    {
+        //        case "String":
+        //            importer.Write(value.ToString());
+        //            break; 
+        //        case "Int":
+        //        case "Int32":
+        //            importer.Write((int)value);
+        //            break;
+        //        case "Long":
+        //        case "Int64":
+        //            importer.Write((long)value);
+        //            break;
+        //        case "Decimal":
+        //            importer.Write((decimal)value);
+        //            break;
+        //        case "Double":
+        //            importer.Write((double)value);
+        //            break;
+        //        case "Float":
+        //            importer.Write((float)value);
+        //            break;
+        //        case "Byte":
+        //            importer.Write((byte)value);
+        //            break;
+        //        case "Char":
+        //            importer.Write((char)value);
+        //            break;
+        //        case "Boolean":
+        //            importer.Write((bool)value);
+        //            break;
+        //        case "DateTime":
+        //            importer.Write((DateTime)value);
+        //            break;
+        //        default:
+        //            importer.Write(value.ToString());
+        //            break;
+        //    }
+        //}
     }
 }
