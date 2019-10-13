@@ -92,21 +92,32 @@ namespace Bouyei.DbFactoryDemo
             //var brt= dbprovider.BulkCopy(new BulkParameter(rt.Result));
 
 
-            DataTable dt = new DataTable();
-            dt.Columns.Add("uname",typeof(string));
-            dt.Columns.Add("upwd", typeof(string));
-            dt.Columns.Add("age",typeof(int));
-            dt.Columns.Add("score", typeof(float));
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("uname",typeof(string));
+            //dt.Columns.Add("upwd", typeof(string));
+            //dt.Columns.Add("age",typeof(int));
+            //dt.Columns.Add("score", typeof(float));
 
-            dt.Rows.Add("bouyei", "232a", 12, 239.4);
-            dt.Rows.Add("hell哦", "232a", 12, 239.4);
-            dt.TableName = "luser";
+            //dt.Rows.Add("bouyei", "232a", 12, 239.4);
+            //dt.Rows.Add("hell哦", "232a", 12, 239.4);
+            //dt.TableName = "luser";
 
-            string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.MySql);
-            var c = dbProvider.Connect(str);
+            string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=bouyei;database=postgres;";
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.PostgreSQL);
 
-            var brt= dbProvider.BulkCopy(new BulkParameter(dt));
+            //var brt= dbProvider.BulkCopy(new BulkParameter(dt));
+
+            fc3d[] fc = new fc3d[] {
+                new fc3d(){ fname="dd", fcode=121 },
+                new fc3d(){fname="sd",fcode=23 },
+                new fc3d(){ fname="个",fcode=2323}
+            };
+
+            var param = new CopyParameter<Array>(fc);
+            param.TableName = "fc3d";
+
+            var rt = dbProvider.BulkCopy(param);
+
         }
 
         private static void AdoDemo(string connectionString)
@@ -188,6 +199,13 @@ namespace Bouyei.DbFactoryDemo
             [Ignore]
             public string Pwd { get; set; }
         }
+    }
+
+    public class fc3d
+    {
+        public string fname { get; set; }
+
+        public long fcode { get; set; }
     }
 
     public class TdWeight

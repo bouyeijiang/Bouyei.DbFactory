@@ -1,18 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {}
+    "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+    "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "projectUniqueName": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
         "projectName": "DbEntity",
-        "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
         "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
+        "outputPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\bouyei\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

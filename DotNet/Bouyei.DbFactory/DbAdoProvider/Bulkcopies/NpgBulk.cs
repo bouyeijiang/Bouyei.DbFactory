@@ -51,9 +51,8 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-                var names = pros.Select(x => x.Name).ToArray();
 
-                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, names)))
+                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName,pros.Select(x => x.Name) )))
                 {
                     foreach (var item in dataSource)
                     {
@@ -64,9 +63,9 @@ namespace Bouyei.DbFactory.DbAdoProvider.Bulkcopies
                             object val = col.GetValue(item, null);
                             if (val == null) continue;
 
-                            WriteValue(val, col.DeclaringType.Name, import);
-                            ++rows;
+                            WriteValue(val, col.PropertyType.Name, import);
                         }
+                        ++rows;
                     }
                     import.Complete();
                 }

@@ -316,7 +316,6 @@ E:\工作文件夹\Projects\DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\
 E:\工作文件夹\Projects\DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.AssemblyInfo.cs
 E:\工作文件夹\Projects\DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll
 E:\工作文件夹\Projects\DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.pdb
-F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.csprojAssemblyReference.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.pdb
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\clidriver\bin\db2app64.dll
@@ -419,7 +418,6 @@ F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.deps.json
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.pdb
-F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.csproj.CoreCompileInputs.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.AssemblyInfoInputs.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.AssemblyInfo.cs
 E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\bin\Debug\netcoreapp2.2\clidriver\bin\db2app64.dll
@@ -527,3 +525,4 @@ E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreap
 E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.AssemblyInfo.cs
 E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll
 E:\Projects\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.pdb
+F:\Project\Bouyei.DbFactory\DotNetCore\Bouyei.DbFactoryCore\obj\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.csprojAssemblyReference.cache

@@ -12,15 +12,11 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            string connstr = "server=139.9.145.31;Port=5432;Database=postgres;uid=postgres;pwd=BOUYEI;";
-            using(DbProvider provider=new DbProvider(connstr,Bouyei.DbFactoryCore.DbType.PostgreSQL))
-            {
-                var brt = provider.Query<dbuser>(x => true);
+            string connstr = "server=127.0.0.1;Port=5432;Database=postgres;uid=postgres;pwd=bouyei;";
+            DbProvider dbProvider = new DbProvider(connstr, Bouyei.DbFactoryCore.DbType.PostgreSQL);
 
-            }
-
-            string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(str,Bouyei.DbFactoryCore.DbType.MySql);
+            //string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
+            //IAdoProvider dbProvider = AdoProvider.CreateProvider(str,Bouyei.DbFactoryCore.DbType.MySql);
             List<luser> ls = new List<luser>();
             ls.Add(new luser()
             {
@@ -37,7 +33,10 @@ namespace DotNetCoreDemo
                 upwd = "地方"
             });
 
-            var arraybrt = dbProvider.BulkCopy(new CopyParameter<Array>(ls.ToArray()));
+            var param = new CopyParameter<Array>(ls.ToArray());
+
+            var arraybrt = dbProvider.BulkCopy(param);
+            Console.WriteLine(arraybrt.Info);
 
             // string connectionString = "Data Source=127.0.0.1;Initial Catalog=B;User ID=sa;Password=123456;";
             //IAdoProvider adoProvider = AdoProvider.CreateProvider(connectionString);
@@ -81,6 +80,7 @@ namespace DotNetCoreDemo
             //{
             //    Console.WriteLine(item.no);
             //}
+
             Console.ReadKey();
         }
 
@@ -90,6 +90,13 @@ namespace DotNetCoreDemo
             public string name { get; set; }
         }
 
+    }
+
+    public class fc3d
+    {
+        public string fname { get; set; }
+
+        public long fcode { get; set; }
     }
 
     [MappedName("db_user")]

@@ -6,10 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bouyei.DbFactoryCore" Version="1.2.3.7" />
+    <PackageReference Include="Npgsql" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bouyei.DbFactoryCore\Bouyei.DbFactoryCore.csproj" />
     <ProjectReference Include="..\DbEntity\DbEntity.csproj" />
   </ItemGroup>
 

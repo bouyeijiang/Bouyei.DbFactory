@@ -54,16 +54,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Bulkcopies
                 {
                     foreach (var item in dataSource)
                     {
-                        var ps = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        //var ps = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-                        foreach (var col in ps)
+                        foreach (var col in pros)
                         {
                             object val = col.GetValue(item, null);
                             if (val == null) continue;
 
-                            WriteValue(val, col.DeclaringType.Name,import);
-                            ++rows;
+                            WriteValue(val, col.PropertyType.Name,import);
                         }
+                        ++rows;
                     }
                     import.Complete();
                 }
