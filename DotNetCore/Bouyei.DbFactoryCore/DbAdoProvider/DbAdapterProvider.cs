@@ -25,6 +25,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     return new SqliteFactory().GetFactory();
                 case DbType.PostgreSQL:
                     return new NpgFactory().GetFactory();
+                case DbType.Oracle:
+                    return new OracleFactory().GetFactory();
+                case DbType.DB2:
+                    return new Db2Factory().GetFactory();
                 default: return null;
             }
         }

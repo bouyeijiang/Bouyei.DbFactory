@@ -37,7 +37,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             dbProviderFactory =  GetAdapterFactory();
           
             if (dbProviderFactory == null)
-                throw new Exception("不提供支持该" + dbType.ToString() + "类型的实例");
+                throw new Exception("暂不提供支持该" + dbType.ToString() + "类型的实例");
         }
 
         protected DbConnection CreateConnection(string ConnectionString)

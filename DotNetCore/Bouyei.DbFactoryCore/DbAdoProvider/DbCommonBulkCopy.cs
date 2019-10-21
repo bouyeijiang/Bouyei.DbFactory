@@ -88,20 +88,20 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                     factory = new SqlFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
                 }
             }
-            //else if (ProviderName == ProviderType.DB2)
-            //{
-            //    if (db2BulkCopy == null || this.ConnectionString != ConnectionString)
-            //    {
-            //        db2BulkCopy = new Db2Bulk(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
-            //    }
-            //}
-            //else if (ProviderName == ProviderType.Oracle)
-            //{
-            //    if (oracleBulkCopy == null || this.ConnectionString != ConnectionString)
-            //    {
-            //        oracleBulkCopy = new OracleBulk(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
-            //    }
-            //}
+            else if (DbType == DbType.DB2)
+            {
+                if (factory == null || this.ConnectionString != ConnectionString)
+                {
+                    factory = new Db2Factory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
+                }
+            }
+            else if (DbType == DbType.Oracle)
+            {
+                if (factory == null || this.ConnectionString != ConnectionString)
+                {
+                    factory = new OracleFactory(ConnectionString, BulkCopyTimeout, DbBulkCopyOption);
+                }
+            }
             else if (DbType == DbType.MySql)
             {
                 factory = new MysqlFactory(ConnectionString, BulkCopyTimeout);
@@ -143,39 +143,39 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 }
                 factory = new SqlFactory(dbConn, dbTrans, BulkCopyTimeout, DbBulkCopyOption);
             }
-            //else if (ProviderName == ProviderType.DB2)
-            //{
-            //    if (db2BulkCopy != null || this.ConnectionString != connectionString)
-            //    {
-            //        if (db2BulkCopy != null)
-            //            db2BulkCopy.Dispose();
-            //    }
+            else if (DbType == DbType.DB2)
+            {
+                if (factory != null || this.ConnectionString != connectionString)
+                {
+                    if (factory != null)
+                        factory.Dispose();
+                }
 
-            //    if (dbConn.State != ConnectionState.Open) dbConn.Open();
+                if (dbConn.State != ConnectionState.Open) dbConn.Open();
 
-            //    if (isTransaction)
-            //    {
-            //        DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
-            //    }
-            //    db2BulkCopy = new Db2Bulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
-            //}
-            //else if (ProviderName == ProviderType.Oracle)
-            //{
-            //    if (oracleBulkCopy != null || this.ConnectionString != connectionString)
-            //    {
-            //        if (oracleBulkCopy != null)
-            //            oracleBulkCopy.Dispose();
-            //    }
+                if (isTransaction)
+                {
+                    DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
+                }
+                factory = new Db2Factory(dbConn, BulkCopyTimeout, DbBulkCopyOption);
+            }
+            else if (DbType == DbType.Oracle)
+            {
+                if (factory != null || this.ConnectionString != connectionString)
+                {
+                    if (factory != null)
+                        factory.Dispose();
+                }
 
-            //    if (dbConn.State != ConnectionState.Open) dbConn.Open();
+                if (dbConn.State != ConnectionState.Open) dbConn.Open();
 
-            //    if (isTransaction)
-            //    {
-            //        DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
-            //    }
+                if (isTransaction)
+                {
+                    DbBulkCopyOption = BulkCopyOptions.UseInternalTransaction;
+                }
 
-            //    oracleBulkCopy = new OracleBulk(dbConn, BulkCopyTimeout, DbBulkCopyOption);
-            //}
+                factory = new OracleFactory(dbConn, null,BulkCopyTimeout, DbBulkCopyOption);
+            }
             else if (DbType == DbType.MySql)
             {
                 if(factory != null || this.ConnectionString != connectionString)

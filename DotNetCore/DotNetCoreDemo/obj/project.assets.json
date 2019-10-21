@@ -677,6 +677,15 @@
           "lib/netstandard2.0/Npgsql.dll": {}
         }
       },
+      "Oracle.ManagedDataAccess.Core/2.19.50": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -1691,7 +1700,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "Bouyei.DbFactoryCore/1.2.3.8": {
+      "Bouyei.DbFactoryCore/1.2.3.9": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.2",
         "dependencies": {
@@ -1704,6 +1713,7 @@
           "MySql.Data": "8.0.16",
           "MySql.Data.EntityFrameworkCore": "8.0.16",
           "Npgsql": "4.0.6",
+          "Oracle.ManagedDataAccess.Core": "2.19.50",
           "System.Data.SQLite.Core": "1.0.110"
         },
         "compile": {
@@ -1717,7 +1727,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.2",
         "dependencies": {
-          "Bouyei.DbFactoryCore": "1.2.3.8"
+          "Bouyei.DbFactoryCore": "1.2.3.9"
         },
         "compile": {
           "bin/placeholder/DbEntity.dll": {}
@@ -2860,6 +2870,22 @@
         "npgsql.4.1.1.nupkg.sha512",
         "npgsql.nuspec",
         "postgresql.png"
+      ]
+    },
+    "Oracle.ManagedDataAccess.Core/2.19.50": {
+      "sha512": "Ol5ByODjY1XFQFTni+wQQPQp454ktpHyxVNo0uFz+NMNIvU4PeSUdae0mfjns8QyrarrLQ1EFeaIevXjmR47KA==",
+      "type": "package",
+      "path": "oracle.manageddataaccess.core/2.19.50",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PerfCounters/register_odpc_perfmon_counters.ps1",
+        "PerfCounters/unregister_odpc_perfmon_counters.ps1",
+        "info.txt",
+        "lib/netstandard2.0/Oracle.ManagedDataAccess.dll",
+        "oracle.manageddataaccess.core.2.19.50.nupkg.sha512",
+        "oracle.manageddataaccess.core.nuspec",
+        "readme.txt"
       ]
     },
     "Remotion.Linq/2.2.0": {
@@ -5929,7 +5955,7 @@
         "version.txt"
       ]
     },
-    "Bouyei.DbFactoryCore/1.2.3.8": {
+    "Bouyei.DbFactoryCore/1.2.3.9": {
       "type": "project",
       "path": "../Bouyei.DbFactoryCore/Bouyei.DbFactoryCore.csproj",
       "msbuildProject": "../Bouyei.DbFactoryCore/Bouyei.DbFactoryCore.csproj"
@@ -5942,7 +5968,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
-      "Bouyei.DbFactoryCore >= 1.2.3.8",
+      "Bouyei.DbFactoryCore >= 1.2.3.9",
       "DbEntity >= 1.0.0",
       "Microsoft.NETCore.App >= 2.2.0",
       "Npgsql >= 4.1.1"
@@ -5955,11 +5981,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+      "projectUniqueName": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
       "projectName": "DotNetCoreDemo",
-      "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+      "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
       "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-      "outputPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
+      "outputPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5978,11 +6004,11 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-              "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+            "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+              "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
             },
-            "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
-              "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
+            "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+              "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
             }
           }
         }

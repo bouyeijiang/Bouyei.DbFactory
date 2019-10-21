@@ -667,6 +667,15 @@
           "lib/netstandard2.0/Npgsql.dll": {}
         }
       },
+      "Oracle.ManagedDataAccess.Core/2.19.50": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -2764,6 +2773,22 @@
         "lib/netstandard2.0/Npgsql.xml",
         "npgsql.4.0.6.nupkg.sha512",
         "npgsql.nuspec"
+      ]
+    },
+    "Oracle.ManagedDataAccess.Core/2.19.50": {
+      "sha512": "Ol5ByODjY1XFQFTni+wQQPQp454ktpHyxVNo0uFz+NMNIvU4PeSUdae0mfjns8QyrarrLQ1EFeaIevXjmR47KA==",
+      "type": "package",
+      "path": "oracle.manageddataaccess.core/2.19.50",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PerfCounters/register_odpc_perfmon_counters.ps1",
+        "PerfCounters/unregister_odpc_perfmon_counters.ps1",
+        "info.txt",
+        "lib/netstandard2.0/Oracle.ManagedDataAccess.dll",
+        "oracle.manageddataaccess.core.2.19.50.nupkg.sha512",
+        "oracle.manageddataaccess.core.nuspec",
+        "readme.txt"
       ]
     },
     "Remotion.Linq/2.2.0": {
@@ -5770,6 +5795,7 @@
       "MySql.Data >= 8.0.16",
       "MySql.Data.EntityFrameworkCore >= 8.0.16",
       "Npgsql >= 4.0.6",
+      "Oracle.ManagedDataAccess.Core >= 2.19.50",
       "System.Data.SQLite.Core >= 1.0.110"
     ]
   },
@@ -5778,13 +5804,13 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "1.2.3.8",
+    "version": "1.2.3.9",
     "restore": {
-      "projectUniqueName": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+      "projectUniqueName": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
       "projectName": "Bouyei.DbFactoryCore",
-      "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+      "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
       "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-      "outputPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
+      "outputPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5855,6 +5881,10 @@
           "Npgsql": {
             "target": "Package",
             "version": "[4.0.6, )"
+          },
+          "Oracle.ManagedDataAccess.Core": {
+            "target": "Package",
+            "version": "[2.19.50, )"
           },
           "System.Data.SQLite.Core": {
             "target": "Package",

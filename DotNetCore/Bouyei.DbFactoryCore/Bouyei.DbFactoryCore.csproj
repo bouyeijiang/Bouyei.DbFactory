@@ -8,13 +8,13 @@
     <PackageLicenseUrl>http://bouyeijiang.com</PackageLicenseUrl>
     <PackageIconUrl>http://anystore.bouyeijiang.com</PackageIconUrl>
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.2.3.8</Version>
+    <Version>1.2.3.9</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/Bouyei.DbFactory</RepositoryUrl>
-    <AssemblyVersion>1.2.3.8</AssemblyVersion>
-    <FileVersion>1.2.3.8</FileVersion>
+    <AssemblyVersion>1.2.3.9</AssemblyVersion>
+    <FileVersion>1.2.3.9</FileVersion>
     <PackageTags>DbFactory</PackageTags>
     <Authors>bouyei</Authors>
     <Company>bouyei</Company>
@@ -34,6 +34,7 @@
     <PackageReference Include="MySql.Data" Version="8.0.16" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
     <PackageReference Include="Npgsql" Version="4.0.6" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.50" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
   </ItemGroup>
 
