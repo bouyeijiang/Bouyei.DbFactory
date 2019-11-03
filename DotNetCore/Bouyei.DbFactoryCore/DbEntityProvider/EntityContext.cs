@@ -18,9 +18,9 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     { 
         public string ConnectionString { get; set; }
 
-        public DbType ProviderType { get; set; }
+        public FactoryType ProviderType { get; set; }
 
-        public EntityContext(DbType dbType=DbType.SqlServer, string NameOrConnectionString = null)
+        public EntityContext(FactoryType dbType=FactoryType.SqlServer, string NameOrConnectionString = null)
         {
             this.ConnectionString = NameOrConnectionString;
             this.ProviderType = dbType;
@@ -262,20 +262,20 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            if (ProviderType == DbType.SqlServer)
+            if (ProviderType == FactoryType.SqlServer)
             {
                 optionsBuilder.UseSqlServer(ConnectionString, (SqlServerDbContextOptionsBuilder option) =>
                 {
                 });
             }
-            else if (ProviderType == DbType.SQLite)
+            else if (ProviderType == FactoryType.SQLite)
             {
                 optionsBuilder.UseSqlite(ConnectionString, (SqliteDbContextOptionsBuilder option) =>
                 {
 
                 });
             }
-            else if (ProviderType == DbType.MySql)
+            else if (ProviderType == FactoryType.MySql)
             {
                 optionsBuilder.UseMySQL(ConnectionString,(MySQLDbContextOptionsBuilder option) => {
 

@@ -1,48 +1,70 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Bouyei.DbFactoryCore.DbAdoProvider.Factories
+namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
-    public class BaseFactory
+    public class BaseFactory:IBaseFactory
     {
-        public string ConnectionString { get; protected set; }
+        public string ConnectionString { get;  set; }
 
-        public int ExecuteTimeout { get; protected set; }
+        public int ExecuteTimeout { get;  set; }
 
-       public BulkCopiedArgs BulkCopiedHandler { get; set; }
+        public FactoryType DbType { get; set; }
 
-        public virtual DbProviderFactory GetFactory()
+        protected DbProviderFactory dbProviderFactory { get;private set; }
+
+        private IDbConnection dbConnection = null;
+        private IDbTransaction dbTransaction = null;
+
+        public BaseFactory(FactoryType dbType,int executeTimeout)
         {
-            return null;
+            this.DbType = dbType;
+            this.ExecuteTimeout = executeTimeout;
+            dbProviderFactory = GetProviderFactory();
         }
 
-        public DataTable ArrayToDataTable(Array dataSource, string tableName)
+        public BaseFactory(FactoryType factoryType,int executeTimeout,
+            string connectionstring):this(factoryType,executeTimeout)
         {
-            var firstRow = dataSource.GetValue(0).GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            this.ConnectionString = connectionstring;
+            dbProviderFactory = GetProviderFactory();
+        }
 
-            DataTable dt = new DataTable();
-            dt.TableName = tableName;
+        public BaseFactory(FactoryType factoryType,int executeTimeout,
+            IDbConnection dbConnection,IDbTransaction dbTransaction)
+            :this(factoryType,executeTimeout)
+        {
+            this.dbConnection =  dbConnection;
+            this.dbTransaction = dbTransaction;
+            dbProviderFactory = GetProviderFactory();
+        }
 
-            foreach (var p in firstRow)
+        protected virtual DbProviderFactory GetProviderFactory()
+        {
+            switch (DbType)
             {
-                dt.Columns.Add(p.Name, p.PropertyType);
+                case FactoryType.SqlServer:
+                    return SqlServer.SqlFactory.GetFactory();
+                case FactoryType.Oracle:
+                    return  Oracle.OracleFactory.GetFactory();
+                case FactoryType.MySql:
+                    return  Mysql.MysqlFactory.GetFactory();
+                case FactoryType.SQLite:
+                    return Sqlite.SqliteFactory.GetFactory();
+                case FactoryType.PostgreSQL:
+                    return  Postgresql.NpgFactory.GetFactory();
+                case FactoryType.DB2:
+                    return  DB2.Db2Factory.GetFactory();
+                default: throw new Exception("not support type" + DbType);
             }
-
-            foreach (var row in dataSource)
-            {
-                var types = row.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-                var vals = types.Select(x => x.GetValue(row, null)).Where(x => x != null).ToArray();
-                dt.Rows.Add(vals);
-            }
-
-            return dt;
+        }
+               
+        public virtual void Dispose()
+        {
+           
         }
     }
 }

@@ -161,8 +161,6 @@ namespace Bouyei.DbFactoryCore
         public T dataSource { get; set; }
 
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
-
-        public Action<IDbTransaction, int> TransactionCallback { get; set; }
     }
     [Serializable]
     public class DbResult<R, I>

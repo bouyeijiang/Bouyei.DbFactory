@@ -10,7 +10,7 @@ namespace Bouyei.DbFactoryCore
 
     public interface ISqlProvider
     {
-        DbType ProviderType { get; set; }
+        FactoryType ProviderType { get; set; }
 
         Select Select(params string[] columns);
 

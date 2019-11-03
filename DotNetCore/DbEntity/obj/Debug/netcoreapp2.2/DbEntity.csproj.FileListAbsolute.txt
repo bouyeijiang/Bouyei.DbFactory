@@ -428,7 +428,6 @@ F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Debug\netcoreapp2.2\DbEntity
 F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.dll
 F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\bin\Debug\netcoreapp2.2\Bouyei.DbFactoryCore.pdb
 F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Debug\netcoreapp2.2\DbEntity.csprojAssemblyReference.cache
-F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Debug\netcoreapp2.2\DbEntity.csproj.CoreCompileInputs.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Debug\netcoreapp2.2\DbEntity.AssemblyInfoInputs.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Debug\netcoreapp2.2\DbEntity.AssemblyInfo.cs
 F:\Project\Bouyei.DbFactory\DotNetCore\DbEntity\obj\Debug\netcoreapp2.2\DbEntity.csproj.CopyComplete

@@ -10,14 +10,14 @@ namespace Bouyei.DbFactoryCore
 
     public class SqlProvider : ISqlProvider
     {
-       public DbType ProviderType { get;  set; }
+       public FactoryType ProviderType { get;  set; }
 
-        public SqlProvider(DbType providerType=DbType.SqlServer)
+        public SqlProvider(FactoryType providerType=FactoryType.SqlServer)
         {
             this.ProviderType = providerType;
         }
 
-        public static ISqlProvider CreateProvider(DbType providerType = DbType.SqlServer)
+        public static ISqlProvider CreateProvider(FactoryType providerType = FactoryType.SqlServer)
         {
             return new SqlProvider(providerType);
         }

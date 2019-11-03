@@ -8,13 +8,13 @@ namespace Bouyei.DbFactory
     public class AdoProvider : DbProvider,IAdoProvider
     {
         public AdoProvider(string ConnectionString,
-            DbType DbType = DbType.SqlServer)
+            FactoryType DbType = FactoryType.SqlServer)
             : base(ConnectionString, DbType)
         {
         }
 
         public static IAdoProvider CreateProvider(string ConnectionString,
-            DbType dbType=DbType.SqlServer)
+            FactoryType dbType=FactoryType.SqlServer)
         {
             return new AdoProvider(ConnectionString, dbType);
         }
@@ -28,7 +28,7 @@ namespace Bouyei.DbFactory
 
         public static IAdoProvider Clone(IAdoProvider adoProvider)
         {
-            return new AdoProvider(adoProvider.DbConnectionString, adoProvider.DbType);
+            return new AdoProvider(adoProvider.ConnectionString, adoProvider.DbType);
         }
     }
 }
