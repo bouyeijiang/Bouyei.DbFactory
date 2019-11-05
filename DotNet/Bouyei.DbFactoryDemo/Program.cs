@@ -59,10 +59,10 @@ namespace Bouyei.DbFactoryDemo
             //SyncProviderDemo syncProvider = new SyncProviderDemo();
             //syncProvider.Execute();
 
-            //AdoDemo("");
+            AdoDemo("");
            // OrmDemo(connectionString);
 
-            Bulkcopy();
+            //Bulkcopy();
         }
 
         private static void Bulkcopy()
@@ -103,7 +103,7 @@ namespace Bouyei.DbFactoryDemo
             //dt.TableName = "luser";
 
             string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=bouyei;database=postgres;";
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.PostgreSQL);
+            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.FactoryType.PostgreSQL);
 
             //var brt= dbProvider.BulkCopy(new BulkParameter(dt));
 
@@ -129,19 +129,19 @@ namespace Bouyei.DbFactoryDemo
                 CommandText = "select * from [user]"
             });
 
-            DataTable dt = new DataTable();
-            dt.Columns.Add("uname");
-            dt.Columns.Add("age");
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("uname");
+            //dt.Columns.Add("age");
 
-            dt.Rows.Add(new object[] { "bouyei", 27 });
-            dt.Rows.Add(new object[] { "aileenyin", 25 });
-            dt.Rows.Add(new object[] { "hhhh", 13 });
-            dt.TableName = "user";
+            //dt.Rows.Add(new object[] { "bouyei", 27 });
+            //dt.Rows.Add(new object[] { "aileenyin", 25 });
+            //dt.Rows.Add(new object[] { "hhhh", 13 });
+            //dt.TableName = "user";
 
-            var brt = dbProvider.BulkCopy(new BulkParameter()
-            {
-                DataSource = dt
-            });
+            //var brt = dbProvider.BulkCopy(new BulkParameter()
+            //{
+            //    DataSource = dt
+            //});
 
 
             var rt= dbProvider.Query<User>(x => x.age >= 20);

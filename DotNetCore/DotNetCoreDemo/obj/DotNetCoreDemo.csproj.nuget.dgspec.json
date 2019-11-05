@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj": {}
+    "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-      "version": "1.2.3.9",
+    "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+      "version": "1.2.4.1",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+        "projectUniqueName": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
         "projectName": "Bouyei.DbFactoryCore",
-        "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
+        "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj",
         "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
+        "outputPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -73,7 +73,7 @@
             },
             "MySql.Data": {
               "target": "Package",
-              "version": "[8.0.16, )"
+              "version": "[8.0.18, )"
             },
             "MySql.Data.EntityFrameworkCore": {
               "target": "Package",
@@ -81,7 +81,7 @@
             },
             "Npgsql": {
               "target": "Package",
-              "version": "[4.0.6, )"
+              "version": "[4.1.1, )"
             },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
@@ -89,7 +89,7 @@
             },
             "System.Data.SQLite.Core": {
               "target": "Package",
-              "version": "[1.0.110, )"
+              "version": "[1.0.112, )"
             }
           },
           "imports": [
@@ -106,14 +106,14 @@
         }
       }
     },
-    "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+    "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "projectUniqueName": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
         "projectName": "DbEntity",
-        "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
+        "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj",
         "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
+        "outputPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -132,8 +132,8 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-                "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+              "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+                "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
               }
             }
           }
@@ -168,14 +168,14 @@
         }
       }
     },
-    "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj": {
+    "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+        "projectUniqueName": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
         "projectName": "DotNetCoreDemo",
-        "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
+        "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\DotNetCoreDemo.csproj",
         "packagesPath": "C:\\Users\\bouyei\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
+        "outputPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DotNetCoreDemo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -194,11 +194,11 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
-                "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
+              "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj": {
+                "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\Bouyei.DbFactoryCore\\Bouyei.DbFactoryCore.csproj"
               },
-              "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
-                "projectPath": "E:\\Projects\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
+              "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj": {
+                "projectPath": "F:\\Project\\Bouyei.DbFactory\\DotNetCore\\DbEntity\\DbEntity.csproj"
               }
             }
           }

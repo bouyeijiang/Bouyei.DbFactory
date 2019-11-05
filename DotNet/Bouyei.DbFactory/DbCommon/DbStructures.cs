@@ -126,8 +126,6 @@ namespace Bouyei.DbFactory
 
         public bool IsAutoDispose { get; set; }
 
-        public Action<IDbTransaction, int> TransactionCallback { get; set; }
-
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
     }
 
@@ -162,8 +160,6 @@ namespace Bouyei.DbFactory
         public T dataSource { get; set; }
 
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
-
-        public Action<IDbTransaction, int> TransactionCallback { get; set; }
     }
 
     [Serializable]
@@ -202,7 +198,7 @@ namespace Bouyei.DbFactory
     [Serializable]
     public class ConnectionConfig
     {
-        public DbType DbType { get; set; }
+        public FactoryType DbType { get; set; }
 
         public string DbIp { get; set; }
 
@@ -220,14 +216,14 @@ namespace Bouyei.DbFactory
         {
             switch (DbType)
             {
-                case DbType.SqlServer:
+                case FactoryType.SqlServer:
                     {
                         if (DbPort <= 0) DbPort = 1433;
                         ConnectionString = string.Format("Server={0},{1};Database={2};User Id={3};Password={4};",
                             DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case DbType.Oracle:
+                case FactoryType.Oracle:
                     //case DbType.MsOracle:
                     {
                         if (DbPort <= 0) DbPort = 1521;
@@ -238,7 +234,7 @@ namespace Bouyei.DbFactory
                              DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case DbType.DB2:
+                case FactoryType.DB2:
                     {
                         if (DbPort <= 0) DbPort = 50000;
 
@@ -246,27 +242,27 @@ namespace Bouyei.DbFactory
                             DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case DbType.MySql:
+                case FactoryType.MySql:
                     {
                         if (DbPort <= 0) DbPort = 3306;
                         ConnectionString = string.Format("Data Source={0};port={1};Database={2};User Id={3};Password={4};pooling=false;CharSet=utf8;",
                           DbIp, DbPort, DbName, DbUserName, DbPassword);
                     }
                     break;
-                case DbType.SQLite:
+                case FactoryType.SQLite:
                     {
                         ConnectionString = string.Format("Data Source={0};Version=3;", DbIp);
                         if (string.IsNullOrEmpty(DbPassword) == false)
                             ConnectionString += "Password=" + DbPassword;
                     }
                     break;
-                case DbType.PostgreSQL:
+                case FactoryType.PostgreSQL:
                     ConnectionString = $"Server={DbIp};Port={DbPort};UserId={DbUserName};Password={DbPort};Database={DbName};";
                     break;
-                case DbType.Odbc:
+                case FactoryType.Odbc:
                     ConnectionString = $"Driver={{DbName}};Server={DbIp};Database={DbName}; Uid={DbUserName};Pwd={DbPassword};";
                     break;
-                case DbType.OleDb:
+                case FactoryType.OleDb:
                     {
                         ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DbName};";
                         if (string.IsNullOrEmpty(DbUserName) == false)

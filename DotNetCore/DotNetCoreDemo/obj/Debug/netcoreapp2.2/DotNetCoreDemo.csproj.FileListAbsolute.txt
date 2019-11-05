@@ -456,7 +456,6 @@ F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\bin\Debug\netcoreapp2.2\Db
 F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csprojAssemblyReference.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.Properties.Resources.resources
 F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csproj.GenerateResource.cache
-F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csproj.CoreCompileInputs.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.AssemblyInfoInputs.cache
 F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.AssemblyInfo.cs
 F:\Project\Bouyei.DbFactory\DotNetCore\DotNetCoreDemo\obj\Debug\netcoreapp2.2\DotNetCoreDemo.csproj.CopyComplete

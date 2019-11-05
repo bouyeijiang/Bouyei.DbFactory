@@ -16,18 +16,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 {
     using DbUtils;
 
-    public class DbProvider : DbCommonBuilder, IDbProvider
+    public class DbProvider : DbBaseProvider, IDbProvider
     {
         #region variable
         private bool disposed = false;
-
-        public string DbConnectionString { get; set; }
 
         #endregion
 
         #region  dispose
 
-        public void Dispose()
+        public override void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -42,7 +40,6 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
                 if (this.dbConn != null) this.dbConn.Dispose();
                 if (this.dbDataAdapter != null) this.dbDataAdapter.Dispose();
                 if (this.dbCommand != null) this.dbCommand.Dispose();
-                if (this.dbBulkCopy != null) this.dbBulkCopy.Dispose();
                 if (this.dbCommandBuilder != null) dbCommandBuilder.Dispose();
                 if (this.dbTransaction != null) dbTransaction.Dispose();
             }
@@ -53,15 +50,24 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
         #region  structure
         public DbProvider(
-            string connectionString,
-            DbType dbType = DbType.SqlServer)
-            : base(dbType)
+            string ConnectionString,
+            FactoryType dbType = FactoryType.SqlServer)
+            : base(dbType,ConnectionString)
         {
-            this.DbConnectionString = connectionString;
+            
         }
 
         public DbProvider(
-            DbType dbType = DbType.SqlServer)
+            string ConnectionString,
+            int ExecuteTimeout,
+            FactoryType dbType = FactoryType.SqlServer)
+            : base(dbType, ExecuteTimeout, ConnectionString)
+        {
+
+        }
+
+        public DbProvider(
+            FactoryType dbType = FactoryType.SqlServer)
             : base(dbType)
         {
             
@@ -72,10 +78,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         #region public
         public DbResult<bool, string> Connect(string ConnectionString)
         {
-            this.DbConnectionString = ConnectionString;
+            this.ConnectionString = ConnectionString;
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(this.ConnectionString))
                 {
                     return new DbResult<bool, string>(true, string.Empty);
                 }
@@ -90,10 +96,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = this.CreateCommand(conn, dbParameter, trans))
-                using (DbDataAdapter adapter = this.CreateAdapter())
+                using (DbDataAdapter adapter = this.CreateDataAdapter())
                 {
                     DataTable dt = new DataTable();
                     adapter.SelectCommand = cmd;
@@ -115,10 +121,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = this.CreateCommand(conn, dbParameter, trans))
-                using (DbDataAdapter adapter = this.CreateAdapter())
+                using (DbDataAdapter adapter = this.CreateDataAdapter())
                 {
                     DataSet ds = new DataSet();
                     adapter.SelectCommand = cmd;
@@ -141,7 +147,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             try
             {
                 int rows = 0;
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                 using (DbDataReader reader = cmd.ExecuteReader())
@@ -174,7 +180,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             try
             {
                 int rows = 0;
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                 using (DbDataReader reader = cmd.ExecuteReader())
@@ -207,7 +213,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                DbConnection conn = CreateConnection(DbConnectionString);
+                DbConnection conn = CreateConnection(ConnectionString);
                 DbCommand cmd = CreateCommand(conn, dbParameter);
                 IDataReader reader = cmd.ExecuteReader();
                 return DbResult<IDataReader, string>.Create(reader, string.Empty);
@@ -222,7 +228,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                 {
@@ -247,7 +253,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                 using (DbDataReader dReader = cmd.ExecuteReader())
@@ -272,7 +278,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction tran = BeginTransaction(conn))
                 {
                     try
@@ -305,7 +311,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction tran = BeginTransaction(conn))
                 {
                     try
@@ -361,7 +367,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                 {
@@ -387,55 +393,26 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                Exception temex = null;
                 int cnt = 0;
-                using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbParameter))
+                var copy = new CopyFactory(DbType, ConnectionString, dbParameter.ExecuteTimeout)
                 {
-                    bulkCopy.Open();
-                    bulkCopy.BulkCopiedHandler = dbParameter.BulkCopiedHandler;
+                    BulkCopiedHandler = dbParameter.BulkCopiedHandler
+                };
 
-                    bulkCopy.BatchSize = dbParameter.BatchSize;
-                    bulkCopy.BulkCopyTimeout = dbParameter.ExecuteTimeout;
-
-                    try
-                    {
-                        if ((dbParameter.DataSource == null
-                            || dbParameter.DataSource.Rows.Count == 0)
-                            && dbParameter.IDataReader != null)
-                        {
-                            bulkCopy.WriteToServer(dbParameter.IDataReader, dbParameter.TableName);
-                            cnt = 1;
-                        }
-                        else
-                        {
-                            if (dbParameter.BatchSize > dbParameter.DataSource.Rows.Count)
-                                dbParameter.BatchSize = dbParameter.DataSource.Rows.Count;
-
-                            bulkCopy.WriteToServer(dbParameter.DataSource);
-                            cnt = dbParameter.DataSource.Rows.Count;
-                        }
-
-                        //use transaction
-                        if (dbParameter.IsTransaction)
-                        {
-                            //有事务回调则由外边控制事务提交,否则直接提交事务
-                            if (dbParameter.TransactionCallback != null)
-                                dbParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
-                            else
-                                bulkCopy.dbTrans.Commit();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        temex = ex;
-                        if (dbParameter.IsTransaction && bulkCopy.dbTrans != null)
-                        {
-                            bulkCopy.dbTrans.Rollback();
-                        }
-                    }
+                if ((dbParameter.DataSource == null
+                    || dbParameter.DataSource.Rows.Count == 0)
+                    && dbParameter.IDataReader != null)
+                {
+                    copy.WriteToServer(dbParameter.IDataReader, dbParameter.TableName);
+                    cnt = 1;
                 }
+                else
+                {
+                    if (dbParameter.BatchSize > dbParameter.DataSource.Rows.Count)
+                        dbParameter.BatchSize = dbParameter.DataSource.Rows.Count;
 
-                if (temex != null) throw temex;
+                    cnt = copy.WriteToServer(dbParameter.DataSource, dbParameter.BatchSize);
+                }
                 return DbResult<int, string>.Create(cnt, string.Empty);
             }
             catch (Exception ex)
@@ -448,63 +425,35 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                Exception temex = null;
                 int cnt = 0;
-                using (DbCommonBulkCopy bulkCopy = CreateBulkCopy(DbConnectionString, dbParameter))
+                var copy = new CopyFactory(DbType, ConnectionString, dbParameter.ExecuteTimeout)
                 {
-                    bulkCopy.Open();
-                    bulkCopy.BulkCopiedHandler = dbParameter.BulkCopiedHandler;
+                    BulkCopiedHandler = dbParameter.BulkCopiedHandler
+                };
+                if (dbParameter.dataSource is DataTable)
+                {
+                    var data = dbParameter.dataSource as DataTable;
+                    if (dbParameter.BatchSize > data.Rows.Count)
+                        dbParameter.BatchSize = data.Rows.Count;
 
-                    bulkCopy.BatchSize = dbParameter.BatchSize;
-                    bulkCopy.BulkCopyTimeout = dbParameter.ExecuteTimeout;
-
-                    try
-                    {
-                        if (dbParameter.dataSource is DataTable)
-                        {
-                            var data = dbParameter.dataSource as DataTable;
-                            if (dbParameter.BatchSize > data.Rows.Count)
-                                dbParameter.BatchSize = data.Rows.Count;
-
-                            bulkCopy.WriteToServer(data);
-                            cnt = data.Rows.Count;
-                        }
-                        else if (dbParameter.dataSource is IDataReader)
-                        {
-                            bulkCopy.WriteToServer(dbParameter.dataSource as IDataReader, dbParameter.TableName);
-                            cnt = 1;
-                        }
-                        else if (dbParameter.dataSource is Array)
-                        {
-                            var array = dbParameter.dataSource as Array;
-
-                            bulkCopy.WriteToServer(array, dbParameter.TableName);
-                            cnt = array.Length;
-                        }
-                        else
-                            throw new Exception("not support data type");
-
-                        //use transaction
-                        if (dbParameter.IsTransaction)
-                        {
-                            //有事务回调则由外边控制事务提交,否则直接提交事务
-                            if (dbParameter.TransactionCallback != null)
-                                dbParameter.TransactionCallback(bulkCopy.dbTrans, cnt);
-                            else
-                                bulkCopy.dbTrans.Commit();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        temex = ex;
-                        if (dbParameter.IsTransaction && bulkCopy.dbTrans != null)
-                        {
-                            bulkCopy.dbTrans.Rollback();
-                        }
-                    }
+                    copy.WriteToServer(data);
+                    cnt = data.Rows.Count;
                 }
+                else if (dbParameter.dataSource is IDataReader)
+                {
+                    copy.WriteToServer(dbParameter.dataSource as IDataReader, dbParameter.TableName);
+                    cnt = 1;
+                }
+                else if (dbParameter.dataSource is Array)
+                {
+                    var array = dbParameter.dataSource as Array;
 
-                if (temex != null) throw temex;
+                    copy.WriteToServer(array, dbParameter.TableName);
+                    cnt = array.Length;
+                }
+                else
+                    throw new Exception("not support data type");
+
                 return DbResult<int, string>.Create(cnt, string.Empty);
             }
             catch (Exception ex)
@@ -517,7 +466,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
                 using (DbDataReader reader = cmd.ExecuteReader())
@@ -543,10 +492,10 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
         {
             try
             {
-                using (DbConnection conn = CreateConnection(DbConnectionString))
+                using (DbConnection conn = CreateConnection(ConnectionString))
                 using (DbTransaction trans = dbParameter.IsTransaction ? BeginTransaction(conn, dbParameter.IsolationLevel) : null)
                 using (DbCommand cmd = CreateCommand(conn, dbParameter, trans))
-                using (DbDataAdapter adapter = CreateAdapter())
+                using (DbDataAdapter adapter = CreateDataAdapter())
                 {
                     DataTable dt = new DataTable();
                     adapter.SelectCommand = cmd;
