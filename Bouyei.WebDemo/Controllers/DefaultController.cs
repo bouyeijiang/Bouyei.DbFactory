@@ -34,7 +34,7 @@ namespace Bouyei.WebDemo.Controllers
             dt.TableName = "luser";
 
             string str = "server=127.0.0.1;port=3306;user=root;password=123456; database=gdzl;";
-            IAdoProvider dbProvider = AdoProvider.CreateProvider(str, DbFactory.DbType.MySql);
+             IAdoProvider dbProvider = AdoProvider.CreateProvider(str, FactoryType.MySql);
 
             //var brt = dbProvider.BulkCopy(new CopyParameter<DataTable>(dt));
 
@@ -54,7 +54,7 @@ namespace Bouyei.WebDemo.Controllers
                 upwd = "地方"
             });
 
-           var arraybrt= dbProvider.BulkCopy(new CopyParameter<Array>(ls.ToArray()));
+           var arraybrt= dbProvider.BulkCopy(new  CopyParameter<Array>(ls.ToArray()));
 
             return View();
         }

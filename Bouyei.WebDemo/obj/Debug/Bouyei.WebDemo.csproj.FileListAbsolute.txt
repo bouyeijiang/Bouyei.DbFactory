@@ -212,3 +212,6 @@ C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Runtime
 C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\Google.Protobuf.xml
 C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Numerics.Vectors.xml
 C:\Users\bouyei\source\repos\dbproviderfactory\Bouyei.WebDemo\bin\System.Buffers.xml
+E:\Projects\Bouyei.DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.csprojAssemblyReference.cache
+E:\Projects\Bouyei.DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.dll
+E:\Projects\Bouyei.DbFactory\Bouyei.WebDemo\obj\Debug\Bouyei.WebDemo.pdb
