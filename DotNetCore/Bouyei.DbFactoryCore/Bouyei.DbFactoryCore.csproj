@@ -10,11 +10,11 @@
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.3.5.0</Version>
+    <Version>1.4.6.0</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/Bouyei.DbFactory</RepositoryUrl>
-    <AssemblyVersion>1.3.5.0</AssemblyVersion>
-    <FileVersion>1.3.5.0</FileVersion>
+    <AssemblyVersion>1.4.6.0</AssemblyVersion>
+    <FileVersion>1.4.6.0</FileVersion>
     <PackageTags>DbFactoryCore</PackageTags>
     <Authors>bouyei</Authors>
     <Company>bouyei</Company>

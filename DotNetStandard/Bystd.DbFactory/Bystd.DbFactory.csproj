@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Bystd.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>1.1.1</Version>
+    <Version>1.4.6</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/Bouyei.DbFactory</RepositoryUrl>
     <Authors>bouyei</Authors>
@@ -13,6 +13,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>postgresql,oracle,sqlserver,sqlite,db2 etc.</Description>
     <Copyright>bouyei</Copyright>
+    <AssemblyVersion>1.4.6.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
