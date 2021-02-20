@@ -22,7 +22,7 @@ namespace Bouyei.DbFactoryCore.DbMapper
             this.dbProvider = adoProvider;
         }
 
-        protected void Initialize(IAdoProvider adoProvider)
+        protected virtual void Initialized(IAdoProvider adoProvider)
         {
             this.dbProvider = adoProvider;
         }
