@@ -36,6 +36,19 @@ namespace Bouyei.DbFactoryDemo
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
                 .Where(x => x.uage == 1).GroupBy<User>().SqlString;
 
+            //in 语法
+            string[] values = new string[] { "a","b"};
+            var inSql = sqlProvider.Select<User>().From().Where(x => values.Contains(x.uname)).SqlString;
+
+            //like 语法 '%bouyei%'
+            var likeSql = sqlProvider.Select<User>().From().Where(x => x.uname.Contains("bouyei")).SqlString;
+
+            //like 语法'%bouyei'
+            var beginSql = sqlProvider.Select<User>().From().Where(x => x.uname.StartsWith("bouyei")).SqlString;
+
+            //like 语法'bouyei%'
+            var endSql = sqlProvider.Select<User>().From().Where(x => x.uname.EndsWith("bouyei")).SqlString;
+
             //select count(*) from user where id=1
             string commandText = sqlProvider.Select<User>(new Count("*")).From<User>().Where(x=>x.id==1).SqlString;
 
@@ -248,7 +261,7 @@ namespace Bouyei.DbFactoryDemo
         {
             string connstr = "Host=127.0.0.1;Port=5432;User id=postgres;Password=bouyei;Database=postgres;";
             var provider = AdoProvider.CreateProvider(connstr, FactoryType.PostgreSQL);
-            Initilize(provider);
+            Initialized(provider);
         }
     }
 }

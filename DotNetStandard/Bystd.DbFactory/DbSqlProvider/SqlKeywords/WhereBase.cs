@@ -227,43 +227,71 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
             return value;
         }
 
-        internal string VisitMethodCallExp(SysExp.MethodCallExpression methodCallExp,ExpDirection direct)
+        internal string VisitMethodCallExp(SysExp.MethodCallExpression methodCallExp, ExpDirection direct)
         {
+            string field = string.Empty, values = string.Empty;
+
             if (methodCallExp.Method.Name == "Contains")
             {
-                string field = string.Empty, values = string.Empty;
+                if (methodCallExp.Arguments.Count == 1)
+                {
+                    var left = methodCallExp.Object as SysExp.MemberExpression;
+                    var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
+
+                    field = left.Member.Name;
+                    values = right.Value.ToString();
+
+                    return field + " Like '%" + values + "%'";
+                }
 
                 if (methodCallExp.Arguments[1] is SysExp.MemberExpression caller)
-                    field = VisitMemberExp(caller,direct);
+                    field = VisitMemberExp(caller, direct);
                 if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
-                    values = VisitMemberExp(param,direct);
+                    values = VisitMemberExp(param, direct);
 
                 return field + " In(" + values + ")";
             }
+            else if (methodCallExp.Method.Name == "StartsWith")
+            {
+                var left = methodCallExp.Object as SysExp.MemberExpression;
+                var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
+
+                field = left.Member.Name;
+                values = right.Value.ToString();
+                return field + " Like '%" + values + "'";
+            }
+            else if (methodCallExp.Method.Name == "EndsWith")
+            {
+                var left = methodCallExp.Object as SysExp.MemberExpression;
+                var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
+
+                field = left.Member.Name;
+                values = right.Value.ToString();
+
+                return field + " Like '" + values + "%'";
+            }
             else if (methodCallExp.Method.Name == "Equals")
             {
-                string field = string.Empty, value = string.Empty;
-
                 if (methodCallExp.Object is SysExp.MemberExpression caller)
-                    field = VisitMemberExp(caller,direct);
+                    field = VisitMemberExp(caller, direct);
                 if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
-                    value = VisitMemberExp(param,direct);
+                    values = VisitMemberExp(param, direct);
 
-                return field + "=" + value;
+                return field + "=" + values;
             }
             else
             {
-                List<object> values = new List<object>(methodCallExp.Arguments.Count);
+                List<object> array = new List<object>(methodCallExp.Arguments.Count);
 
                 foreach (var exp in methodCallExp.Arguments)
                 {
                     if (exp is SysExp.MemberExpression mem)
-                        values.Add(VisitMemberExp(mem,direct));
+                        array.Add(VisitMemberExp(mem, direct));
                     else if (exp is SysExp.ConstantExpression constant)
-                        values.Add(VisitConstantExp(constant));
+                        array.Add(VisitConstantExp(constant));
                 }
 
-                return methodCallExp.Method.Name + "(" + string.Join(",", values) + ")";
+                return methodCallExp.Method.Name + "(" + string.Join(",", array) + ")";
             }
         }
 

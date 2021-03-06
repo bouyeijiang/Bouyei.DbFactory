@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Bouyei.DbFactory.DbEntityProvider;
-using System.Data.Entity.ModelConfiguration;
 using Bouyei.DbFactory;
 using Bouyei.DbFactory.DbMapper;
 
@@ -32,7 +31,7 @@ namespace Bouyei.DbEntities
         {
             string connstr= "Host=127.0.0.1;Port=5432;User id=postgres;Password=bouyei;Database=postgres;";
             var provider = AdoProvider.CreateProvider(connstr, FactoryType.PostgreSQL);
-            Initilize(provider);
+            Initialized(provider);
         }
     }
 }
