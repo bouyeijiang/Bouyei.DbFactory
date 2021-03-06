@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -119,6 +120,31 @@ namespace Bouyei.DbFactoryCore.DbMapper
             var rt = dbProvider.QuerySum<T>(whereclause, sumColumn);
             if (string.IsNullOrEmpty(rt.Info) == false)
                 throw new Exception(rt.Info);
+
+            return rt.Result;
+        }
+
+        public virtual T SelectFirst(Expression<Func<T, bool>> whereclause)
+        {
+            var result = dbProvider.PageQuery<T>(whereclause, 0, 1);
+            return result.Result.FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// 返回第一行第一列
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="whereclause"></param>
+        /// <returns></returns>
+        public virtual R SelectScalar<R>(string column, Expression<Func<T, bool>> whereclause)
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
+            var commandText = sql.Select(column).From<T>().Where(whereclause).SqlString;
+
+            var rt = dbProvider.ExecuteScalar<R>(new Parameter(commandText));
+            if (rt.Info != string.Empty)
+                rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt.Result;
         }
