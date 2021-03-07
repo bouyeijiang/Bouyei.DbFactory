@@ -39,7 +39,8 @@ namespace DotNetCoreDemo
                 .Where(x => x.age == 1).GroupBy<User>().SqlString;
 
             //like 语法'bouyei%'
-            var beginSql = sqlProvider.Select<User>().From().Where(x => x.name.StartsWith("18212") || x.name.StartsWith("18212")).SqlString;
+            string cond = "bouyei";
+            var beginSql = sqlProvider.Select<User>().From().Where(x => x.name.StartsWith(cond)).SqlString;
 
             //function 
             string sqlfun = sqlProvider.Select<User>(new Max("age")).From<User>().Where(x => x.age > 20).SqlString;

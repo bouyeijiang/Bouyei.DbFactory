@@ -60,19 +60,7 @@ namespace Bouyei.DbFactory.DbMapper
 
         public virtual int Update(T value, Expression<Func<T, bool>> whereclause)
         {
-            Dictionary<string, object> kv = new Dictionary<string, object>();
-            var t = typeof(T);
-            var pros = t.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var p in pros)
-            {
-                object v = p.GetValue(value);
-                if (v == null || string.IsNullOrEmpty(v.ToString()))
-                    continue;
-
-                kv.Add(p.Name, v);
-            }
-
-            var rt= dbProvider.Update(kv, whereclause);
+            var rt= dbProvider.Update(value,whereclause);
             if (string.IsNullOrEmpty(rt.Info) == false)
                 throw new Exception(rt.Info);
 

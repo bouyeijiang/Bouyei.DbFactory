@@ -236,55 +236,38 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             switch (methodName)
             {
                 case "Contains":
-                    {
-                        if (methodCallExp.Arguments.Count == 1)
-                        {
-                            var left = methodCallExp.Object as SysExp.MemberExpression;
-                            var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
-
-                            field = left.Member.Name;
-                            values = right.Value == null ? "" : right.Value.ToString();
-
-                            return field + " Like '%" + values + "%'";
-                        }
-
-                        if (methodCallExp.Arguments[1] is SysExp.MemberExpression caller)
-                            field = VisitMemberExp(caller, direct);
-                        if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
-                            values = VisitMemberExp(param, direct);
-
-                        methodExp = field + " In(" + values + ")";
-                    }
-                    break;
                 case "StartsWith":
-                    {
-                        var left = methodCallExp.Object as SysExp.MemberExpression;
-                        var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
-
-                        field = left.Member.Name;
-                        values = right.Value == null ? "" : right.Value.ToString();
-                        methodExp = field + " Like '" + values + "%'";
-                    }
-                    break;
                 case "EndsWith":
-                    {
-                        var left = methodCallExp.Object as SysExp.MemberExpression;
-                        var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
-
-                        field = left.Member.Name;
-                        values = right.Value == null ? "" : right.Value.ToString();
-
-                        methodExp = field + " Like '%" + values + "'";
-                    }
-                    break;
                 case "Equals":
                     {
-                        if (methodCallExp.Object is SysExp.MemberExpression caller)
-                            field = VisitMemberExp(caller, direct);
-                        if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
-                            values = VisitMemberExp(param, direct);
+                        if (methodCallExp.Arguments[0] is SysExp.MemberExpression memberP)
+                            values = VisitMemberExp(memberP, direct);
+                        else if (methodCallExp.Arguments[0] is SysExp.ConstantExpression constP)
+                            values = VisitConstantExp(constP);
 
-                        methodExp = field + "=" + values;
+                        if (methodCallExp.Arguments.Count == 1)
+                        {
+                            if (methodCallExp.Object is SysExp.MemberExpression leftMember)
+                                field = VisitMemberExp(leftMember, direct);
+                            else if (methodCallExp.Object is SysExp.ConstantExpression leftConst)
+                                field = VisitConstantExp(leftConst);
+
+                            if (methodName == "Contains")
+                            {
+                                methodExp = getMethdSqlExp(methodName + "Like", field, values);
+                            }
+                            else
+                            {
+                                methodExp = getMethdSqlExp(methodName, field, values);
+                            }
+                        }
+                        else
+                        {
+                            if (methodCallExp.Arguments[1] is SysExp.MemberExpression caller)
+                                field = VisitMemberExp(caller, direct);
+
+                            methodExp = getMethdSqlExp(methodName, field, values);
+                        }
                     }
                     break;
                 default:
@@ -304,6 +287,33 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                     break;
             }
             return methodExp;
+        }
+
+        private string getMethdSqlExp(string methdName, string field, string values)
+        {
+            switch (methdName)
+            {
+                case "Equals":
+                    return field + "=" + values;
+                case "Contains":
+                    return field + " In(" + values + ")";
+                case "ContainsLike":
+                    {
+                        string nval = values.Replace("'", "");
+                        return field + " Like '%" + nval + "%'";
+                    }
+                case "StartsWith":
+                    {
+                        string nval = values.Replace("'", "");
+                        return field + " Like '" + nval + "%'";
+                    }
+                case "EndsWith":
+                    {
+                        string nval = values.Replace("'", "");
+                        return field + " Like '%" + nval + "'";
+                    }
+                default: return string.Empty;
+            }
         }
 
         protected string VisitOperatorExp(SysExp.BinaryExpression exp)
