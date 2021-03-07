@@ -15,18 +15,18 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            //SqlDemo();
-            string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=bouyei;database=postgres;";
-            IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
-            User usr = new User() { 
-             age=1,
-              no=2
-            };
-            var b= provider.Update<User>(usr, x => x.id == 1);
+            SqlDemo();
+            //string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=bouyei;database=postgres;";
+            //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
+            //User usr = new User() { 
+            // age=1,
+            //  no=2
+            //};
+            //var b= provider.Update<User>(usr, x => x.id == 1);
 
-            Bulkcopy(str);
-            AdoDemo(str);
-            OrmDemo(str);
+            //Bulkcopy(str);
+            //AdoDemo(str);
+            //OrmDemo(str);
         }
 
         private static void SqlDemo()
@@ -37,6 +37,9 @@ namespace DotNetCoreDemo
             //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
                 .Where(x => x.age == 1).GroupBy<User>().SqlString;
+
+            //like 语法'bouyei%'
+            var beginSql = sqlProvider.Select<User>().From().Where(x => x.name.StartsWith("18212") || x.name.StartsWith("18212")).SqlString;
 
             //function 
             string sqlfun = sqlProvider.Select<User>(new Max("age")).From<User>().Where(x => x.age > 20).SqlString;
@@ -218,7 +221,7 @@ namespace DotNetCoreDemo
         {
             string connstr = "Host=127.0.0.1;Port=5432;User id=postgres;Password=bouyei;Database=postgres;";
             var provider = AdoProvider.CreateProvider(connstr, FactoryType.PostgreSQL);
-            Initilize(provider);
+            Initialized(provider);
         }
     }
 
@@ -228,5 +231,4 @@ namespace DotNetCoreDemo
 
         public long fcode { get; set; }
     }
-
 }

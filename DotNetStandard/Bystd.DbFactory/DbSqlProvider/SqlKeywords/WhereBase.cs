@@ -230,69 +230,80 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         internal string VisitMethodCallExp(SysExp.MethodCallExpression methodCallExp, ExpDirection direct)
         {
             string field = string.Empty, values = string.Empty;
+            string methodName = methodCallExp.Method.Name;
+            string methodExp = string.Empty;
 
-            if (methodCallExp.Method.Name == "Contains")
+            switch (methodName)
             {
-                if (methodCallExp.Arguments.Count == 1)
-                {
-                    var left = methodCallExp.Object as SysExp.MemberExpression;
-                    var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
+                case "Contains":
+                    {
+                        if (methodCallExp.Arguments.Count == 1)
+                        {
+                            var left = methodCallExp.Object as SysExp.MemberExpression;
+                            var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
 
-                    field = left.Member.Name;
-                    values = right.Value.ToString();
+                            field = left.Member.Name;
+                            values = right.Value == null ? "" : right.Value.ToString();
 
-                    return field + " Like '%" + values + "%'";
-                }
+                            return field + " Like '%" + values + "%'";
+                        }
 
-                if (methodCallExp.Arguments[1] is SysExp.MemberExpression caller)
-                    field = VisitMemberExp(caller, direct);
-                if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
-                    values = VisitMemberExp(param, direct);
+                        if (methodCallExp.Arguments[1] is SysExp.MemberExpression caller)
+                            field = VisitMemberExp(caller, direct);
+                        if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
+                            values = VisitMemberExp(param, direct);
 
-                return field + " In(" + values + ")";
+                        methodExp = field + " In(" + values + ")";
+                    }
+                    break;
+                case "StartsWith":
+                    {
+                        var left = methodCallExp.Object as SysExp.MemberExpression;
+                        var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
+
+                        field = left.Member.Name;
+                        values = right.Value == null ? "" : right.Value.ToString();
+                        methodExp = field + " Like '" + values + "%'";
+                    }
+                    break;
+                case "EndsWith":
+                    {
+                        var left = methodCallExp.Object as SysExp.MemberExpression;
+                        var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
+
+                        field = left.Member.Name;
+                        values = right.Value == null ? "" : right.Value.ToString();
+
+                        methodExp = field + " Like '%" + values + "'";
+                    }
+                    break;
+                case "Equals":
+                    {
+                        if (methodCallExp.Object is SysExp.MemberExpression caller)
+                            field = VisitMemberExp(caller, direct);
+                        if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
+                            values = VisitMemberExp(param, direct);
+
+                        methodExp = field + "=" + values;
+                    }
+                    break;
+                default:
+                    {
+                        List<object> array = new List<object>(methodCallExp.Arguments.Count);
+
+                        foreach (var exp in methodCallExp.Arguments)
+                        {
+                            if (exp is SysExp.MemberExpression mem)
+                                array.Add(VisitMemberExp(mem, direct));
+                            else if (exp is SysExp.ConstantExpression constant)
+                                array.Add(VisitConstantExp(constant));
+                        }
+
+                        methodExp = methodCallExp.Method.Name + "(" + string.Join(",", array) + ")";
+                    }
+                    break;
             }
-            else if (methodCallExp.Method.Name == "StartsWith")
-            {
-                var left = methodCallExp.Object as SysExp.MemberExpression;
-                var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
-
-                field = left.Member.Name;
-                values = right.Value.ToString();
-                return field + " Like '%" + values + "'";
-            }
-            else if (methodCallExp.Method.Name == "EndsWith")
-            {
-                var left = methodCallExp.Object as SysExp.MemberExpression;
-                var right = methodCallExp.Arguments[0] as SysExp.ConstantExpression;
-
-                field = left.Member.Name;
-                values = right.Value.ToString();
-
-                return field + " Like '" + values + "%'";
-            }
-            else if (methodCallExp.Method.Name == "Equals")
-            {
-                if (methodCallExp.Object is SysExp.MemberExpression caller)
-                    field = VisitMemberExp(caller, direct);
-                if (methodCallExp.Arguments[0] is SysExp.MemberExpression param)
-                    values = VisitMemberExp(param, direct);
-
-                return field + "=" + values;
-            }
-            else
-            {
-                List<object> array = new List<object>(methodCallExp.Arguments.Count);
-
-                foreach (var exp in methodCallExp.Arguments)
-                {
-                    if (exp is SysExp.MemberExpression mem)
-                        array.Add(VisitMemberExp(mem, direct));
-                    else if (exp is SysExp.ConstantExpression constant)
-                        array.Add(VisitConstantExp(constant));
-                }
-
-                return methodCallExp.Method.Name + "(" + string.Join(",", array) + ")";
-            }
+            return methodExp;
         }
 
         protected string VisitOperatorExp(SysExp.BinaryExpression exp)

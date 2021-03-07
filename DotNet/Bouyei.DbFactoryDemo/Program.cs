@@ -43,10 +43,10 @@ namespace Bouyei.DbFactoryDemo
             //like 语法 '%bouyei%'
             var likeSql = sqlProvider.Select<User>().From().Where(x => x.uname.Contains("bouyei")).SqlString;
 
-            //like 语法'%bouyei'
-            var beginSql = sqlProvider.Select<User>().From().Where(x => x.uname.StartsWith("bouyei")).SqlString;
-
             //like 语法'bouyei%'
+            var beginSql = sqlProvider.Select<User>().From().Where(x => x.uname.StartsWith("bouyei") || x.uname.StartsWith("bb")).SqlString;
+
+            //like 语法'%bouyei'
             var endSql = sqlProvider.Select<User>().From().Where(x => x.uname.EndsWith("bouyei")).SqlString;
 
             //select count(*) from user where id=1

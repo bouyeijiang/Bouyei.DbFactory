@@ -150,6 +150,7 @@ namespace Bouyei.DbFactory.DbMapper
 
             return rt.Result;
         }
+        
         public void Dispose()
         {
             if(dbProvider!=null)
