@@ -50,7 +50,27 @@ namespace Bystd.DbFactory
            Expression<Func<T, bool>> predicate, int page = 0, int size = 1) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
-            string commandText = sql.Select<T>().From<T>().Where<T>(predicate).Top<T>(dbProvider.DbType, page, size).SqlString;
+            int offset = page * size;
+
+            string commandText = sql.Select<T>().From<T>().Where<T>(predicate
+                ).Top<T>(dbProvider.DbType, offset, size).SqlString;
+
+            var rt = dbProvider.Query<T>(new Parameter(commandText));
+            if (rt.Info != string.Empty)
+                rt.Info = rt.Info + "\n\r" + commandText;
+
+            return rt;
+        }
+
+        public static DbResult<List<T>, string> PageQueryOrderBy<T>(this IAdoProvider dbProvider,
+        Expression<Func<T, bool>> predicate, string[] orderColumnNames,
+        SortType sType = SortType.Desc, int page = 0, int size = 1) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
+            int offset = page * size;
+
+            string commandText = sql.Select<T>().From<T>()
+                .Where<T>(predicate).Top<T>(dbProvider.DbType, offset, size).OrderBy(sType, orderColumnNames).SqlString;
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
             if (rt.Info != string.Empty)

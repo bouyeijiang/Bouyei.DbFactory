@@ -90,7 +90,20 @@ namespace Bouyei.DbFactory.DbMapper
             if (page < 0) page = 0;
             if (size <= 0) size = 10;
 
-            var rt = dbProvider.PageQuery(whereclause, page, size);
+            var rt = dbProvider.PageQuery(whereclause, page*size, size);
+            if (string.IsNullOrEmpty(rt.Info) == false)
+                throw new Exception(rt.Info);
+
+            return rt.Result;
+        }
+
+        public virtual List<T> SelectOrderBy(int page, int size, Expression<Func<T, bool>> whereclause,
+        string[] orderColumNames, SortType sType = SortType.Desc)
+        {
+            if (page < 0) page = 0;
+            if (size <= 0) size = 10;
+
+            var rt = dbProvider.PageQueryOrderBy(whereclause, orderColumNames, sType, page * size, size);
             if (string.IsNullOrEmpty(rt.Info) == false)
                 throw new Exception(rt.Info);
 

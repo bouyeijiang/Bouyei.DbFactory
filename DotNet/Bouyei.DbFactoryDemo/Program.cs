@@ -20,10 +20,10 @@ namespace Bouyei.DbFactoryDemo
     {
         static void Main(string[] args)
         {
-            SqlDemo();
-            string str = "Host=127.0.0.1;Port=5432;User id=postgres;Password=bouyei;Database=postgres;";
+            //SqlDemo();
+            string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=123456;database=postgres;";
             //Bulkcopy(str);
-            //AdoDemo(str);
+            AdoDemo(str);
             //OrmDemo(str);
         }
 
@@ -148,33 +148,31 @@ namespace Bouyei.DbFactoryDemo
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, FactoryType.PostgreSQL);
             var ext = dbProvider.Connect(connectionString);
 
-            var adort = dbProvider.Query(new Parameter()
-            {
-                CommandText = "select * from public.db_user"
-            });
- 
-            //
-            var rt= dbProvider.Query<User>(x => x.uage >= 20);
+            //var adort = dbProvider.Query(new Parameter()
+            //{
+            //    CommandText = "select * from public.db_user"
+            //});
 
-            //top 语法
-            var takert = dbProvider.PageQuery<User>(x => x.uage == 30, 10);
+            ////
+            //var rt= dbProvider.Query<User>(x => x.uage >= 20);
 
-            //定义更新
-            var dic = new Dictionary<string, object>();
-            dic.Add("name", "hellow");
-            dic.Add("age", 0);
-            dic.Add("score", 1.0);
-            dbProvider.Update<User>(dic, x => x.id == 1);
+            ////top 语法
+            //var takert = dbProvider.PageQuery<User>(x => x.uage == 30, 10);
 
-            dbProvider.Delete<User>(x => x.uname == "bouyei");
+            ////定义更新
+            //var dic = new Dictionary<string, object>();
+            //dic.Add("name", "hellow");
+            //dic.Add("age", 0);
+            //dic.Add("score", 1.0);
+            //dbProvider.Update<User>(dic, x => x.id == 1);
+
+            //dbProvider.Delete<User>(x => x.uname == "bouyei");
 
             //插入
-            var users = new User[] {
-            new User(){ uname="bouyei", score=100, uage=30 },
-            new User(){ uname="八渡", score=10, uage=20 }
-            };
-            dbProvider.Insert(users);
-
+            //var users = new User[] {
+            //new User(){ uname=null, score=100, uage=30 },
+            //new User(){ uname=null, score=10, uage=20 }
+            //};
         }
 
         private static void OrmDemo(string connectionString)

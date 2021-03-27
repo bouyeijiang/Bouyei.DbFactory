@@ -15,8 +15,8 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            SqlDemo();
-            //string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=bouyei;database=postgres;";
+            //SqlDemo();
+            string str = "Server=;Port=5432;User Id=postgres;Password=;Database=postgres;";
             //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
             //User usr = new User() { 
             // age=1,
@@ -25,7 +25,7 @@ namespace DotNetCoreDemo
             //var b= provider.Update<User>(usr, x => x.id == 1);
 
             //Bulkcopy(str);
-            //AdoDemo(str);
+            AdoDemo(str);
             //OrmDemo(str);
         }
 
@@ -136,25 +136,46 @@ namespace DotNetCoreDemo
         private static void AdoDemo(string connectionString)
         {
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString);
-          
-            var ext = dbProvider.Connect(connectionString);
 
-            var adort = dbProvider.Query(new Parameter()
+            //var ext = dbProvider.Connect(connectionString);
+
+            //var adort = dbProvider.Query(new Parameter()
+            //{
+            //    CommandText = "select * from [user]"
+            //});
+
+            ////
+            //var rt = dbProvider.PageQuery<User>(x => x.age >= 20, 0, 10);
+
+            ////定义更新
+            //var dic = new Dictionary<string, object>();
+            //dic.Add("name", "hellow");
+            //dic.Add("age", 0);
+            //dic.Add("score", 1.0);
+            //dbProvider.Update<User>(dic, x => x.id == 1);
+
+            //dbProvider.Delete<User>(x => x.name == "bouyei");
+            var tests = new testpaper[] {
+            new testpaper(){
+                paperid=Guid.Parse("664de118-0d72-4834-be97-9defb66ee5d2"),
+                optionid=Guid.Parse("664de118-0d72-4834-be97-9defb66ee5d2"),
+             subjectid=Guid.Parse("5bd97ddb-2f86-488c-b399-f4e3682a607c"),
+                tester="dd",
+             testerid="ddd"},
+            new testpaper(){
+            paperid=Guid.Parse("664de118-0d72-4834-be97-9defb66ee5d2"),
+                optionid=Guid.Parse("24521f28-fd28-4908-bc5b-c34f3f64ee27"),
+             subjectid=Guid.Parse("24521f28-fd28-4908-bc5b-c34f3f64ee27"),
+                tester="dd",
+             testerid="ddd"
+            }
+            };
+
+            var rt = dbProvider.Insert(tests);
+            if (rt.Info != string.Empty)
             {
-                CommandText = "select * from [user]"
-            });
 
-            //
-            var rt = dbProvider.PageQuery<User>(x => x.age >= 20, 0, 10);
-
-            //定义更新
-            var dic = new Dictionary<string, object>();
-            dic.Add("name", "hellow");
-            dic.Add("age", 0);
-            dic.Add("score", 1.0);
-            dbProvider.Update<User>(dic, x => x.id == 1);
-
-            dbProvider.Delete<User>(x => x.name == "bouyei");
+            }
 
         }
 
@@ -201,6 +222,36 @@ namespace DotNetCoreDemo
             }
         }
     }
+
+    public class testpaper
+    {
+        /// <summary>
+        /// 试卷编号
+        /// </summary>
+        public Guid paperid { get; set; }
+        /// <summary>
+        /// 题目编号
+        /// </summary>
+        public Guid subjectid { get; set; }
+        /// <summary>
+        /// 答题者
+        /// </summary>
+        public string tester { get; set; }
+        /// <summary>
+        /// 答题者编号
+        /// </summary>
+        public string testerid { get; set; }
+        /// <summary>
+        /// 答题选项编号
+        /// </summary>
+        public Guid optionid { get; set; }
+        /// <summary>
+        /// 答题选项内容
+        /// </summary>
+        public string option_content { get; set; }
+    }
+
+
     [Flags]
         public enum Sex
         {
