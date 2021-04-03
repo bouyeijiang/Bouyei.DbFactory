@@ -129,9 +129,14 @@ namespace Bouyei.DbFactoryCore.DbMapper
         public virtual T SelectFirst(Expression<Func<T, bool>> whereclause)
         {
             var result = dbProvider.PageQuery<T>(whereclause, 0, 1);
+
+            if (result.Info != string.Empty)
+                throw new Exception(result.Info);
+
+            if (result.Result == null) return default(T);
+
             return result.Result.FirstOrDefault();
         }
-
 
         /// <summary>
         /// 返回第一行第一列
