@@ -34,5 +34,12 @@ namespace Bouyei.DbFactoryCore
             where.SqlString = set.SqlString + where.ToString<T>(expression);
             return where;
         }
+
+        public static Where Where<T>(this OrderBy orderby, Expression<Func<T, bool>> expression)
+        {
+            Where where = new Where();
+            where.SqlString = orderby.SqlString + where.ToString<T>(expression);
+            return where;
+        }
     }
 }

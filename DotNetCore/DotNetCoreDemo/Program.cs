@@ -15,7 +15,7 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            //SqlDemo();
+           // SqlDemo();
             string str = "Server=;Port=5432;User Id=postgres;Password=;Database=postgres;";
             //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
             //User usr = new User() { 
@@ -24,8 +24,8 @@ namespace DotNetCoreDemo
             //};
             //var b= provider.Update<User>(usr, x => x.id == 1);
 
-            //Bulkcopy(str);
-            AdoDemo(str);
+            Bulkcopy(str);
+            //AdoDemo(str);
             //OrmDemo(str);
         }
 
@@ -146,6 +146,10 @@ namespace DotNetCoreDemo
 
             ////
             //var rt = dbProvider.PageQuery<User>(x => x.age >= 20, 0, 10);
+            
+            //分页排序查询
+            var b = dbProvider.PageQueryOrderBy<User>(x => x.age == 1, new string[] { "age" }, size: 10);
+
 
             ////定义更新
             //var dic = new Dictionary<string, object>();

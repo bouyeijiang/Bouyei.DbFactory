@@ -70,7 +70,7 @@ namespace Bystd.DbFactory
             int offset = page * size;
 
             string commandText = sql.Select<T>().From<T>()
-                .Where<T>(predicate).Top<T>(dbProvider.DbType, offset, size).OrderBy(sType, orderColumnNames).SqlString;
+                .Where<T>(predicate).OrderBy(sType, orderColumnNames).Top<T>(dbProvider.DbType, offset, size).SqlString;
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
             if (rt.Info != string.Empty)

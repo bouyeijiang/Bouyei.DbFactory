@@ -163,35 +163,62 @@ namespace Bouyei.DbFactoryCore
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
     }
     [Serializable]
-    public class DbResult<R, I>
+    public class DbResult<RESULT, INFO>
     {
-        public R Result { get; set; }
+        public RESULT Result { get; set; }
 
-        public I Info { get; set; }
+        public INFO Info { get; set; }
 
         public DbResult()
         {
         }
 
-        public DbResult(R Result)
+        public DbResult(RESULT Result)
         {
             this.Result = Result;
         }
 
-        public DbResult(I Info)
+        public DbResult(INFO Info)
         {
             this.Info = Info;
         }
 
-        public DbResult(R Result, I Info)
+        public DbResult(RESULT Result, INFO Info)
         {
             this.Result = Result;
             this.Info = Info;
         }
 
-        public static DbResult<R, I> Create(R Result, I Info)
+        public static DbResult<RESULT, INFO> Create(RESULT Result, INFO Info)
         {
-            return new DbResult<R, I>(Result, Info);
+            return new DbResult<RESULT, INFO>(Result, Info);
+        }
+
+        public static DbResult<RESULT,string> Failure()
+        {
+            return new DbResult<RESULT, string>(default(RESULT), "failure");
+        }
+
+        public static DbResult<RESULT,string> Error(string info)
+        {
+            return new DbResult<RESULT, string>(default(RESULT), info);
+        }
+
+        public static DbResult<RESULT,string> Success(RESULT result)
+        {
+            return new DbResult<RESULT, string>(result, string.Empty);
+        }
+
+        public bool IsSuccess()
+        {
+            if(this.Info is string r)
+            {
+                return string.IsNullOrEmpty(r);
+            }
+            else
+            {
+                return this.Info != null;
+            }
         }
     }
  

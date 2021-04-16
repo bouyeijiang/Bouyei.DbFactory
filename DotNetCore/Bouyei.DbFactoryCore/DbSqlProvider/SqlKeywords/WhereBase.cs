@@ -116,7 +116,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                 case "DateTime":
                 case "String":
                     {
-                        if (val == null) value = "NULL";
+                        if (val == null) value = "''";
                         else value = $"'{val}'";
                     }
                     break;
@@ -186,7 +186,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                 case "String":
                     {
                         var val = SysExp.Expression.Lambda<Func<string>>(memberExp).Compile()();
-                        if (val == null) val = "NULL";
+                        if (val == null) value = "''";
                         else value = $"'{val}'";
                     }
                     break;
@@ -321,6 +321,12 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
             string op = string.Empty;
             switch (exp.NodeType)
             {
+                case SysExp.ExpressionType.IsFalse:
+                    op = "=False";
+                    break;
+                case SysExp.ExpressionType.IsTrue:
+                    op = "=True";
+                    break;
                 case SysExp.ExpressionType.Equal:
                     op = "=";
                     break;

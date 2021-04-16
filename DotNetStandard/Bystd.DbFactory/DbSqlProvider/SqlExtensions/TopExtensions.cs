@@ -35,7 +35,12 @@ namespace Bystd.DbFactory
             top.SqlString = where.SqlString + top.ToString();
             return top;
         }
-
+        public static Top Top<T>(this OrderBy orderby, FactoryType dbType, int page = 0, int size = 1)
+        {
+            Top top = new Top(dbType, page, size);
+            top.SqlString = orderby.SqlString + top.ToString();
+            return top;
+        }
         public static Top Top<T>(this GroupBy groupBy, FactoryType dbType, int page = 0, int size = 1, params string[] columnNames)
         {
             Top top = new Top(dbType, page, size);

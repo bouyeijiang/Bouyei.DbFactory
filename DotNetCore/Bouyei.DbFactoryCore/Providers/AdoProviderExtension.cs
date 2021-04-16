@@ -62,14 +62,14 @@ namespace Bouyei.DbFactoryCore
         }
 
         public static DbResult<List<T>, string> PageQueryOrderBy<T>(this IAdoProvider dbProvider,
-        Expression<Func<T, bool>> predicate, string[] orderColumnNames,
+        Expression<Func<T, bool>> predicate,string[] orderColumnNames,
         SortType sType = SortType.Desc, int page = 0, int size = 1) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
             int offset = page * size;
 
             string commandText = sql.Select<T>().From<T>()
-                .Where<T>(predicate).Top<T>(dbProvider.DbType, offset, size).OrderBy(sType, orderColumnNames).SqlString;
+                .Where<T>(predicate).OrderBy<T>(sType, orderColumnNames).Top<T>(dbProvider.DbType, offset, size).SqlString;
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
             if (rt.Info != string.Empty)

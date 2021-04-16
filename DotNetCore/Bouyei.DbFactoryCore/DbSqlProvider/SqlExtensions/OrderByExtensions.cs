@@ -37,13 +37,5 @@ namespace Bouyei.DbFactoryCore
 
             return orderby;
         }
-
-        public static OrderBy OrderBy(this Top top, SortType sType = SortType.Asc,params string[] columnNames)
-        {
-            OrderBy orderby = new OrderBy(sType, columnNames);
-            orderby.SqlString = top.SqlString + orderby.ToString();
-
-            return orderby;
-        }
     }
 }
