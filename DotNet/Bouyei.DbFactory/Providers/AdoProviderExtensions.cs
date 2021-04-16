@@ -46,7 +46,7 @@ namespace Bouyei.DbFactory
             return rt;
         }
 
-        public static DbResult<List<T>, string> PageQuery<T>(this IAdoProvider dbProvider,
+        public static DbResult<List<T>, string>QueryPage<T>(this IAdoProvider dbProvider,
            Expression<Func<T, bool>> predicate, int page = 0, int size = 1) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
@@ -62,7 +62,7 @@ namespace Bouyei.DbFactory
             return rt;
         }
 
-        public static DbResult<List<T>, string> PageQueryOrderBy<T>(this IAdoProvider dbProvider,
+        public static DbResult<List<T>, string> QueryOrderBy<T>(this IAdoProvider dbProvider,
         Expression<Func<T, bool>> predicate,string[] orderColumnNames,
         SortType sType=SortType.Desc, int page = 0, int size = 1) where T : class
         {

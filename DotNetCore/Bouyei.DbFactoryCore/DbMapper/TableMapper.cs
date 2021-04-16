@@ -87,7 +87,7 @@ namespace Bouyei.DbFactoryCore.DbMapper
             if (page < 0) page = 0;
             if (size <= 0) size = 10;
 
-            var rt = dbProvider.PageQuery(whereclause, page*size, size);
+            var rt = dbProvider.QueryPage(whereclause, page, size);
             if (string.IsNullOrEmpty(rt.Info) == false)
                 throw new Exception(rt.Info);
 
@@ -100,7 +100,7 @@ namespace Bouyei.DbFactoryCore.DbMapper
             if (page < 0) page = 0;
             if (size <= 0) size = 10;
 
-            var rt = dbProvider.PageQueryOrderBy(whereclause, orderColumNames, sType, page * size, size);
+            var rt = dbProvider.QueryOrderBy(whereclause, orderColumNames, sType, page, size);
             if (string.IsNullOrEmpty(rt.Info) == false)
                 throw new Exception(rt.Info);
 
@@ -128,7 +128,7 @@ namespace Bouyei.DbFactoryCore.DbMapper
 
         public virtual T SelectFirst(Expression<Func<T, bool>> whereclause)
         {
-            var result = dbProvider.PageQuery<T>(whereclause, 0, 1);
+            var result = dbProvider.QueryPage<T>(whereclause, 0, 1);
 
             if (result.Info != string.Empty)
                 throw new Exception(result.Info);

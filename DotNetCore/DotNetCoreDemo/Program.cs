@@ -148,7 +148,7 @@ namespace DotNetCoreDemo
             //var rt = dbProvider.PageQuery<User>(x => x.age >= 20, 0, 10);
             
             //分页排序查询
-            var b = dbProvider.PageQueryOrderBy<User>(x => x.age == 1, new string[] { "age" }, size: 10);
+            var b = dbProvider.QueryOrderBy<User>(x => x.age == 1, new string[] { "age" }, size: 10);
 
 
             ////定义更新
