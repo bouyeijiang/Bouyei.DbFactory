@@ -25,10 +25,10 @@
             });
 
 	//查询
-	var users = adoProvider.Query<user>(x => 1 == 1);
+	var users = adoProvider.Query<user>(x =>x.name.Container);
 
     //分页查询
-	var users = adoProvider.PageQuery<user>(x => 1 == 1,0,10);
+	var users = adoProvider.QueryPage<user>(x => 1 == 1,0,10);
 
 	foreach (DataRow dr in rt.Result.Rows)
 	{
@@ -93,30 +93,30 @@
 	Console.ReadKey();
 
 #sql表达式生成例子
-		//生成简单查询脚本
-        ISqlProvider sqlProvider = SqlProvider.CreateProvider();
 
-        //MappedName 测试
-        var sqls = sqlProvider.Insert<UserDto>().Values(new UserDto[] { new UserDto() {
-                Pwd="ds",
-                UserName="d"
-        } }).SqlString;
+	//生成简单查询脚本
+        //group by 
+            string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
+                .Where(x => x.uage == 1).GroupBy<User>().SqlString;
 
-        //查询
-        var sql = sqlProvider.Select<User>()
-                .From().Where(x => x.id == 1).Top(FactoryType.PostgreSQL, 10).SqlString;
+            //in 语法
+            string[] values = new string[] { "a","b"};
+            var inSql = sqlProvider.Select<User>().From().Where(x => values.Contains(x.uname)).SqlString;
 
-        //修改
-        sql = sqlProvider.Update<User>()
-            .Set(new User() { name = "bouyei" })
-            .Where<User>(x => x.id == 1 || (x.name == "b" && x.no == 2)).SqlString;
+            //like 语法 '%bouyei%'
+            var likeSql = sqlProvider.Select<User>().From().Where(x => x.uname.Contains("bouyei")).SqlString;
 
-        //删除
-        sql = sqlProvider.Delete()
-            .From<User>().Where(x => x.name == "bouyei").SqlString;
+            //like 语法'bouyei%'
+            var beginSql = sqlProvider.Select<User>().From().Where(x => x.uname.StartsWith("bouyei") || x.uname.StartsWith("bb")).SqlString;
 
-        //插入
-        sql = sqlProvider.Insert<User>()
-            .Values(new User[] {
-            new User() { name ="hello", age=12 }
-            ,new User() { name="bouyei",age=23} }).SqlString;
+            //like 语法'%bouyei'
+            var endSql = sqlProvider.Select<User>().From().Where(x => x.uname.EndsWith("bouyei")).SqlString;
+
+            //select count(*) from user where id=1
+            string commandText = sqlProvider.Select<User>(new Count("*")).From<User>().Where(x=>x.id==1).SqlString;
+
+            //function 
+            string sqlfun = sqlProvider.Select<User>(new Max("age")).From<User>().Where(x=>x.uage>20).SqlString;
+
+            //order by
+            var osql = sqlProvider.Select<User>().From<User>().OrderBy(SortType.Asc, "name").SqlString;
