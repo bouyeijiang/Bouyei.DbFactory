@@ -119,9 +119,9 @@ namespace Bouyei.DbFactory.DbMapper
             return rt.Result;
         }
 
-        public virtual int SelectSum(string sumColumn,Expression<Func<T, bool>> whereclause)
+        public virtual R SelectSum<R>(string sumColumn,Expression<Func<T, bool>> whereclause)
         {
-            var rt = dbProvider.QuerySum<T>(whereclause,sumColumn);
+            var rt = dbProvider.QuerySum<T,R>(whereclause,sumColumn);
             if (string.IsNullOrEmpty(rt.Info) == false)
                 throw new Exception(rt.Info);
 

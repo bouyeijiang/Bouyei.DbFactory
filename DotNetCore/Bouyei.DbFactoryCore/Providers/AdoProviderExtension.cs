@@ -91,26 +91,26 @@ namespace Bouyei.DbFactoryCore
             return rt;
         }
 
-        public static DbResult<int, string> QueryMax<T>(this IAdoProvider dbProvider,
+        public static DbResult<R, string> QueryMax<T,R>(this IAdoProvider dbProvider,
         Expression<Func<T, bool>> predicate, string maxColumn) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
             string commandText = sql.Select<T>(new Max(maxColumn)).From<T>().Where(predicate).SqlString;
 
-            var rt = dbProvider.ExecuteScalar<int>(new Parameter(commandText));
+            var rt = dbProvider.ExecuteScalar<R>(new Parameter(commandText));
             if (rt.Info != string.Empty)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
         }
 
-        public static DbResult<int, string> QuerySum<T>(this IAdoProvider dbProvider,
+        public static DbResult<R, string> QuerySum<T,R>(this IAdoProvider dbProvider,
         Expression<Func<T, bool>> predicate, string sumColumn) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
             string commandText = sql.Select<T>(new Sum(sumColumn)).From<T>().Where(predicate).SqlString;
 
-            var rt = dbProvider.ExecuteScalar<int>(new Parameter(commandText));
+            var rt = dbProvider.ExecuteScalar<R>(new Parameter(commandText));
             if (rt.Info != string.Empty)
                 rt.Info = rt.Info + "\n\r" + commandText;
 

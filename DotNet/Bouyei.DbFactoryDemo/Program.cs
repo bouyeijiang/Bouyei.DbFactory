@@ -168,11 +168,29 @@ namespace Bouyei.DbFactoryDemo
 
             //dbProvider.Delete<User>(x => x.uname == "bouyei");
 
-            //插入
-            //var users = new User[] {
-            //new User(){ uname=null, score=100, uage=30 },
-            //new User(){ uname=null, score=10, uage=20 }
-            //};
+            //增加
+            var rt = dbProvider.Insert<User>(new User()
+            {
+                score = 10,
+                uname = "bouyei",
+                uage = 30
+            });
+
+            //删除
+            var drt = dbProvider.Delete<User>(x => x.uname == "bouyei" || x.uage > 30);
+
+            //查询
+            string[] orderbyColumn = new string[] { "uname" };
+            var qrt = dbProvider.QueryOrderBy<User>(x => true, orderbyColumn, SortType.Desc, 0, 10);
+
+            //更改
+            var urt = dbProvider.Update<User>(new User()
+            {
+                score = 90,
+                uage = 29,
+                uname = "jiang"
+            }, x => x.id == 1);
+
         }
 
         private static void OrmDemo(string connectionString)

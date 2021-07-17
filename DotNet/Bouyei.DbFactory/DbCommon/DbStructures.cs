@@ -284,7 +284,7 @@ namespace Bouyei.DbFactory
                     }
                     break;
                 case FactoryType.PostgreSQL:
-                    ConnectionString = $"Server={DbIp};Port={DbPort};UserId={DbUserName};Password={DbPort};Database={DbName};";
+                    ConnectionString = $"Server={DbIp};Port={DbPort};UserId={DbUserName};Password={DbPassword};Database={DbName};";
                     break;
                 case FactoryType.Odbc:
                     ConnectionString = $"Driver={{{DbName}}};Server={DbIp};Database={DbName}; Uid={DbUserName};Pwd={DbPassword};";
