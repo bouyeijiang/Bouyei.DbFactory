@@ -23,7 +23,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
     public class GroupBy<T> : WordsBase
     {
-        public GroupBy() : base(typeof(T), IgnoreType.IgnoreRead)
+        public GroupBy() : base(typeof(T))
         {
 
         }

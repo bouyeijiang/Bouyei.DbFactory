@@ -13,15 +13,11 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         public string SqlString { get; set; }
 
         protected Type type = null;
-        protected IgnoreType ignoreType { get; set; }
-        public WordsBase(IgnoreType ignoreType=IgnoreType.None)
-        {
-            this.ignoreType = ignoreType;
-        }
 
-        public WordsBase(Type type,IgnoreType ignoreType=IgnoreType.None)
+        public WordsBase() { }
+
+        public WordsBase(Type type)
         {
-            this.ignoreType = ignoreType;
             this.type = type;
         }
 
@@ -51,7 +47,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         protected virtual IEnumerable<PropertyInfo> GetProperties()
         {
             var items = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            return items.Where(x => ExistIgnoreAttribute(x,ignoreType) == false);
+            return items.Where(x => ExistIgnoreAttribute(x) == false);
         }
 
         protected string ParameterFormat(PropertyInfo[] pInfo,object value)
@@ -124,23 +120,31 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         //    return bAttr.AttrType;
         //}
 
-        protected bool ExistIgnoreAttribute(PropertyInfo pInfo, IgnoreType ignoreType)
+        protected bool ExistIgnoreAttribute(PropertyInfo pInfo)
         {
             var attrs = pInfo.GetCustomAttributes();
             foreach (var attr in attrs)
             {
-                if (ignoreType == IgnoreType.IgnoreRead)
+                if (attr is IgnoreAttribute ignore)
                 {
-                    if (attr is IgnoreReadAttribute) return true;
+                    if (ignore.AttrType == AttributeType.Ignore
+                        ||ignore.AttrType == AttributeType.IgnoreRead
+                        ||ignore.AttrType == AttributeType.IgnoreWrite)
+                        return true;
                 }
-                else if (ignoreType == IgnoreType.IgnoreWrite)
-                {
-                    if (attr is IgnoreWriteAttribute) return true;
-                }
-                else if (ignoreType == IgnoreType.Ignore)
-                {
-                    if (attr is IgnoreAttribute) return true;
-                }
+
+                //if (ignoreType == IgnoreType.IgnoreRead)
+                //{
+                //    if (attr is IgnoreReadAttribute) return true;
+                //}
+                //else if (ignoreType == IgnoreType.IgnoreWrite)
+                //{
+                //    if (attr is IgnoreWriteAttribute) return true;
+                //}
+                //else if (ignoreType == IgnoreType.Ignore)
+                //{
+                //    if (attr is IgnoreAttribute) return true;
+                //}
             }
             return false;
         }
@@ -151,12 +155,5 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         //    if (bAttr == null) return false;
         //    return bAttr.IsDefaultAttribute();
         //}
-    }
-    public enum IgnoreType
-    {
-        None,
-        Ignore,
-        IgnoreWrite,
-        IgnoreRead
     }
 }

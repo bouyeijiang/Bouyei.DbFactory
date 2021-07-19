@@ -70,31 +70,33 @@ namespace Bystd.DbFactory
             this.Name = Name;
         }
 
-        public IgnoreAttribute() { }
-    }
-
-    public class IgnoreWriteAttribute:BaseAttribute
-    {
-        public IgnoreWriteAttribute(string Name)
-           : base(Name, AttributeType.IgnoreWrite)
-        {
-            this.Name = Name;
-        }
-
-        public IgnoreWriteAttribute()
+        public IgnoreAttribute(AttributeType attrType=AttributeType.Ignore)
+            :base(attrType)
         { }
     }
 
-    public class IgnoreReadAttribute:BaseAttribute
-    {
-        public IgnoreReadAttribute(string Name)
-          : base(Name, AttributeType.IgnoreWrite)
-        {
-            this.Name = Name;
-        }
-        public IgnoreReadAttribute()
-        { }
-    }
+    //public class IgnoreWriteAttribute:BaseAttribute
+    //{
+    //    public IgnoreWriteAttribute(string Name)
+    //       : base(Name, AttributeType.IgnoreWrite)
+    //    {
+    //        this.Name = Name;
+    //    }
+
+    //    public IgnoreWriteAttribute()
+    //    { }
+    //}
+
+    //public class IgnoreReadAttribute:BaseAttribute
+    //{
+    //    public IgnoreReadAttribute(string Name)
+    //      : base(Name, AttributeType.IgnoreWrite)
+    //    {
+    //        this.Name = Name;
+    //    }
+    //    public IgnoreReadAttribute()
+    //    { }
+    //}
 
     public class MappedNameAttribute:BaseAttribute
     {
@@ -105,6 +107,7 @@ namespace Bystd.DbFactory
         }
 
         public MappedNameAttribute()
+            :base(AttributeType.Mapped)
         { }
     }
 

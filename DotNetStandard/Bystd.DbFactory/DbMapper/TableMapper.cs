@@ -31,7 +31,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual int Insert(params T[] values)
         {
             var rt = dbProvider.Insert(values);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -40,7 +40,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual int Insert(Dictionary<string, object> values)
         {
             var rt = dbProvider.Insert<T>(values);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -49,7 +49,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual int Delete(Expression<Func<T, bool>> whereclause)
         {
             var rt = dbProvider.Delete(whereclause);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -58,7 +58,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual int Update(T value, Expression<Func<T, bool>> whereclause)
         {
             var rt = dbProvider.Update(value, whereclause);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -67,7 +67,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual int Update(Dictionary<string, object> values, Expression<Func<T, bool>> whereclause)
         {
             var rt = dbProvider.Update<T>(values, whereclause);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -76,7 +76,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual List<T> Select(Expression<Func<T, bool>> whereclause)
         {
             var rt = dbProvider.Query(whereclause);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -88,7 +88,7 @@ namespace Bystd.DbFactory.DbMapper
             if (size <= 0) size = 10;
 
             var rt = dbProvider.QueryPage(whereclause, page, size);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -101,7 +101,7 @@ namespace Bystd.DbFactory.DbMapper
             if (size <= 0) size = 10;
 
             var rt = dbProvider.QueryOrderBy(whereclause, orderColumNames,sType,page, size);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -110,7 +110,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual int SelectCount<R>(Expression<Func<T, bool>> whereclause)
         {
             var rt = dbProvider.QueryCount<T>(whereclause);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -119,7 +119,7 @@ namespace Bystd.DbFactory.DbMapper
         public virtual R SelectSum<R>(string sumColumn, Expression<Func<T, bool>> whereclause)
         {
             var rt = dbProvider.QuerySum<T,R>(whereclause, sumColumn);
-            if (string.IsNullOrEmpty(rt.Info) == false)
+            if (rt.IsSuccess()==false)
                 throw new Exception(rt.Info);
 
             return rt.Result;
@@ -127,13 +127,13 @@ namespace Bystd.DbFactory.DbMapper
 
         public virtual T SelectFirst(Expression<Func<T, bool>> whereclause)
         {
-            var result = dbProvider.QueryPage<T>(whereclause, 0, 1);
-            if (result.Info != string.Empty)
-                throw new Exception(result.Info);
+            var rt = dbProvider.QueryPage<T>(whereclause, 0, 1);
+            if (rt.IsSuccess()==false)
+                throw new Exception(rt.Info);
 
-            if (result.Result == null) return default(T);
+            if (rt.Result == null) return default(T);
 
-            return result.Result.FirstOrDefault();
+            return rt.Result.FirstOrDefault();
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Bystd.DbFactory.DbMapper
             var commandText = sql.Select(column).From<T>().Where(whereclause).SqlString;
 
             var rt = dbProvider.ExecuteScalar<R>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt.Result;

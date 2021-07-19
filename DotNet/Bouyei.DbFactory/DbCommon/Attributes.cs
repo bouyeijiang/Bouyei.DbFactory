@@ -64,33 +64,36 @@ namespace Bouyei.DbFactory
     {
         public IgnoreAttribute(string Name)
             : base(Name, AttributeType.Ignore)
-        {
-            this.Name = Name;
-        }
+        {}
 
-        public IgnoreAttribute() { }
-    }
-
-    public class IgnoreWriteAttribute : BaseAttribute
-    {
-        public IgnoreWriteAttribute(string Name)
-           : base(Name, AttributeType.IgnoreWrite)
-        {
-            this.Name = Name;
-        }
-
-        public IgnoreWriteAttribute()
+        public IgnoreAttribute(AttributeType attrType= AttributeType.Ignore)
+            : base(attrType)
         { }
     }
 
-    public class IgnoreReadAttribute : BaseAttribute
-    {
-        public IgnoreReadAttribute(string Name)
-          : base(Name, AttributeType.IgnoreWrite)
-        {
-            this.Name = Name;
-        }
-    }
+    //public class IgnoreWriteAttribute : BaseAttribute
+    //{
+    //    public IgnoreWriteAttribute(string Name)
+    //       : base(Name, AttributeType.IgnoreWrite)
+    //    {
+    //        this.Name = Name;
+    //    }
+
+    //    public IgnoreWriteAttribute()
+    //    { }
+    //}
+
+    //public class IgnoreReadAttribute : BaseAttribute
+    //{
+    //    public IgnoreReadAttribute(string Name)
+    //      : base(Name, AttributeType.IgnoreRead)
+    //    {
+    //        this.Name = Name;
+    //    }
+
+    //    public IgnoreReadAttribute()
+    //    { }
+    //}
 
     public class MappedNameAttribute : BaseAttribute
     {
@@ -101,7 +104,8 @@ namespace Bouyei.DbFactory
         }
 
         public MappedNameAttribute()
-        { }
+            :base(AttributeType.Mapped)
+        {}
     }
 
     [Flags]

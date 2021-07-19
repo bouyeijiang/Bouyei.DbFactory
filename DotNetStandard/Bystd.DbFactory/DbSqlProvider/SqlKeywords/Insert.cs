@@ -33,7 +33,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
     {
         public string TableName { get; private set; }
 
-        public Insert():base(typeof(T),IgnoreType.IgnoreWrite)
+        public Insert():base(typeof(T))
         {
             this.TableName = GetTableName();
         }

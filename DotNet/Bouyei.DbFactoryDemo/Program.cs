@@ -169,15 +169,15 @@ namespace Bouyei.DbFactoryDemo
             //dbProvider.Delete<User>(x => x.uname == "bouyei");
 
             //增加
-            var rt = dbProvider.Insert<User>(new User()
-            {
-                score = 10,
-                uname = "bouyei",
-                uage = 30
-            });
+            //var rt = dbProvider.Insert<User>(new User()
+            //{
+            //    score = 10,
+            //    uname = "bouyei",
+            //    uage = 30
+            //});
 
             //删除
-            var drt = dbProvider.Delete<User>(x => x.uname == "bouyei" || x.uage > 30);
+           // var drt = dbProvider.Delete<User>(x => x.uname == "bouyei" || x.uage > 30);
 
             //查询
             string[] orderbyColumn = new string[] { "uname" };

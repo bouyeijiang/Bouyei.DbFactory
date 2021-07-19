@@ -143,9 +143,13 @@ namespace Bouyei.DbFactoryCore.DbMapper
             var attrs = pInfo.GetCustomAttributes();
             foreach (var attr in attrs)
             {
-                if (attr is IgnoreAttribute
-                    || attr is IgnoreWriteAttribute
-                    || attr is IgnoreReadAttribute) return true;
+                if (attr is IgnoreAttribute ignore)
+                {
+                    if (ignore.AttrType == AttributeType.Ignore
+                        || ignore.AttrType == AttributeType.IgnoreRead
+                        || ignore.AttrType == AttributeType.IgnoreWrite)
+                        return true;
+                }
             }
             return false;
         }

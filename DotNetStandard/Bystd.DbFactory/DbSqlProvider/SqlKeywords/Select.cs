@@ -13,7 +13,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         private string funString = string.Empty;
         private string topString = string.Empty;
 
-        public Select() : base(typeof(T), IgnoreType.IgnoreRead)
+        public Select() : base(typeof(T))
         {
 
         }

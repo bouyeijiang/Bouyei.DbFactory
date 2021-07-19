@@ -14,7 +14,7 @@ namespace Bystd.DbFactory
             var commandText = sql.Select<T>().From<T>().Where<T>(predicate).SqlString;
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -27,7 +27,7 @@ namespace Bystd.DbFactory
 
             var commandText = sql.Select(selectColumns).From<T>().Where(predicate).SqlString;
             var rt = dbProvider.Query<T>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt;
@@ -40,7 +40,7 @@ namespace Bystd.DbFactory
 
             var commandText = sql.Select(selectColumns).From(tableName).Where(predicate).SqlString;
             var rt = dbProvider.Query<T>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt;
@@ -56,7 +56,7 @@ namespace Bystd.DbFactory
                 ).Top<T>(dbProvider.DbType, offset, size).SqlString;
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -73,7 +73,7 @@ namespace Bystd.DbFactory
                 .Where<T>(predicate).OrderBy(sType, orderColumnNames).Top<T>(dbProvider.DbType, offset, size).SqlString;
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -86,7 +86,7 @@ namespace Bystd.DbFactory
             string commandText = sql.Select<T>(new Count(countColumn)).From<T>().Where(predicate).SqlString;
 
             var rt = dbProvider.ExecuteScalar<int>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -99,7 +99,7 @@ namespace Bystd.DbFactory
             string commandText = sql.Select<T>(new Max(maxColumn)).From<T>().Where(predicate).SqlString;
 
             var rt = dbProvider.ExecuteScalar<int>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -112,7 +112,7 @@ namespace Bystd.DbFactory
             string commandText = sql.Select<T>(new Sum(sumColumn)).From<T>().Where(predicate).SqlString;
 
             var rt = dbProvider.ExecuteScalar<R>(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -125,7 +125,7 @@ namespace Bystd.DbFactory
             var commandText = sql.Delete().From<T>().Where<T>(predicate).SqlString;
 
             var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -139,7 +139,7 @@ namespace Bystd.DbFactory
 
             var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
 
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -153,7 +153,7 @@ namespace Bystd.DbFactory
 
             var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
 
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt;
@@ -165,7 +165,7 @@ namespace Bystd.DbFactory
             var commandText = sql.Insert<T>().Values<T>(value).SqlString;
             var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
 
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -179,7 +179,7 @@ namespace Bystd.DbFactory
 
             var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
 
-            if (rt.Info != string.Empty)
+            if (rt.IsSuccess()==false)
                 rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt;

@@ -22,6 +22,7 @@ namespace Bouyei.DbEntities
 
         public int uage { get; set; }
 
+        [Ignore]
         public int score { get; set; }
     }
 

@@ -29,7 +29,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Values<T> : WordsBase
     {
-        public Values():base(typeof(T),IgnoreType.IgnoreWrite)
+        public Values():base(typeof(T))
         {
 
         }
