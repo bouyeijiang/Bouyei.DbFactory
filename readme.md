@@ -4,8 +4,15 @@
 
 #Bystd.DbFactory 基于.net standard 2.0+
 
+# Package
+---
+
+Package  | NuGet 
+-------- | :------------ 
 Bouyei.DbFactory		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.svg)](https://www.nuget.org/packages/Bouyei.DbFactory)
+
 Bouyei.DbFactoryCore		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
+
 Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)](https://www.nuget.org/packages/Bystd.DbFactory)
 
 #1、Ado使用例子
