@@ -391,7 +391,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             try
             {
                 int cnt = 0;
-                var copy = new CopyFactory(DbType, ConnectionString, dbParameter.ExecuteTimeout)
+                var copy = new CopyFactory(FactoryType, ConnectionString, dbParameter.ExecuteTimeout)
                 {
                     BulkCopiedHandler = dbParameter.BulkCopiedHandler
                 };
@@ -423,7 +423,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             try
             {
                 int cnt = 0;
-                var copy = new CopyFactory(DbType, ConnectionString, dbParameter.ExecuteTimeout)
+                var copy = new CopyFactory(FactoryType, ConnectionString, dbParameter.ExecuteTimeout)
                 {
                     BulkCopiedHandler = dbParameter.BulkCopiedHandler
                 };

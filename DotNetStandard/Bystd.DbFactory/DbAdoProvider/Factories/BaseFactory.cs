@@ -10,7 +10,7 @@ namespace Bystd.DbFactory.DbAdoProvider
 
         public int ExecuteTimeout { get;  set; }
 
-        public FactoryType DbType { get; set; }
+        public FactoryType FactoryType { get; set; }
 
         protected DbProviderFactory dbProviderFactory { get;private set; }
 
@@ -19,7 +19,7 @@ namespace Bystd.DbFactory.DbAdoProvider
 
         public BaseFactory(FactoryType dbType,int executeTimeout)
         {
-            this.DbType = dbType;
+            this.FactoryType = dbType;
             this.ExecuteTimeout = executeTimeout;
             dbProviderFactory = GetProviderFactory();
         }
@@ -42,7 +42,7 @@ namespace Bystd.DbFactory.DbAdoProvider
 
         protected virtual DbProviderFactory GetProviderFactory()
         {
-            switch (DbType)
+            switch (FactoryType)
             {
                 case FactoryType.SqlServer:
                     return SqlServer.SqlFactory.GetFactory();
@@ -60,10 +60,10 @@ namespace Bystd.DbFactory.DbAdoProvider
                     {
 #if NETSTANDARD2_1
                         var invariant = GetFactoryName();
-                        if (invariant == string.Empty) throw new Exception("not support type" + DbType);
+                        if (invariant == string.Empty) throw new Exception("not support type" + FactoryType);
                         return DbProviderFactories.GetFactory(invariant);
 #else
-                        throw new Exception("not support type" + DbType);
+                        throw new Exception("not support type" + FactoryType);
 #endif
                     }
             }
@@ -72,7 +72,7 @@ namespace Bystd.DbFactory.DbAdoProvider
         private string GetFactoryName()
         {
             string invariantName = string.Empty;
-            switch (DbType)
+            switch (FactoryType)
             {
                 case FactoryType.DB2: invariantName = "IBM.Data.DB2"; break;
                 case FactoryType.Oracle: invariantName = "Oracle.DataAccess"; break;
@@ -89,7 +89,8 @@ namespace Bystd.DbFactory.DbAdoProvider
 
         public virtual void Dispose()
         {
-           
+            if (dbConnection != null) dbConnection.Dispose();
+            if (dbTransaction != null) dbTransaction.Dispose();
         }
     }
 }

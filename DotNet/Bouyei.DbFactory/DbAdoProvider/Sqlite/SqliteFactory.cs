@@ -17,7 +17,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Sqlite
         public SqliteFactory(IDbConnection dbConnection, IDbTransaction dbTransaction, int timeout)
             :base(FactoryType.SQLite, timeout, dbConnection, dbTransaction)
         { }
-
+  
         public static DbProviderFactory GetFactory()
         {
             return System.Data.SQLite.SQLiteFactory.Instance;

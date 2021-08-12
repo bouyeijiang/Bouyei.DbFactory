@@ -27,7 +27,7 @@ namespace Bouyei.DbFactoryCore
 
         public static IAdoProvider Clone(IAdoProvider adoProvider)
         {
-            return new AdoProvider(adoProvider.ConnectionString, adoProvider.DbType);
+            return new AdoProvider(adoProvider.ConnectionString, adoProvider.FactoryType);
         }
     }
 }

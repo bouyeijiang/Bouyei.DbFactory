@@ -18,7 +18,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.SqlServer
         {
            
         }
-
+  
         public static DbProviderFactory GetFactory()
         {
             return System.Data.SqlClient.SqlClientFactory.Instance;

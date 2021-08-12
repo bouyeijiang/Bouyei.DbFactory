@@ -25,11 +25,13 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         {
             this.attrType = attrType;
         }
+
         public WordsBase(Type type, AttributeType attrType)
-       : this(type)
+       : this(attrType)
         {
             this.type = type;
         }
+
         public virtual string ToString(string[] columnNames)
         {
             return string.Join(",", columnNames);
@@ -48,12 +50,12 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             return tabName;
         }
 
-        protected virtual IEnumerable<string> GetColumns()
+        public virtual IEnumerable<string> GetColumns()
         {
             return GetProperties().Select(x => x.Name);
         }
 
-        protected virtual IEnumerable<PropertyInfo> GetProperties()
+        public virtual IEnumerable<PropertyInfo> GetProperties()
         {
             var items = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             return items.Where(x => ExistIgnoreAttribute(x) == false);

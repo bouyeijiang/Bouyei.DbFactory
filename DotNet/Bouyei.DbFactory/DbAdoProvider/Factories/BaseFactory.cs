@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Bouyei.DbFactory.DbSqlProvider.SqlKeywords;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Reflection;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
@@ -10,7 +14,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         public int ExecuteTimeout { get;  set; }
 
-        public FactoryType DbType { get; set; }
+        public FactoryType FactoryType { get; set; }
 
         protected DbProviderFactory dbProviderFactory { get;private set; }
 
@@ -19,7 +23,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         public BaseFactory(FactoryType dbType,int executeTimeout)
         {
-            this.DbType = dbType;
+            this.FactoryType = dbType;
             this.ExecuteTimeout = executeTimeout;
         }
 
@@ -41,7 +45,7 @@ namespace Bouyei.DbFactory.DbAdoProvider
 
         public virtual DbProviderFactory GetProviderFactory()
         {
-            switch (DbType)
+            switch (FactoryType)
             {
                 case FactoryType.SqlServer:
                     return SqlServer.SqlFactory.GetFactory();
@@ -58,17 +62,16 @@ namespace Bouyei.DbFactory.DbAdoProvider
                 default:
                     {
                         string invariant = GetFactoryName();
-                        if (invariant == string.Empty) throw new Exception("not support type" + DbType);
+                        if (invariant == string.Empty) throw new Exception("not support type" + FactoryType);
                         return DbProviderFactories.GetFactory(invariant);
                     }
             }
         }
-
-
+ 
         public string GetFactoryName()
         {
             string invariantName = string.Empty;
-            switch (DbType)
+            switch (FactoryType)
             {
                 case FactoryType.DB2: invariantName = "IBM.Data.DB2"; break;
                 case FactoryType.Oracle: invariantName = "Oracle.DataAccess"; break;
@@ -82,10 +85,11 @@ namespace Bouyei.DbFactory.DbAdoProvider
             }
             return invariantName;
         }
-
+ 
         public virtual void Dispose()
         {
-           
+            if (dbConnection != null) dbConnection.Dispose();
+            if (dbTransaction != null) dbTransaction.Dispose();
         }
     }
 }

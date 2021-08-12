@@ -11,7 +11,6 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.Extensions.Configuration;
-    using MySql.Data.EntityFrameworkCore.Infraestructure;
     using System.Data.Common;
 
     internal class EntityContext : DbContext, IDisposable
@@ -275,12 +274,12 @@ namespace Bouyei.DbFactoryCore.DbEntityProvider
 
                 });
             }
-            else if (ProviderType == FactoryType.MySql)
-            {
-                optionsBuilder.UseMySQL(ConnectionString,(MySQLDbContextOptionsBuilder option) => {
+            //else if (ProviderType == FactoryType.MySql)
+            //{
+            //    optionsBuilder.UseMySQL(ConnectionString,(MySQLDbContextOptionsBuilder option) => {
 
-                });
-            }
+            //    });
+            //}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

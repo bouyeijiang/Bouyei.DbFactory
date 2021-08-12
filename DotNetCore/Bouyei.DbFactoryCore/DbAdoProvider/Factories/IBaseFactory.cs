@@ -14,7 +14,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
 
         int ExecuteTimeout { get; set; }
 
-        FactoryType DbType { get; set; }
+        FactoryType FactoryType { get; set; }
 
     }
 }

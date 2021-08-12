@@ -11,6 +11,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Mysql
         public MysqlFactory(string ConnectionString,int timeout = 1800)
         : base(FactoryType.MySql,timeout,ConnectionString) { }
 
+
         public static DbProviderFactory GetFactory()
         {
             return MySql.Data.MySqlClient.MySqlClientFactory.Instance;

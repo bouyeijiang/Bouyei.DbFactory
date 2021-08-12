@@ -10,7 +10,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.Postgresql
 
         public NpgFactory(string ConnectionString,int timeout = 1800)
             : base(FactoryType.PostgreSQL, timeout,ConnectionString) { }
-
+  
         public static DbProviderFactory GetFactory()
         {
             return Npgsql.NpgsqlFactory.Instance;

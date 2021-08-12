@@ -54,12 +54,12 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
             return tabName;
         }
 
-        protected virtual IEnumerable<string> GetColumns()
+        public virtual IEnumerable<string> GetColumns()
         {
             return GetProperties().Select(x => x.Name);
         }
 
-        protected virtual IEnumerable<PropertyInfo> GetProperties()
+        public virtual IEnumerable<PropertyInfo> GetProperties()
         {
             var items = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             return items.Where(x => ExistIgnoreAttribute(x) == false);

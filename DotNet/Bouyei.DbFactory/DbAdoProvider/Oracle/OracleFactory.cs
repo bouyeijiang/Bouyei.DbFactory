@@ -5,6 +5,7 @@ using Oracle.DataAccess.Client;
 
 namespace Bouyei.DbFactory.DbAdoProvider.Oracle
 {
+
     internal class OracleFactory : BaseFactory, IBaseFactory
     {
         public OracleFactory(string ConnectionString, int timeout = 1800)

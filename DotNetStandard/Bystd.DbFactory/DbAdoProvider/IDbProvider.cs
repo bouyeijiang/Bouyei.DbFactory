@@ -17,7 +17,7 @@ namespace Bystd.DbFactory.DbAdoProvider
     public interface IDbProvider: IDisposable
     {
         string ConnectionString { get; set; }
-        FactoryType DbType { get; set; }
+        FactoryType FactoryType { get; set; }
         DbResult<bool, string> Connect(string connString);
         DbResult<DataTable, string> QuerySchema();
         DbResult<DataTable, string> Query(Parameter dbParameter);

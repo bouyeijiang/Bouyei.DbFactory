@@ -22,7 +22,7 @@ namespace Bouyei.DbFactory.DbAdoProvider.DB2
         {
 
         }
-
+  
         public static DbProviderFactory GetFactory()
         {
             return IBM.Data.DB2.DB2Factory.Instance;

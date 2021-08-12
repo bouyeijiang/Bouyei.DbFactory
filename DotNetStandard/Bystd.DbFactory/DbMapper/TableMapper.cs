@@ -144,7 +144,7 @@ namespace Bystd.DbFactory.DbMapper
         /// <returns></returns>
         public virtual R SelectScalar<R>(string column,Expression<Func<T, bool>> whereclause)
         {
-            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.DbType);
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
             var commandText = sql.Select(column).From<T>().Where(whereclause).SqlString;
 
             var rt = dbProvider.ExecuteScalar<R>(new Parameter(commandText));

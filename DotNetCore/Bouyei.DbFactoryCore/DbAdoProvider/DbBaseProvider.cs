@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using OracleDataAccess = Oracle.ManagedDataAccess.Client;
 
@@ -90,9 +91,9 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             dbCommand.CommandText = dbParameter.CommandText;
             dbCommand.CommandTimeout = dbParameter.ExecuteTimeout;
 
-            if (dbParameter.dbProviderParameters != null)
+            if (dbParameter.cmdParameters != null)
             {
-                foreach (CmdParameter param in dbParameter.dbProviderParameters)
+                foreach (CmdParameter param in dbParameter.cmdParameters)
                 {
                     dbCommand.Parameters.Add(CreateParameter(param));
                 }
@@ -107,61 +108,43 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider
             return dbTransaction;
         }
 
-        protected DbParameter CreateParameter(CmdParameter dbProviderParameter)
+        protected DbParameter CreateParameter(CmdParameter cmdParameter)
         {
-            switch (DbType)
+            DbParameter dbParam = null;
+
+            switch (FactoryType)
             {
-                case FactoryType.SqlServer:
-                    return new System.Data.SqlClient.SqlParameter()
-                    {
-                        DbType = dbProviderParameter.DbType,
-                        ParameterName = dbProviderParameter.ParameterName,
-                        Value = dbProviderParameter.Value,
-                        Size = dbProviderParameter.Size,
-                        Direction = dbProviderParameter.Direction,
-                        SourceColumn = dbProviderParameter.SourceColumn,
-                        SourceVersion = dbProviderParameter.SourceVersion,
-                        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
-                    };
-                case FactoryType.DB2:
-                    return new IBM.Data.DB2.Core.DB2Parameter()
-                    {
-                        DbType = dbProviderParameter.DbType,
-                        ParameterName = dbProviderParameter.ParameterName,
-                        Value = dbProviderParameter.Value,
-                        Size = dbProviderParameter.Size,
-                        Direction = dbProviderParameter.Direction,
-                        SourceColumn = dbProviderParameter.SourceColumn,
-                        SourceVersion = dbProviderParameter.SourceVersion,
-                        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
-                    };
-                case FactoryType.Oracle:
-                    return new OracleDataAccess.OracleParameter()
-                    {
-                        DbType = dbProviderParameter.DbType,
-                        ParameterName = dbProviderParameter.ParameterName,
-                        Value = dbProviderParameter.Value,
-                        Size = dbProviderParameter.Size,
-                        Direction = dbProviderParameter.Direction,
-                        SourceColumn = dbProviderParameter.SourceColumn,
-                        SourceVersion = dbProviderParameter.SourceVersion,
-                        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
-                    };
+                case FactoryType.PostgreSQL:
+                    dbParam = new Npgsql.NpgsqlParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    break;
+                case FactoryType.SQLite:
+                    dbParam = new System.Data.SQLite.SQLiteParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    break;
                 case FactoryType.MySql:
-                    return new MySql.Data.MySqlClient.MySqlParameter()
-                    {
-                        DbType = dbProviderParameter.DbType,
-                        ParameterName = dbProviderParameter.ParameterName,
-                        Value = dbProviderParameter.Value,
-                        Size = dbProviderParameter.Size,
-                        Direction = dbProviderParameter.Direction,
-                        SourceColumn = dbProviderParameter.SourceColumn,
-                        SourceVersion = dbProviderParameter.SourceVersion,
-                        SourceColumnNullMapping = dbProviderParameter.SourceColumnNullMapping
-                    };
+                    dbParam = new MySql.Data.MySqlClient.MySqlParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    break;
+                case FactoryType.SqlServer:
+                    dbParam = new System.Data.SqlClient.SqlParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    break;
+                case FactoryType.DB2:
+                    dbParam = new IBM.Data.DB2.Core.DB2Parameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    break;
+                case FactoryType.Oracle:
+                    dbParam = new OracleDataAccess.OracleParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    break;
                 default:
-                    return dbProviderParameter;
+                    throw new Exception("not supported");
             }
+
+            dbParam.DbType = cmdParameter.DbType;
+            dbParam.Size = cmdParameter.Size;
+            dbParam.Direction = cmdParameter.Direction;
+            dbParam.SourceColumn = cmdParameter.SourceColumn;
+            dbParam.SourceVersion = cmdParameter.SourceVersion;
+            dbParam.SourceColumnNullMapping = cmdParameter.SourceColumnNullMapping;
+
+            return dbParam;
         }
+
     }
 }

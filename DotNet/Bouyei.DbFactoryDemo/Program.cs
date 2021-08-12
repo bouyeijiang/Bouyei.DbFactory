@@ -146,7 +146,15 @@ namespace Bouyei.DbFactoryDemo
         private static void AdoDemo(string connectionString)
         {
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, FactoryType.PostgreSQL);
-            var ext = dbProvider.Connect(connectionString);
+
+            var rt = dbProvider.InsertParameter<User>(new User()
+            {
+                score = 11,
+                uage = 12,
+                uname = "dsf"
+            });
+
+            //var ext = dbProvider.Connect(connectionString);
 
             //var adort = dbProvider.Query(new Parameter()
             //{

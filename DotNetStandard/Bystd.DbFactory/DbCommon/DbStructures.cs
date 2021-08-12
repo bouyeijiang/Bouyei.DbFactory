@@ -52,7 +52,7 @@ namespace Bystd.DbFactory
 
         public Parameter(params CmdParameter[] dbProviderParameters)
         {
-            this.dbProviderParameters = dbProviderParameters;
+            this.cmdParameters = dbProviderParameters;
         }
 
         public Parameter(string CommandText,
@@ -61,7 +61,7 @@ namespace Bystd.DbFactory
             :base(ExectueTimeout)
         {
             this.CommandText = CommandText;
-            this.dbProviderParameters = dbProviderParameters;
+            this.cmdParameters = dbProviderParameters;
         }
         public Parameter(string format,params object[] args)
             :base()
@@ -81,7 +81,7 @@ namespace Bystd.DbFactory
         /// <summary>
         /// 指定脚本的传入参数
         /// </summary>
-        public CmdParameter[] dbProviderParameters { get; set; }
+        public CmdParameter[] cmdParameters { get; set; }
     }
     
     public class BulkParameter : BaseParameter
