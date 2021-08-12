@@ -4,7 +4,7 @@
 
 #Bystd.DbFactory 基于.net standard 2.0+
 
-# 1、nuget安装引用
+# 1)nuget安装引用
 ---
 
 Package  | NuGet 
@@ -13,7 +13,7 @@ Bouyei.DbFactory		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.sv
 Bouyei.DbFactoryCore		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
 Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)](https://www.nuget.org/packages/Bystd.DbFactory)
 
-# 2、增删查改基本例子
+# 2)增删查改基本例子
 ---
 
 增删查改基本例子
@@ -47,7 +47,7 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 		Console.WriteLine(string.Join(",", dr.ItemArray));
 	}
 
-# 3、表实体映射继承例子
+# 3)表实体映射继承例子
 ---
 
 表实体映射继承例子
@@ -95,7 +95,7 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
         }
     }
 
-# 4、表达式生成SQL脚本例子
+# 4)表达式生成SQL脚本例子
 ---
 
 表达式生成SQL脚本例子
