@@ -13,9 +13,10 @@ Bouyei.DbFactory		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.sv
 Bouyei.DbFactoryCore		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
 Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)](https://www.nuget.org/packages/Bystd.DbFactory)
 
-# 2、增删查改基本例子
+# 增删查改基本例子
 ---
-#2.1、Ado使用例子
+
+增删查改基本例子
  
 	string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
 
@@ -49,7 +50,7 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 # 表实体映射继承例子
 ---
 
-#3.1、表实体映射例子
+表实体映射继承例子
 
     //使用例子1
     private void execute()
@@ -97,7 +98,8 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 # 表达式生成SQL脚本例子
 ---
 
-	//生成简单查询脚本
+表达式生成SQL脚本例子
+
         //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
                 .Where(x => x.uage == 1).GroupBy<User>().SqlString;
