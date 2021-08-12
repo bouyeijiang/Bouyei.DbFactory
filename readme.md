@@ -1,10 +1,13 @@
+#### 模块说明
+---
+
 #Bouyei.DbFactory 基于.net framework 4.6.1+
 
 #Bouyei.DbFactoryCore基于.net core2.2+
 
 #Bystd.DbFactory 基于.net standard 2.0+
 
-# Package
+#### Package
 ---
 
 Package  | NuGet 
@@ -13,10 +16,8 @@ Bouyei.DbFactory		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.sv
 Bouyei.DbFactoryCore		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
 Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)](https://www.nuget.org/packages/Bystd.DbFactory)
 
-# 增删查改基本例子
+#### Ado基本例子
 ---
-
-增删查改基本例子
  
 	string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
 
@@ -47,10 +48,8 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 		Console.WriteLine(string.Join(",", dr.ItemArray));
 	}
 
-# 表实体映射继承例子
+#### 表实体映射继承例子
 ---
-
-表实体映射继承例子
 
     //使用例子1
     private void execute()
@@ -95,10 +94,8 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
         }
     }
 
-# 表达式生成SQL脚本例子
+#### 表达式生成SQL例子
 ---
-
-表达式生成SQL脚本例子
 
         //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
