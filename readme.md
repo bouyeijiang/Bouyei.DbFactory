@@ -4,7 +4,7 @@
 
 #Bystd.DbFactory 基于.net standard 2.0+
 
-# Package
+# 1、Package
 ---
 
 Package  | NuGet 
@@ -13,7 +13,9 @@ Bouyei.DbFactory		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.sv
 Bouyei.DbFactoryCore		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
 Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)](https://www.nuget.org/packages/Bystd.DbFactory)
 
-#1、Ado使用例子
+# 2、增删查改基本例子
+---
+#2.1、Ado使用例子
  
 	string connectionString = "Data Source=.;Initial Catalog=testdb;User ID=sa;Password=bouyei;";
 
@@ -44,7 +46,10 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 		Console.WriteLine(string.Join(",", dr.ItemArray));
 	}
 
-#2、表实体映射例子
+# 3、表实体映射继承例子
+---
+
+#3.1、表实体映射例子
 
     //使用例子1
     private void execute()
@@ -89,19 +94,8 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
         }
     }
 
-#基于EF的ORM需要再配置文件加相应实体映射dll路径，详细看demo代码例子
-
-	IOrmProvider ormProvider = OrmProvider.CreateProvider(ProviderType.SqlServer, connectionString);
-
-	var items= ormProvider.Query<DbEntity.User>("select * from MemUser").ToList();
-
-	foreach(var item in items)
-	{
-		Console.WriteLine(item.uName);
-	}
-	Console.ReadKey();
-
-#sql表达式生成例子
+# 4、表达式生成SQL脚本例子
+---
 
 	//生成简单查询脚本
         //group by 
