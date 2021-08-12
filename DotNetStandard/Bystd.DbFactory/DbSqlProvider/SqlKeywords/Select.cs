@@ -13,7 +13,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         private string funString = string.Empty;
         private string topString = string.Empty;
 
-        public Select() : base(typeof(T))
+        public Select() : base(typeof(T), AttributeType.IgnoreRead)
         {
 
         }
@@ -64,9 +64,9 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         private string topString = string.Empty;
         private string funString = string.Empty;
 
-        public Select() { }
+        public Select() : base(AttributeType.IgnoreRead) { }
 
-        public Select(params string[] columnNames)
+        public Select(params string[] columnNames) : this()
         {
             this.ColumnNames = columnNames;
         }

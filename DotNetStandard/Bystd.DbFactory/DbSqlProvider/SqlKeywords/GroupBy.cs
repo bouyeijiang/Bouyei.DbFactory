@@ -11,6 +11,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         public string[] ColumnNames { get; private set; }
 
         public GroupBy(params string[] columnNames)
+            : base(AttributeType.IgnoreRead)
         {
             this.ColumnNames = columnNames;
         }
@@ -23,7 +24,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
     public class GroupBy<T> : WordsBase
     {
-        public GroupBy() : base(typeof(T))
+        public GroupBy() : base(typeof(T), AttributeType.IgnoreRead)
         {
 
         }

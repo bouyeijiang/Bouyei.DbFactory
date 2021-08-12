@@ -15,7 +15,7 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-           // SqlDemo();
+            SqlDemo();
             string str = "Server=;Port=5432;User Id=postgres;Password=;Database=postgres;";
             //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
             //User usr = new User() { 
@@ -24,7 +24,7 @@ namespace DotNetCoreDemo
             //};
             //var b= provider.Update<User>(usr, x => x.id == 1);
 
-            Bulkcopy(str);
+            //Bulkcopy(str);
             //AdoDemo(str);
             //OrmDemo(str);
         }
@@ -37,6 +37,11 @@ namespace DotNetCoreDemo
             //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
                 .Where(x => x.age == 1).GroupBy<User>().SqlString;
+
+
+            var s=sqlProvider.Insert<User>().Values(new User()).SqlString;
+
+            var u = sqlProvider.Update<User>().Set(new User()).SqlString;
 
             //like 语法'bouyei%'
             string cond = "bouyei";

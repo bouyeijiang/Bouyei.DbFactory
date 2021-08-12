@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 {
-    public class Values:WordsBase
+    public class Values : WordsBase
     {
-        public Values( )
-        { }
+        public Values() : base(AttributeType.IgnoreWrite)
+        {
+
+        }
 
         public string ToString(Dictionary<string, object> columns)
         {
@@ -27,7 +29,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Values<T> : WordsBase
     {
-        public Values():base(typeof(T))
+        public Values() : base(typeof(T), AttributeType.IgnoreWrite)
         {
 
         }
@@ -56,5 +58,6 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
             return "Values (" + string.Join(",", array) + ") ";
         }
+
     }
 }

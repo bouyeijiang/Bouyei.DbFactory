@@ -14,13 +14,27 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
         protected Type type = null;
 
+        protected AttributeType attrType = AttributeType.None;
+
         public WordsBase()
         {}
+
+        public WordsBase(AttributeType attrType)
+        {
+            this.attrType = attrType;
+        }
 
         public WordsBase(Type type)
         {
             this.type = type;
         }
+        public WordsBase(Type type, AttributeType attrType)
+            :this(attrType)
+        {
+            this.type = type;
+        }
+
+
 
         public virtual string ToString(string[] columnNames)
         {
@@ -110,29 +124,28 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
         protected bool ExistIgnoreAttribute(PropertyInfo pInfo)
         {
+            if (attrType == AttributeType.None)
+                return false;
+
             var attrs = pInfo.GetCustomAttributes();
             foreach (var attr in attrs)
             {
                 if (attr is IgnoreAttribute ignore)
                 {
-                    if (ignore.AttrType == AttributeType.Ignore
-                        || ignore.AttrType == AttributeType.IgnoreRead
-                        || ignore.AttrType == AttributeType.IgnoreWrite)
-                        return true;
-                }
+                    if(ignore.AttrType==AttributeType.Ignore)
+                    {
+                        if (ignore.AttrType == AttributeType.IgnoreRead
+                       || ignore.AttrType == AttributeType.IgnoreWrite)
+                            return true;
+                    }
 
-                //if (ignoreType == IgnoreType.IgnoreRead)
-                //{
-                //    if (attr is IgnoreReadAttribute) return true;
-                //}
-                //else if (ignoreType == IgnoreType.IgnoreWrite)
-                //{
-                //    if (attr is IgnoreWriteAttribute) return true;
-                //}
-                //else if (ignoreType == IgnoreType.Ignore)
-                //{
-                //    if (attr is IgnoreAttribute) return true;
-                //}
+                    if (attrType == ignore.AttrType&&
+                        (ignore.AttrType == AttributeType.IgnoreRead
+                        || ignore.AttrType == AttributeType.IgnoreWrite))
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }

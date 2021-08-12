@@ -27,11 +27,11 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Set<T> : WordsBase
     {
-        public Set():base(typeof(T)) { }
+        public Set() : base(typeof(T), AttributeType.IgnoreWrite) { }
 
         public string ToString(T value)
         {
-            var items =GetProperties();
+            var items = GetProperties();
 
             List<string> tmp = new List<string>(items.Count());
 
@@ -42,7 +42,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
                 tmp.Add(string.Format("{0}={1}", item.Name, IsDigital(rVal) ? rVal : string.Format("'{0}'", rVal)));
             }
-            return "Set " + string.Join(",", tmp)+" ";
+            return "Set " + string.Join(",", tmp) + " ";
         }
     }
 }

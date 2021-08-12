@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Bystd.DbFactory.pfx</AssemblyOriginatorKeyFile>
     <Version>21.7.19</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>

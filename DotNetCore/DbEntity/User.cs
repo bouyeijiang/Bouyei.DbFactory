@@ -11,7 +11,7 @@ namespace DbEntity
     public class User : DbEntity
     {
         [Key]
-      //  [IgnoreWrite]
+        [Ignore(AttributeType.IgnoreRead)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
 

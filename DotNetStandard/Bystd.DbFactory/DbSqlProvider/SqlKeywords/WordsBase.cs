@@ -13,14 +13,28 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         public string SqlString { get; set; }
 
         protected Type type = null;
-  
+
+        protected AttributeType attrType = AttributeType.None;
+
         public WordsBase()
-        {}
+        { }
+
+        public WordsBase(AttributeType attrType)
+        {
+            this.attrType = attrType;
+        }
 
         public WordsBase(Type type)
         {
             this.type = type;
         }
+        public WordsBase(Type type, AttributeType attrType)
+            : this(attrType)
+        {
+            this.type = type;
+        }
+
+
 
         public virtual string ToString(string[] columnNames)
         {
@@ -51,7 +65,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
             return items.Where(x => ExistIgnoreAttribute(x) == false);
         }
 
-        protected string ParameterFormat(PropertyInfo[] pInfo,object value)
+        protected string ParameterFormat(PropertyInfo[] pInfo, object value)
         {
             var pInfos = pInfo;// typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
             List<string> values = new List<string>(pInfos.Length);
@@ -93,12 +107,12 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
                 || value is byte
                 || value is double) return true;
 
-            var val = value.ToString();
+            string val = value.ToString();
             if (val == string.Empty) return false;
 
             return Regex.IsMatch(val, numericReg);
         }
-  
+
         protected string GetMappedAttributeName()
         {
             var attr = type.GetCustomAttributes<MappedNameAttribute>(false).FirstOrDefault();
@@ -110,29 +124,28 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
         protected bool ExistIgnoreAttribute(PropertyInfo pInfo)
         {
+            if (attrType == AttributeType.None)
+                return false;
+
             var attrs = pInfo.GetCustomAttributes();
             foreach (var attr in attrs)
             {
                 if (attr is IgnoreAttribute ignore)
                 {
-                    if (ignore.AttrType == AttributeType.Ignore
-                        || ignore.AttrType == AttributeType.IgnoreRead
-                        || ignore.AttrType == AttributeType.IgnoreWrite)
-                        return true;
-                }
+                    if (ignore.AttrType == AttributeType.Ignore)
+                    {
+                        if (ignore.AttrType == AttributeType.IgnoreRead
+                       || ignore.AttrType == AttributeType.IgnoreWrite)
+                            return true;
+                    }
 
-                //if (ignoreType == IgnoreType.IgnoreRead)
-                //{
-                //    if (attr is IgnoreReadAttribute) return true;
-                //}
-                //else if (ignoreType == IgnoreType.IgnoreWrite)
-                //{
-                //    if (attr is IgnoreWriteAttribute) return true;
-                //}
-                //else if (ignoreType == IgnoreType.Ignore)
-                //{
-                //    if (attr is IgnoreAttribute) return true;
-                //}
+                    if (attrType == ignore.AttrType &&
+                        (ignore.AttrType == AttributeType.IgnoreRead
+                        || ignore.AttrType == AttributeType.IgnoreWrite))
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }

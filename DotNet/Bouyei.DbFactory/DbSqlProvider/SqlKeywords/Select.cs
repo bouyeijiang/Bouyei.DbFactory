@@ -8,14 +8,14 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 {
     using SqlFunctions;
 
-    public class Select<T>:WordsBase
+    public class Select<T> : WordsBase
     {
         private string funString = string.Empty;
         private string topString = string.Empty;
 
-        public Select() : base(typeof(T))
+        public Select() : base(typeof(T), AttributeType.IgnoreRead)
         {
-            
+
         }
 
         public Select(Count input) : this()
@@ -42,6 +42,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         {
             funString = input.ToString();
         }
+
         public override string ToString()
         {
             if (funString != string.Empty)
@@ -56,16 +57,16 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         }
     }
 
-    public class Select:WordsBase
+    public class Select : WordsBase
     {
         public string[] ColumnNames { get; private set; }
 
         private string topString = string.Empty;
         private string funString = string.Empty;
 
-        public Select() { }
+        public Select() : base(AttributeType.IgnoreRead) { }
 
-        public Select(params string[] columnNames)
+        public Select(params string[] columnNames) : this()
         {
             this.ColumnNames = columnNames;
         }
@@ -97,7 +98,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
         public override string ToString()
         {
-            if(funString!=string.Empty)
+            if (funString != string.Empty)
             {
                 return string.Format("Select {0} ", funString);
             }

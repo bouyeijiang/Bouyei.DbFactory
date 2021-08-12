@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 {
-    public class Values:WordsBase
+    public class Values : WordsBase
     {
-        public Values( )
+        public Values() : base(AttributeType.IgnoreWrite)
         {
-            
+
         }
 
         public string ToString(Dictionary<string, object> columns)
@@ -29,7 +29,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Values<T> : WordsBase
     {
-        public Values():base(typeof(T))
+        public Values() : base(typeof(T), AttributeType.IgnoreWrite)
         {
 
         }

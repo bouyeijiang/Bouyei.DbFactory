@@ -11,6 +11,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         public string TableName { get; private set; }
 
         public Insert(string tableName)
+            :base(AttributeType.IgnoreWrite)
         {
             this.TableName = tableName;
         }
@@ -33,7 +34,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
     {
         public string TableName { get; private set; }
 
-        public Insert():base(typeof(T))
+        public Insert():base(typeof(T),AttributeType.IgnoreWrite)
         {
             this.TableName = GetTableName();
         }

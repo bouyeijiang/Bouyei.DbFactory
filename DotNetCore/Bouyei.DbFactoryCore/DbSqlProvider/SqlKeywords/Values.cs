@@ -9,7 +9,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 {
     public class Values:WordsBase
     {
-        public Values( )
+        public Values( ):base(AttributeType.IgnoreWrite)
         {
             
         }
@@ -29,7 +29,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
     public class Values<T> : WordsBase
     {
-        public Values():base(typeof(T))
+        public Values():base(typeof(T), AttributeType.IgnoreWrite)
         {
 
         }
