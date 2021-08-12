@@ -46,7 +46,7 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 		Console.WriteLine(string.Join(",", dr.ItemArray));
 	}
 
-# 3、表实体映射继承例子
+# 表实体映射继承例子
 ---
 
 #3.1、表实体映射例子
@@ -94,7 +94,7 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
         }
     }
 
-# 4、表达式生成SQL脚本例子
+# 表达式生成SQL脚本例子
 ---
 
 	//生成简单查询脚本
