@@ -4,7 +4,7 @@
 
 #Bystd.DbFactory 基于.net standard 2.0+
 
-# nuget安装引用
+# Package
 ---
 
 Package  | NuGet 
