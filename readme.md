@@ -37,8 +37,8 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
                  age=30
             });
 
-	//查询
-	var users = adoProvider.Query<user>(x =>x.name.Container);
+	//查询 like '%bouyei%'
+	var users = adoProvider.Query<user>(x =>x.name.Contains("bouyei"));
 
     //分页查询
 	var users = adoProvider.QueryPage<user>(x => 1 == 1,0,10);
