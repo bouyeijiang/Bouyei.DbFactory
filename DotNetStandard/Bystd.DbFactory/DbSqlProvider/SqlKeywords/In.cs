@@ -34,14 +34,13 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         }
     }
 
-    public class In<T>:WordsBase
+    public class In<T> : WordsBase
     {
-        public string[] ColumnNames { get; private set; }
         private string _in = string.Empty;
 
-        public In():base(typeof(T))
+        public In() : base(typeof(T), AttributeType.Ignore | AttributeType.IgnoreRead)
         {
-            this.ColumnNames = GetColumns().ToArray();
+            var ColumnNames = GetColumns().ToArray();
 
             _in = string.Format("{0} In(", ColumnNames.Length > 1 ?
                 string.Format("({0}) ", string.Join(",", ColumnNames)) : ColumnNames[0]);

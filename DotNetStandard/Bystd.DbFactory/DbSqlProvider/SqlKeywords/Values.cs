@@ -9,7 +9,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 {
     public class Values : WordsBase
     {
-        public Values() : base(AttributeType.IgnoreWrite)
+        public Values() : base(AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
 
         }
@@ -29,7 +29,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Values<T> : WordsBase
     {
-        public Values() : base(typeof(T), AttributeType.IgnoreWrite)
+        public Values() : base(typeof(T), AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
 
         }

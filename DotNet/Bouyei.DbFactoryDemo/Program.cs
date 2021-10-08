@@ -20,7 +20,7 @@ namespace Bouyei.DbFactoryDemo
     {
         static void Main(string[] args)
         {
-            //SqlDemo();
+            SqlDemo();
             string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=123456;database=postgres;";
             //Bulkcopy(str);
             AdoDemo(str);
@@ -248,7 +248,7 @@ namespace Bouyei.DbFactoryDemo
     {
         public string UserName { get; set; }
 
-        [Ignore]
+        [Ignore(AttributeType.Ignore)]
         public string Pwd { get; set; }
 
        public void AddUser(UserDto user)

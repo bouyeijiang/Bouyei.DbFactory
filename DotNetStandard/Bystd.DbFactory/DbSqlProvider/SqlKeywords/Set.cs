@@ -27,12 +27,11 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Set<T> : WordsBase
     {
-        public Set() : base(typeof(T), AttributeType.IgnoreWrite) { }
+        public Set() : base(typeof(T), AttributeType.IgnoreWrite | AttributeType.Ignore) { }
 
         public string ToString(T value)
         {
             var items = GetProperties();
-
             List<string> tmp = new List<string>(items.Count());
 
             foreach (var item in items)

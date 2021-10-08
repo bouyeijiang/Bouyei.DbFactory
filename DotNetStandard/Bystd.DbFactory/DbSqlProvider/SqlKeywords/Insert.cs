@@ -11,7 +11,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
         public string TableName { get; private set; }
 
         public Insert(string tableName)
-            : base(AttributeType.IgnoreWrite)
+            : base(AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
             this.TableName = tableName;
         }
@@ -34,7 +34,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
     {
         public string TableName { get; private set; }
 
-        public Insert() : base(typeof(T), AttributeType.IgnoreWrite)
+        public Insert() : base(typeof(T), AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
             this.TableName = GetTableName();
         }

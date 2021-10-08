@@ -38,7 +38,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
     {
         private string _in = string.Empty;
 
-        public In():base(typeof(T))
+        public In():base(typeof(T),AttributeType.Ignore|AttributeType.IgnoreRead)
         {
             var ColumnNames = GetColumns().ToArray();
 

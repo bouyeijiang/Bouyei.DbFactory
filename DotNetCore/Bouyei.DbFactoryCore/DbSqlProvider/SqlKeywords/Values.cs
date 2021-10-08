@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 {
-    public class Values:WordsBase
+    public class Values : WordsBase
     {
-        public Values( ):base(AttributeType.IgnoreWrite)
+        public Values() : base(AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
-            
+
         }
 
         public string ToString(Dictionary<string, object> columns)
@@ -29,7 +29,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
     public class Values<T> : WordsBase
     {
-        public Values():base(typeof(T), AttributeType.IgnoreWrite)
+        public Values() : base(typeof(T), AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
 
         }

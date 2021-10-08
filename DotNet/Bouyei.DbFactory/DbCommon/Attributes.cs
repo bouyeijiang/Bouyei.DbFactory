@@ -114,7 +114,7 @@ namespace Bouyei.DbFactory
         None = 0,
         Ignore = 1,
         IgnoreWrite = 2,
-        IgnoreRead = 3,
-        Mapped = 4
+        IgnoreRead = 4,
+        Mapped = 8
     }
 }

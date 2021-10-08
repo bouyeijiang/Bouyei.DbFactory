@@ -132,16 +132,23 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
             {
                 if (attr is IgnoreAttribute ignore)
                 {
-                    if (ignore.AttrType == AttributeType.Ignore)
+                    var _ignore = attrType & AttributeType.Ignore;
+                    if (_ignore == AttributeType.Ignore &&
+                        (ignore.AttrType & AttributeType.Ignore) == AttributeType.Ignore)
                     {
-                        if (ignore.AttrType == AttributeType.IgnoreRead
-                       || ignore.AttrType == AttributeType.IgnoreWrite)
-                            return true;
+                        return true;
                     }
 
-                    if (attrType == ignore.AttrType &&
-                        (ignore.AttrType == AttributeType.IgnoreRead
-                        || ignore.AttrType == AttributeType.IgnoreWrite))
+                    var _read = attrType & AttributeType.IgnoreRead;
+                    if (_read == AttributeType.IgnoreRead
+                        && (ignore.AttrType & AttributeType.IgnoreRead) == AttributeType.IgnoreRead)
+                    {
+                        return true;
+                    }
+
+                    var _write = attrType & AttributeType.IgnoreWrite;
+                    if (_write == AttributeType.IgnoreWrite
+                        && (ignore.AttrType & AttributeType.IgnoreWrite) == AttributeType.IgnoreWrite)
                     {
                         return true;
                     }

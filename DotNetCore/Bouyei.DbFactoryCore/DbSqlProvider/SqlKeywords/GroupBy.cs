@@ -11,7 +11,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         public string[] ColumnNames { get; private set; }
 
         public GroupBy(params string[] columnNames)
-            :base(AttributeType.IgnoreRead)
+            : base(AttributeType.IgnoreRead | AttributeType.Ignore)
         {
             this.ColumnNames = columnNames;
         }
@@ -24,7 +24,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 
     public class GroupBy<T> : WordsBase
     {
-        public GroupBy() : base(typeof(T), AttributeType.IgnoreRead)
+        public GroupBy() : base(typeof(T), AttributeType.IgnoreRead | AttributeType.Ignore)
         {
 
         }

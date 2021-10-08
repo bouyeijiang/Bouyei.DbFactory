@@ -23,6 +23,7 @@ namespace DbEntity
 
         public int age { get; set; }
 
+        [Ignore(AttributeType.IgnoreWrite)]
         public byte[] stamp { get; set; }
 
     }

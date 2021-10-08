@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
 {
-   public class Insert:WordsBase
+    public class Insert : WordsBase
     {
         public string TableName { get; private set; }
 
         public Insert(string tableName)
-            :base(AttributeType.IgnoreWrite)
+            : base(AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
             this.TableName = tableName;
         }
@@ -34,7 +34,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
     {
         public string TableName { get; private set; }
 
-        public Insert():base(typeof(T),AttributeType.IgnoreWrite)
+        public Insert() : base(typeof(T), AttributeType.IgnoreWrite | AttributeType.Ignore)
         {
             this.TableName = GetTableName();
         }
@@ -43,7 +43,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
         {
             var ColumnNames = GetColumns();
 
-            return string.Format("Insert Into {0}({1}) ",TableName, base.ToString(ColumnNames));
+            return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(ColumnNames));
         }
 
         public string ToString(Dictionary<string, object> columns)

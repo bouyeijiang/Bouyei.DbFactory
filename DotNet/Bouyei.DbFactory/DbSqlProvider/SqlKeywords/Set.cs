@@ -27,7 +27,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
     public class Set<T> : WordsBase
     {
-        public Set():base(typeof(T)) { }
+        public Set():base(typeof(T),AttributeType.IgnoreWrite| AttributeType.Ignore) { }
 
         public string ToString(T value)
         {
