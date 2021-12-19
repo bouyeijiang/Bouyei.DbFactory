@@ -9,6 +9,7 @@
 using System;
 using System.Data;
 using System.Linq;
+//using IBM.Data.DB2;
 using IBM.Data.DB2.Core;
 
 namespace Bystd.DbFactory.DbAdoProvider.DB2

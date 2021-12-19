@@ -14,7 +14,7 @@ namespace Bouyei.DbFactory.DbSqlProvider
     /// 排序方式
     /// </summary>
     [Flags]
-    public enum Ordering
+    public enum Ordering:int
     {
         /// <summary>
         /// 降序
@@ -27,7 +27,7 @@ namespace Bouyei.DbFactory.DbSqlProvider
     }
 
     [Flags]
-    public enum AndOr
+    public enum AndOr:int
     {
         /// <summary>
         /// 与
@@ -39,13 +39,22 @@ namespace Bouyei.DbFactory.DbSqlProvider
         Or
     }
 
-    public enum SqlType
+    [Flags]
+    public enum SqlType:int
     {
         Normal = 0,
         SqlServer = 1,
         Oracle = 2,
         Mysql = 4,
         Db2 = 8
+    }
+
+    [Flags]
+    public enum JoinType:int
+    {
+        Left,
+        Right,
+        Inner
     }
 
     [StructLayout(LayoutKind.Sequential)]

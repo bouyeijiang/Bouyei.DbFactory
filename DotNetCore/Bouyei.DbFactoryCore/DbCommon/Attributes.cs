@@ -124,4 +124,12 @@ namespace Bouyei.DbFactoryCore
         IgnoreRead=4,
         Mapped=8
     }
+
+    [Flags]
+    public enum JoinType : int
+    {
+        Left,
+        Right,
+        Inner
+    }
 }

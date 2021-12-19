@@ -218,6 +218,7 @@
     <Compile Include="DbSqlProvider\SqlExtensions\FromExtensions.cs" />
     <Compile Include="DbSqlProvider\SqlExtensions\FunctionsExtensions.cs" />
     <Compile Include="DbSqlProvider\SqlExtensions\GroupByExtensions.cs" />
+    <Compile Include="DbSqlProvider\SqlExtensions\JoinExtensions.cs" />
     <Compile Include="DbSqlProvider\SqlExtensions\OrderByExtensions.cs" />
     <Compile Include="DbSqlProvider\SqlExtensions\SetExtensions.cs" />
     <Compile Include="DbSqlProvider\SqlExtensions\TopExtensions.cs" />
@@ -229,6 +230,8 @@
     <Compile Include="DbSqlProvider\SqlFunctions\Max.cs" />
     <Compile Include="DbSqlProvider\SqlFunctions\Min.cs" />
     <Compile Include="DbSqlProvider\SqlFunctions\Sum.cs" />
+    <Compile Include="DbSqlProvider\SqlKeywords\Join.cs" />
+    <Compile Include="DbSqlProvider\SqlKeywords\On.cs" />
     <Compile Include="DbSqlProvider\SqlKeywords\Top.cs" />
     <Compile Include="DbSqlProvider\SqlKeywords\WhereBase.cs" />
     <Compile Include="DbSqlProvider\SqlKeywords\Delete.cs" />

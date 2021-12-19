@@ -23,6 +23,21 @@ namespace Bystd.DbFactory
             return rt;
         }
 
+        public static DbResult<List<T>, string> QueryJoin<T, L, R>(this IAdoProvider dbProvider,
+          Expression<Func<L, bool>> left, Expression<Func<R, bool>> rigth,
+          Expression<Func<L, R, bool>> onWhere, JoinType joinType = JoinType.Left) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+
+            string commandText = sql.Select<T>().Join<T, L, R>(left, rigth, onWhere, joinType).SqlString;
+
+            var rt = dbProvider.Query<T>(new Parameter(commandText));
+            if (rt.IsSuccess() == false)
+                rt.Info = rt.Info + "\r\n" + commandText;
+
+            return rt;
+        }
+
         public static DbResult<List<T>, string> Query<T>(this IAdoProvider dbProvider,
        string[] selectColumns, Expression<Func<T, bool>> predicate) where T : class
         {

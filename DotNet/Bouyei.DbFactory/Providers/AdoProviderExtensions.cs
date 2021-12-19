@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Linq;
 using Bouyei.DbFactory.DbSqlProvider.SqlKeywords;
 using System.Data;
+using Bouyei.DbFactory.DbSqlProvider;
 
 namespace Bouyei.DbFactory
 {
@@ -31,6 +32,38 @@ namespace Bouyei.DbFactory
             var commandText = sql.Select(selectColumns).From<T>().Where(predicate).SqlString;
             var rt = dbProvider.Query<T>(new Parameter(commandText));
             if (rt.IsSuccess()==false)
+                rt.Info = rt.Info + "\r\n" + commandText;
+
+            return rt;
+        }
+
+        public static DbResult<List<T>, string> QueryJoin<T,L,R>(this IAdoProvider dbProvider,
+            Expression<Func<L, bool>> left, Expression<Func<R, bool>> rigth,
+            Expression<Func<L,R, bool>> onWhere,JoinType joinType=JoinType.Left) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+
+            string commandText = sql.Select<T>().Join<T, L, R>(left, rigth, onWhere,joinType).SqlString;
+
+            var rt = dbProvider.Query<T>(new Parameter(commandText));
+            if (rt.IsSuccess() == false)
+                rt.Info = rt.Info + "\r\n" + commandText;
+
+            return rt;
+        }
+
+
+        public static DbResult<List<T>, string> QueryJoin<T, L, R>(this IAdoProvider dbProvider,
+            string[] selectColumns,
+            Expression<Func<L, bool>> left, Expression<Func<R, bool>> rigth,
+            Expression<Func<L, R, bool>> onWhere, JoinType joinType = JoinType.Left) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+
+            string commandText = sql.Select(selectColumns).Join<T, L, R>(left, rigth, onWhere, joinType).SqlString;
+
+            var rt = dbProvider.Query<T>(new Parameter(commandText));
+            if (rt.IsSuccess() == false)
                 rt.Info = rt.Info + "\r\n" + commandText;
 
             return rt;

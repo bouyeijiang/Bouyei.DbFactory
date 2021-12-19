@@ -112,6 +112,14 @@ namespace Bystd.DbFactory
     }
 
     [Flags]
+    public enum JoinType : int
+    {
+        Left,
+        Right,
+        Inner
+    }
+
+    [Flags]
     public enum AttributeType:byte
     {
         None=0,

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bystd.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>21.10.08</Version>
+    <Version>21.12.20</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/Bouyei.DbFactory</RepositoryUrl>
     <Authors>bouyei</Authors>
@@ -13,16 +13,23 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>postgresql,oracle,sqlserver,sqlite,db2 etc.</Description>
     <Copyright>bouyei</Copyright>
-    <AssemblyVersion>21.10.8.0</AssemblyVersion>
+    <AssemblyVersion>21.12.20.0</AssemblyVersion>
+    <FileVersion>21.12.20.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IBM.Data.DB2.Core" Version="3.1.0.400" />
     <PackageReference Include="MySql.Data" Version="8.0.26" />
     <PackageReference Include="Npgsql" Version="5.0.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.3" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.131" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IBM.Data.DB2">
+      <HintPath>..\..\DotNet\Bouyei.DbFactory\libs\IBM.Data.DB2.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

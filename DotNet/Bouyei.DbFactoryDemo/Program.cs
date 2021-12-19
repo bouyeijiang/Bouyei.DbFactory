@@ -31,6 +31,14 @@ namespace Bouyei.DbFactoryDemo
         {
             //生成简单查询脚本
             ISqlProvider sqlProvider = SqlProvider.CreateProvider();
+            Dictionary<string, string> onWhere = new Dictionary<string, string>();
+            onWhere.Add("id", "id");
+            onWhere.Add("score", "score");
+
+            //join 
+            string join = sqlProvider.Select<User>().Join<User, User, User>(x => x.id == 1, y => y.id == 2, onWhere).SqlString;
+
+           join=sqlProvider.Select<User>().Join<User, User, User>(x => x.id == 1, y => y.id == 2, (a, b) => a.id == b.id && a.uname==b.uname).SqlString;
 
             //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()

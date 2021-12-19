@@ -8,6 +8,7 @@ namespace Bouyei.DbFactory
 {
     using DbSqlProvider.SqlKeywords;
     using DbSqlProvider.SqlFunctions;
+    using Bouyei.DbFactory.DbSqlProvider;
 
     public interface ISqlProvider
     {
@@ -26,6 +27,8 @@ namespace Bouyei.DbFactory
         Select<T> Select<T>(Count input) where T : class;
 
         Select<T> Select<T>(Sum input) where T : class;
+
+       // Select<T> Select<T,L,R>(Join Select<L> left, Select<R> right,JoinType joinType=JoinType.Left) where T : class;
 
         Insert Insert(string tableName, string[] columnNames);
 
