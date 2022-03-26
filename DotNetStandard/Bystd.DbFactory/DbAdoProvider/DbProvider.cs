@@ -71,9 +71,10 @@ namespace Bystd.DbFactory.DbAdoProvider
         #endregion
 
         #region public
-        public DbResult<bool, string> Connect(string ConnectionString)
+        public DbResult<bool, string> Connect(string connectionString="")
         {
-            this.ConnectionString = ConnectionString;
+            if (!string.IsNullOrEmpty(connectionString))
+                this.ConnectionString = connectionString;
             try
             {
                 using (DbConnection conn = CreateConnection(this.ConnectionString))

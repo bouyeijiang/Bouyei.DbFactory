@@ -27,8 +27,12 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Postgresql
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-                using (var import = conn.BeginBinaryImport(ToImportFormat(dataSource.TableName,
-                    dataSource.Columns.Cast<DataColumn>().Select(x => x.ColumnName))))
+
+                List<string> ls = new List<string>(dataSource.Columns.Count);
+                foreach (DataColumn col in dataSource.Columns)
+                    ls.Add(col.ColumnName);
+
+                using (var import = conn.BeginBinaryImport(ToImportFormat(dataSource.TableName,ls)))
                 {
                     foreach (DataRow dr in dataSource.Rows)
                     {
@@ -49,7 +53,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Postgresql
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, pros.Select(x => x.Name))))
+                using (var import = conn.BeginBinaryImport(ToImportFormat(tableName, getColumnNames(pros))))
                 {
                     foreach (var item in dataSource)
                     {
@@ -80,12 +84,22 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Postgresql
             using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-                using (var export = conn.BeginBinaryExport(string.Format("COPY {0}({1}) TO STDOUT (FORMAT BINARY)", tableName,
-                     string.Join(",", pros.Select(x => x.Name)))))
+                using (var export = conn.BeginBinaryExport(string.Format("COPY {0}({1}) TO STDOUT (FORMAT BINARY)",
+                    tableName, string.Join(",", getColumnNames(pros)))))
                 {
                     BinaryToList<T>(exp, pros, export, action);
                 }
             }
+        }
+       
+        private List<string> getColumnNames(PropertyInfo[] pros)
+        {
+            List<string> ls = new List<string>(pros.Length);
+            foreach (var p in pros)
+            {
+                ls.Add(p.Name);
+            }
+            return ls;
         }
 
         private string ToImportFormat(string tabName,IEnumerable<string> columns)

@@ -6,14 +6,16 @@
  *    Ltd: 
  *   guid: 44ea6ba7-acc1-452e-9c70-58b7a7083a3f
 ---------------------------------------------------------------*/
+
 using System;
 using System.Data;
+using Oracle.ManagedDataAccess.Client;
 
 namespace Bystd.DbFactory.DbAdoProvider.Oracle
 {
     internal class OracleCopy : BaseFactory
     {
-        //OracleBulkCopy bulkCopy = null;
+        OracleBulkCopy bulkCopy = null;
         bool disposed = false;
 
         public BulkCopiedArgs BulkCopiedHandler { get; set; }
@@ -26,8 +28,8 @@ namespace Bystd.DbFactory.DbAdoProvider.Oracle
         {
             this.Option = option;
             this.ConnectionString = ConnectionString;
-            //bulkCopy = CreatedBulkCopy(option);
-            //bulkCopy.BulkCopyTimeout = timeout;
+            bulkCopy = CreatedBulkCopy(option);
+            bulkCopy.BulkCopyTimeout = timeout;
         }
 
         public OracleCopy(IDbConnection dbConnection, int timeout = 1800,
@@ -36,24 +38,24 @@ namespace Bystd.DbFactory.DbAdoProvider.Oracle
         {
             this.Option = option;
             this.ConnectionString = ConnectionString;
-            //bulkCopy = new OracleBulkCopy((OracleConnection)dbConnection, (OracleBulkCopyOptions)option)
-            //{
-            //    BulkCopyTimeout = timeout
-            //};
+            bulkCopy = new OracleBulkCopy((OracleConnection)dbConnection, (OracleBulkCopyOptions)option)
+            {
+                BulkCopyTimeout = timeout
+            };
         }
 
-        //private OracleBulkCopy CreatedBulkCopy(BulkCopyOptions option)
-        //{
-        //    if (option == BulkCopyOptions.Default)
-        //    {
-        //        return new OracleBulkCopy(ConnectionString, OracleBulkCopyOptions.Default);
-        //    }
-        //    else if (option == BulkCopyOptions.UseInternalTransaction)
-        //    {
-        //        return new OracleBulkCopy(ConnectionString, OracleBulkCopyOptions.UseInternalTransaction);
-        //    }
-        //    else return new OracleBulkCopy(ConnectionString);
-        //}
+        private OracleBulkCopy CreatedBulkCopy(BulkCopyOptions option)
+        {
+            if (option == BulkCopyOptions.Default)
+            {
+                return new OracleBulkCopy(ConnectionString, OracleBulkCopyOptions.Default);
+            }
+            else if (option == BulkCopyOptions.UseInternalTransaction)
+            {
+                return new OracleBulkCopy(ConnectionString, OracleBulkCopyOptions.UseInternalTransaction);
+            }
+            else return new OracleBulkCopy(ConnectionString);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -61,11 +63,11 @@ namespace Bystd.DbFactory.DbAdoProvider.Oracle
 
             if (disposing)
             {
-                //if (bulkCopy != null)
-                //{
-                //    bulkCopy.Close();
-                //    bulkCopy = null;
-                //}
+                if (bulkCopy != null)
+                {
+                    bulkCopy.Close();
+                    bulkCopy = null;
+                }
             }
             disposed = true;
         }
@@ -78,67 +80,67 @@ namespace Bystd.DbFactory.DbAdoProvider.Oracle
 
         public void Close()
         {
-            //if (bulkCopy != null)
-            //    bulkCopy.Close();
+            if (bulkCopy != null)
+                bulkCopy.Close();
         }
 
         private void InitBulkCopy(DataTable dataSource, int batchSize)
         {
-            //if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
+            if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
-            //bulkCopy.ColumnMappings.Capacity = dataSource.Columns.Count;
-            //bulkCopy.DestinationTableName = dataSource.TableName;
-            //bulkCopy.BatchSize = batchSize;
+            bulkCopy.ColumnMappings.Capacity = dataSource.Columns.Count;
+            bulkCopy.DestinationTableName = dataSource.TableName;
+            bulkCopy.BatchSize = batchSize;
 
-            //for (int i = 0; i < dataSource.Columns.Count; ++i)
-            //{
-            //    bulkCopy.ColumnMappings.Add(dataSource.Columns[i].ColumnName,
-            //        dataSource.Columns[i].ColumnName);
-            //}
-            //if (BulkCopiedHandler != null)
-            //{
-            //    bulkCopy.NotifyAfter = batchSize;
-            //    bulkCopy.OracleRowsCopied += BulkCopy_OracleRowsCopied;
-            //}
+            for (int i = 0; i < dataSource.Columns.Count; ++i)
+            {
+                bulkCopy.ColumnMappings.Add(dataSource.Columns[i].ColumnName,
+                    dataSource.Columns[i].ColumnName);
+            }
+            if (BulkCopiedHandler != null)
+            {
+                bulkCopy.NotifyAfter = batchSize;
+                bulkCopy.OracleRowsCopied += BulkCopy_OracleRowsCopied;
+            }
         }
 
         private void InitBulkCopy(string tableName, string[] columnNames, int batchSize)
         {
-            //if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
-            //bulkCopy.DestinationTableName = tableName;
-            //bulkCopy.BatchSize = batchSize;
+            if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
+            bulkCopy.DestinationTableName = tableName;
+            bulkCopy.BatchSize = batchSize;
 
-            //for (int i = 0; i < columnNames.Length; ++i)
-            //{
-            //    bulkCopy.ColumnMappings.Add(columnNames[i],
-            //        columnNames[i]);
-            //}
+            for (int i = 0; i < columnNames.Length; ++i)
+            {
+                bulkCopy.ColumnMappings.Add(columnNames[i],
+                    columnNames[i]);
+            }
 
-            //if (BulkCopiedHandler != null)
-            //{
-            //    bulkCopy.NotifyAfter = batchSize;
-            //    bulkCopy.OracleRowsCopied += BulkCopy_OracleRowsCopied;
-            //}
+            if (BulkCopiedHandler != null)
+            {
+                bulkCopy.NotifyAfter = batchSize;
+                bulkCopy.OracleRowsCopied += BulkCopy_OracleRowsCopied;
+            }
         }
 
         private void InitBulkCopy(string tableName, int batchSize)
         {
-            //if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
+            if (bulkCopy.ColumnMappings.Count > 0) bulkCopy.ColumnMappings.Clear();
 
-            //bulkCopy.DestinationTableName = tableName;
-            //bulkCopy.BatchSize = batchSize;
+            bulkCopy.DestinationTableName = tableName;
+            bulkCopy.BatchSize = batchSize;
 
-            //if (BulkCopiedHandler != null)
-            //{
-            //    bulkCopy.NotifyAfter = batchSize;
-            //    bulkCopy.OracleRowsCopied += BulkCopy_OracleRowsCopied;
-            //}
+            if (BulkCopiedHandler != null)
+            {
+                bulkCopy.NotifyAfter = batchSize;
+                bulkCopy.OracleRowsCopied += BulkCopy_OracleRowsCopied;
+            }
         }
 
         public int WriteToServer(DataTable dataSource, int batchSize = 102400)
         {
             InitBulkCopy(dataSource, batchSize);
-            //bulkCopy.WriteToServer(dataSource);
+            bulkCopy.WriteToServer(dataSource);
 
             return dataSource.Rows.Count;
         }
@@ -151,33 +153,33 @@ namespace Bystd.DbFactory.DbAdoProvider.Oracle
                 columnNames[i] = dataSource.GetName(i);
             }
             InitBulkCopy(tableName, columnNames, batchSize);
-            //bulkCopy.WriteToServer(dataSource);
+            bulkCopy.WriteToServer(dataSource);
         }
 
         public void WriteToServer(string tableName, DataRow[] rows, int batchSize = 102400)
         {
             InitBulkCopy(tableName, batchSize);
-            //bulkCopy.WriteToServer(rows);
+            bulkCopy.WriteToServer(rows);
         }
 
-        //void BulkCopy_OracleRowsCopied(object sender, OracleRowsCopiedEventArgs eventArgs)
-        //{
-        //    if (BulkCopiedHandler != null)
-        //    {
-        //        BulkCopiedHandler(eventArgs.RowsCopied);
-        //    }
-        //}
+        void BulkCopy_OracleRowsCopied(object sender, OracleRowsCopiedEventArgs eventArgs)
+        {
+            if (BulkCopiedHandler != null)
+            {
+                BulkCopiedHandler(eventArgs.RowsCopied);
+            }
+        }
 
         public void WriteToServer(DataTable dataSource, DataRowState rowState, int batchSize = 102400)
         {
             InitBulkCopy(dataSource, batchSize);
-            //bulkCopy.WriteToServer(dataSource, rowState);
+            bulkCopy.WriteToServer(dataSource, rowState);
         }
 
         public void WriteToServer(DataRow[] rows, int batchSize = 102400)
         {
             InitBulkCopy(rows[0].Table, batchSize);
-            //bulkCopy.WriteToServer(rows);
+            bulkCopy.WriteToServer(rows);
         }
 
        public void ReadFromServer<T>(string tableName, Func<T, bool> action)

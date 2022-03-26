@@ -71,12 +71,13 @@ namespace Bouyei.DbFactory.DbAdoProvider
         #endregion
 
         #region public
-        public DbResult<bool, string> Connect(string ConnectionString)
+        public DbResult<bool, string> Connect(string connectionString="")
         {
-            base.ConnectionString = ConnectionString;
+            if (!string.IsNullOrEmpty(connectionString))
+                base.ConnectionString = connectionString;
             try
             {
-                using (DbConnection conn = CreateConnection(ConnectionString))
+                using (DbConnection conn = CreateConnection(base.ConnectionString))
                 {
                     return new DbResult<bool, string>(true, string.Empty);
                 }

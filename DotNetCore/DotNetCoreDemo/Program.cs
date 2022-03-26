@@ -15,8 +15,8 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            SqlDemo();
-            string str = "Server=;Port=5432;User Id=postgres;Password=;Database=postgres;";
+            //SqlDemo();
+            string str = "Server=127.0.0.1;Port=5432;User Id=postgres;Password=bouyei;Database=postgres;";
             //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
             //User usr = new User() { 
             // age=1,
@@ -24,7 +24,7 @@ namespace DotNetCoreDemo
             //};
             //var b= provider.Update<User>(usr, x => x.id == 1);
 
-            //Bulkcopy(str);
+            Bulkcopy(str);
             //AdoDemo(str);
             //OrmDemo(str);
         }
@@ -124,15 +124,15 @@ namespace DotNetCoreDemo
             IAdoProvider dbProvider = AdoProvider.CreateProvider(str, FactoryType.PostgreSQL);
 
             //var brt= dbProvider.BulkCopy(new BulkParameter(dt));
+ 
 
-            fc3d[] fc = new fc3d[] {
-                new fc3d(){ fname="dd", fcode=121 },
-                new fc3d(){fname="sd",fcode=23 },
-                new fc3d(){ fname="个",fcode=2323}
-            };
+            List<fc3d> ls = new List<fc3d>();
+            ls.Add(new fc3d() { fname = "dd", fcode = 121, gentime = DateTime.Now, id = Guid.NewGuid(), dpt = "研发" });
+            ls.Add(new fc3d() { fname = "sd", fcode = 23, gentime = DateTime.Now, id = Guid.NewGuid() });
+            ls.Add(new fc3d() { fcode = 2323, id = Guid.NewGuid(), dpt = "研发" });
 
-            var param = new CopyParameter<Array>(fc);
-            param.TableName = "fc3d";
+            var param = new CopyParameter<Array>(ls.ToArray());
+            param.TableName = "test";
 
             var rt = dbProvider.BulkCopy(param);
 
@@ -286,10 +286,20 @@ namespace DotNetCoreDemo
         }
     }
 
-    public class fc3d
+    [MappedName("test")]
+    public class fc3d:fbase
     {
+        public Guid id { get; set; }
         public string fname { get; set; }
 
         public long fcode { get; set; }
+
+
+        public string dpt { get; set; }
+    }
+
+    public class fbase
+    {
+        public DateTime gentime { get; set; }
     }
 }
