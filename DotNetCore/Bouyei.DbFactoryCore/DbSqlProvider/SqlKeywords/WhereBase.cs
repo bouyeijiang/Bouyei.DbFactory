@@ -114,6 +114,11 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                     value = val.ToString();
                     break;
                 case "DateTime":
+                    {
+                        var v = Convert.ToDateTime(val).ToString("yyyy-MM-dd HH:mm:ss");
+                        value = $"'{v}'";
+                    }
+                    break;
                 case "String":
                     {
                         if (val == null) value = "''";
@@ -131,8 +136,14 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                         value = string.Join(",", param);
                     }
                     break;
-                case "String[]":
                 case "DateTime[]":
+                    {
+                        var values = val as IEnumerable;
+                        var param = (from DateTime v in values select v.ToString("yyyy-MM-dd HH:mm:ss")).ToArray();
+                        value = $"'{ string.Join("','", param)}'";
+                    }
+                    break;
+                case "String[]":
                 case "Array":
                     {
                         var values = val as IEnumerable;
@@ -143,7 +154,7 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                 default:
                     {
                         if (val == null) value = "''";
-                        else value = $"'{val}'";
+                        else value = $"'{val }'";
                     }
                     break;
             }
@@ -163,8 +174,8 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                         else value = val.ToString();
                     }
                     break;
-                case "Int16":
                 case "Int32":
+                case "Int16":
                     {
                         var val = SysExp.Expression.Lambda<Func<int>>(memberExp).Compile()();
                         value = val.ToString();
@@ -180,13 +191,13 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                 case "DateTime":
                     {
                         var val = SysExp.Expression.Lambda<Func<DateTime>>(memberExp).Compile()();
-                        value = $"'{val}'";
+                        value = $"'{val.ToString("yyyy-MM-dd HH:mm:ss")}'";
                     }
                     break;
                 case "String":
                     {
                         var val = SysExp.Expression.Lambda<Func<string>>(memberExp).Compile()();
-                        if (val == null) value = "''";
+                        if (val == null) val = "''";
                         else value = $"'{val}'";
                     }
                     break;
@@ -209,13 +220,20 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
                     break;
                 case "String[]":
                 case "Array":
-                case "DateTime[]":
                     {
                         var values = SysExp.Expression.Lambda<Func<IEnumerable>>(memberExp).Compile()();
                         var param = (from object val in values select val).ToArray();
                         value = $"'{string.Join("','", param)}'";
                     }
                     break;
+                case "DateTime[]":
+                    {
+                        var values = SysExp.Expression.Lambda<Func<IEnumerable>>(memberExp).Compile()();
+                        var param = (from DateTime val in values select val.ToString("yyyy-MM-dd HH:mm:ss")).ToArray();
+                        value = $"'{string.Join("','", param)}'";
+                    }
+                    break;
+
                 default:
                     {
                         var val = SysExp.Expression.Lambda<Func<object>>(memberExp).Compile()();

@@ -15,7 +15,7 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            //SqlDemo();
+            SqlDemo();
             string str = "Server=127.0.0.1;Port=5432;User Id=postgres;Password=bouyei;Database=postgres;";
             //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
             //User usr = new User() { 
@@ -33,6 +33,12 @@ namespace DotNetCoreDemo
         {
             //生成简单查询脚本
             ISqlProvider sqlProvider = SqlProvider.CreateProvider();
+
+            DateTime d = DateTime.Now;
+            var s = sqlProvider.Insert<User>().Values(new User()
+            {
+                gentime = d,
+            }).SqlString;
 
             //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()

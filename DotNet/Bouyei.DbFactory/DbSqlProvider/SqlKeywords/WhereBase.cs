@@ -114,6 +114,11 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                     value = val.ToString();
                     break;
                 case "DateTime":
+                    {
+                        var v = Convert.ToDateTime(val).ToString("yyyy-MM-dd HH:mm:ss");
+                        value = $"'{v}'";
+                    }
+                    break;
                 case "String":
                     {
                         if (val == null) value = "''";
@@ -131,8 +136,14 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                         value = string.Join(",", param);
                     }
                     break;
-                case "String[]":
                 case "DateTime[]":
+                    {
+                        var values = val as IEnumerable;
+                        var param = (from DateTime v in values select v.ToString("yyyy-MM-dd HH:mm:ss")).ToArray();
+                        value = $"'{ string.Join("','", param)}'";
+                    }
+                    break;
+                case "String[]":
                 case "Array":
                     {
                         var values = val as IEnumerable;
@@ -180,7 +191,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                 case "DateTime":
                     {
                         var val = SysExp.Expression.Lambda<Func<DateTime>>(memberExp).Compile()();
-                        value = $"'{val}'";
+                        value = $"'{val.ToString("yyyy-MM-dd HH:mm:ss")}'";
                     }
                     break;
                 case "String":
@@ -209,13 +220,20 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                     break;
                 case "String[]":
                 case "Array":
-                case "DateTime[]":
                     {
                         var values = SysExp.Expression.Lambda<Func<IEnumerable>>(memberExp).Compile()();
                         var param = (from object val in values select val).ToArray();
                         value = $"'{string.Join("','", param)}'";
                     }
                     break;
+                case "DateTime[]":
+                    {
+                        var values = SysExp.Expression.Lambda<Func<IEnumerable>>(memberExp).Compile()();
+                        var param = (from DateTime val in values select val.ToString("yyyy-MM-dd HH:mm:ss")).ToArray();
+                        value = $"'{string.Join("','", param)}'";
+                    }
+                    break;
+
                 default:
                     {
                         var val = SysExp.Expression.Lambda<Func<object>>(memberExp).Compile()();

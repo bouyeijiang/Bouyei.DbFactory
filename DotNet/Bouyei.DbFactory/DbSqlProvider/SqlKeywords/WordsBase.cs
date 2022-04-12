@@ -78,6 +78,11 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                     values.Add(Convert.ToInt32(val).ToString());
                     continue;
                 }
+                else if (val is DateTime)
+                {
+                    var v = Convert.ToDateTime(val);
+                    values.Add("'" + v.ToString("yyyy-MM-dd HH:mm:ss") + "'");
+                }
                 else
                 {
                     string _val = val.ToString();

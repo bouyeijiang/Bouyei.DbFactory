@@ -26,5 +26,7 @@ namespace DbEntity
         [Ignore(AttributeType.IgnoreWrite)]
         public byte[] stamp { get; set; }
 
+        public DateTime gentime { get; set; }
+
     }
 }

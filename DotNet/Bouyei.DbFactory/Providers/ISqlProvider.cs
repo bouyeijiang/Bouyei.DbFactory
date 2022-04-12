@@ -8,7 +8,6 @@ namespace Bouyei.DbFactory
 {
     using DbSqlProvider.SqlKeywords;
     using DbSqlProvider.SqlFunctions;
-    using Bouyei.DbFactory.DbSqlProvider;
 
     public interface ISqlProvider
     {

@@ -35,6 +35,14 @@ namespace Bouyei.DbFactoryDemo
             onWhere.Add("id", "id");
             onWhere.Add("score", "score");
 
+            DateTime d = DateTime.Now;
+            var s = sqlProvider.Insert<User>().Values(new User()
+            {
+                gentime = d,
+                uname = "sdfsd",
+                score = 11
+            }).SqlString;
+
             //join 
             string join = sqlProvider.Select<User>().Join<User, User, User>(x => x.id == 1, y => y.id == 2, onWhere).SqlString;
 

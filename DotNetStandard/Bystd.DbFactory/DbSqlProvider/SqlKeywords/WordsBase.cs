@@ -73,16 +73,20 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
             foreach (var pi in pInfos)
             {
                 object val = pi.GetValue(value, null);
-
                 if (val == null || val == DBNull.Value)
                 {
                     values.Add("NULL");
                     continue;
                 }
-                else if (pi.PropertyType.IsEnum)
+                else if (val is Enum)
                 {
                     values.Add(Convert.ToInt32(val).ToString());
                     continue;
+                }
+                else if (val is DateTime)
+                {
+                    var v = Convert.ToDateTime(val);
+                    values.Add("'" + v.ToString("yyyy-MM-dd HH:mm:ss") + "'");
                 }
                 else
                 {
@@ -91,6 +95,7 @@ namespace Bystd.DbFactory.DbSqlProvider.SqlKeywords
                     else
                     {
                         bool isTrue = Regex.IsMatch(_val, numericReg);
+
                         if (isTrue == false) values.Add("'" + _val + "'");
                         else values.Add(_val);
                     }

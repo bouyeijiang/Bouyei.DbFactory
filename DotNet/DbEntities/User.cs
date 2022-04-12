@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Bouyei.DbFactory.DbEntityProvider;
 using Bouyei.DbFactory;
 using Bouyei.DbFactory.DbMapper;
+using System;
 
 namespace Bouyei.DbEntities
 {
@@ -24,6 +25,8 @@ namespace Bouyei.DbEntities
 
         [Ignore]
         public int score { get; set; }
+
+        public DateTime gentime { get; set; }
     }
 
     public class BaseEntity<T> : TableMapper<T> where T : class
