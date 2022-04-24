@@ -15,7 +15,7 @@ namespace DotNetCoreDemo
     {
         static void Main(string[] args)
         {
-            SqlDemo();
+            //SqlDemo();
             string str = "Server=127.0.0.1;Port=5432;User Id=postgres;Password=bouyei;Database=postgres;";
             //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
             //User usr = new User() { 
@@ -24,8 +24,8 @@ namespace DotNetCoreDemo
             //};
             //var b= provider.Update<User>(usr, x => x.id == 1);
 
-            Bulkcopy(str);
-            //AdoDemo(str);
+            //Bulkcopy(str);
+            AdoDemo(str);
             //OrmDemo(str);
         }
 
@@ -45,9 +45,9 @@ namespace DotNetCoreDemo
                 .Where(x => x.age == 1).GroupBy<User>().SqlString;
 
 
-            var s=sqlProvider.Insert<User>().Values(new User()).SqlString;
+            var insert=sqlProvider.Insert<User>().Values(new User()).SqlString;
 
-            var u = sqlProvider.Update<User>().Set(new User()).SqlString;
+            var update = sqlProvider.Update<User>().Set(new User()).SqlString;
 
             //like 语法'bouyei%'
             string cond = "bouyei";
@@ -147,6 +147,13 @@ namespace DotNetCoreDemo
         private static void AdoDemo(string connectionString)
         {
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString);
+            var qrt=dbProvider.Query(new Parameter("select cjdm,cjmc from cn_xzq"),
+                (values, cols) =>
+            {
+                Console.WriteLine(string.Join(",", values));
+                Console.WriteLine(string.Join(",", cols.Select(x => x.ColumnName+":"+x.DataType.Name)));
+                return true;
+            });
 
             //var ext = dbProvider.Connect(connectionString);
 

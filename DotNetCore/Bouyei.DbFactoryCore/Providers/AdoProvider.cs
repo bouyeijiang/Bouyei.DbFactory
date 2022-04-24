@@ -19,10 +19,9 @@ namespace Bouyei.DbFactoryCore
             return new AdoProvider(ConnectionString, DbType);
         }
 
-        public static IAdoProvider CreateProvider(ConnectionConfig ConnectionString,
-          FactoryType DbType = FactoryType.PostgreSQL)
+        public static IAdoProvider CreateProvider(ConnectionConfig ConnectionString)
         {
-            return new AdoProvider(ConnectionString.ToString(), DbType);
+            return new AdoProvider(ConnectionString.ToString(), ConnectionString.DbType);
         }
 
         public static IAdoProvider Clone(IAdoProvider adoProvider)

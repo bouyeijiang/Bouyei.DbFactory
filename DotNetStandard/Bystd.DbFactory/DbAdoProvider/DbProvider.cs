@@ -138,7 +138,7 @@ namespace Bystd.DbFactory.DbAdoProvider
             }
         }
 
-        public DbResult<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader, bool> rowAction)
+        public DbResult<int, string> Query(Parameter dbParameter, Func<IDataReader, bool> rowAction)
         {
             try
             {
@@ -171,6 +171,34 @@ namespace Bystd.DbFactory.DbAdoProvider
             }
         }
 
+        public DbResult<int, string> Query(Parameter dbParameter,
+        Func<object[], DataColumn[], bool> rowAction)
+        {
+            return Query(dbParameter, (reader) =>
+            {
+                if (rowAction != null)
+                { 
+                    DataColumn[] cols = null;
+                    
+                    if (cols == null)
+                    {
+                        cols = new DataColumn[reader.FieldCount];
+                        for (int i = 0; i < cols.Length; ++i)
+                        {
+                            var t = reader.GetFieldType(i);
+                            cols[i] = new DataColumn(reader.GetName(i), t);
+                        }
+                    }
+                    object[] values = new object[cols.Length];
+                    reader.GetValues(values);
+
+                    return rowAction(values, cols);
+                }
+
+                return true;
+            });
+        }
+ 
         public DbResult<int, string> Query<T>(Parameter dbParameter, Func<T, bool> rowAction)
         {
             try

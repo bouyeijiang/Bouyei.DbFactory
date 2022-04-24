@@ -18,13 +18,14 @@ namespace Bystd.DbFactory.DbAdoProvider
     {
         string ConnectionString { get; set; }
         FactoryType FactoryType { get; set; }
-        DbResult<bool, string> Connect(string connString);
+        DbResult<bool, string> Connect(string connectionString = "");
         DbResult<DataTable, string> QuerySchema();
         DbResult<DataTable, string> Query(Parameter dbParameter);
         DbResult<List<T>, string> Query<T>(Parameter dbParameter);
         DbResult<DataSet, string> Querys(Parameter dbParameter);
         DbResult<int, string> Query<T>(Parameter dbParameter, Func<T, bool> rowAction);
-        DbResult<int, string> QueryToReader(Parameter dbParameter, Func<IDataReader,bool> rowAction);
+        DbResult<int, string> Query(Parameter dbParameter, Func<IDataReader, bool> rowAction);
+        DbResult<int, string> Query(Parameter dbParameter, Func<object[], DataColumn[], bool> rowAction);
         DbResult<IDataReader, string> QueryToReader(Parameter dbParameter);
         DbResult<int, string> QueryChanged(Parameter dbParameter, Func<DataTable,bool> action);
         DbResult<int, string> QueryToTable(Parameter dbParameter, DataTable dstTable);
@@ -32,7 +33,7 @@ namespace Bystd.DbFactory.DbAdoProvider
         DbResult<int, string> ExecuteTransaction(Parameter dbParameter);
         DbResult<int, string> ExecuteTransaction(string[] CommandTexts, int timeout = 1800, Func<int, bool> rowAction=null);
         DbResult<T, string> ExecuteScalar<T>(Parameter dbParameter);
-        [Obsolete("方法已过时,请使用泛型方法代替")]
+
         DbResult<int, string> BulkCopy(BulkParameter dbParameter);
 
         DbResult<int, string> BulkCopy<T>(CopyParameter<T> dbParameter);
