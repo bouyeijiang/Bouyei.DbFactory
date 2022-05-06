@@ -174,12 +174,11 @@ namespace Bystd.DbFactory.DbAdoProvider
         public DbResult<int, string> Query(Parameter dbParameter,
         Func<object[], DataColumn[], bool> rowAction)
         {
+            DataColumn[] cols = null;
             return Query(dbParameter, (reader) =>
             {
                 if (rowAction != null)
                 { 
-                    DataColumn[] cols = null;
-                    
                     if (cols == null)
                     {
                         cols = new DataColumn[reader.FieldCount];
