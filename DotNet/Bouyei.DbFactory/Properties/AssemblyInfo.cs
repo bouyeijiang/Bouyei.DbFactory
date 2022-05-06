@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("bouyei")]
-[assembly: AssemblyDescription("the interface for Support Postgresql,SQL server, Oracle, DB2, mysql, access, SQLite, etc.")]
+[assembly: AssemblyDescription("the interface for Support PostgreSQL,SQL server, Oracle, DB2, mysql, access, SQLite, etc.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("bouyei")]
 [assembly: AssemblyProduct("bouyei")]
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 //
 // 可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，
 // 方法是按如下所示使用“*”: 
-[assembly: AssemblyVersion("22.04.24.*")]
+[assembly: AssemblyVersion("22.5.6.*")]
 //[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("22.04.24.0")]
+[assembly: AssemblyFileVersion("22.5.6.0")]

@@ -17,10 +17,13 @@ namespace DotNetCoreDemo
         {
             //SqlDemo();
             string str = "Server=127.0.0.1;Port=5432;User Id=postgres;Password=bouyei;Database=postgres;";
-            //IAdoProvider provider = AdoProvider.CreateProvider("", FactoryType.PostgreSQL);
-            //User usr = new User() { 
-            // age=1,
-            //  no=2
+ 
+           // IAdoProvider provider = AdoProvider.CreateProvider(str, FactoryType.PostgreSQL);
+ 
+            //User usr = new User()
+            //{
+            //    age = 1,
+            //    no = 2
             //};
             //var b= provider.Update<User>(usr, x => x.id == 1);
 

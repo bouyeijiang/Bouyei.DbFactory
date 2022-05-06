@@ -20,7 +20,7 @@ namespace Bouyei.DbFactoryDemo
     {
         static void Main(string[] args)
         {
-            SqlDemo();
+            //SqlDemo();
             string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=123456;database=postgres;";
             //Bulkcopy(str);
             AdoDemo(str);
@@ -162,6 +162,15 @@ namespace Bouyei.DbFactoryDemo
         private static void AdoDemo(string connectionString)
         {
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, FactoryType.PostgreSQL);
+            //mdb测试
+            //var db = AdoProvider.CreateProvider(new ConnectionConfig()
+            //{
+            //    DbName = "F:\\r\\ly\\2017\\52.mdb",
+            //    DbType = FactoryType.OleDb
+            //});
+
+            //var mrt=db.Query(new Parameter("select * from 52"));
+
 
             var rt = dbProvider.InsertParameter<User>(new User()
             {

@@ -56,6 +56,10 @@ namespace Bystd.DbFactory.DbAdoProvider
                     return Postgresql.NpgFactory.GetFactory();
                 case FactoryType.DB2:
                     return DB2.Db2Factory.GetFactory();
+                case FactoryType.OleDb:
+                    return OleDb.OleDbFactory.GetFactory();
+                case FactoryType.Odbc:
+                    return Odbc.OdbcFactory.GetFactory();
                 default:
                     {
 #if NETSTANDARD2_1

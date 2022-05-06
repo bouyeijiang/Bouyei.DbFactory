@@ -438,7 +438,7 @@ namespace Bystd.DbFactory
                     break;
                 case FactoryType.OleDb:
                     {
-                        ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DbName};";
+                        ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DbName};Persist Security Info=False;";
                         if (string.IsNullOrEmpty(DbUserName) == false)
                             ConnectionString += $"User ID={DbUserName};";
                         if (string.IsNullOrEmpty(DbPassword) == false)

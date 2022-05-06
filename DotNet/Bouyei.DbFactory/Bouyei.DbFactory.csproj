@@ -80,7 +80,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
@@ -209,6 +209,8 @@
     <Compile Include="DbAdoProvider\Factories\CopyFactory.cs" />
     <Compile Include="DbAdoProvider\DbBaseProvider.cs" />
     <Compile Include="DbAdoProvider\Factories\ICopyFactory.cs" />
+    <Compile Include="DbAdoProvider\Odbc\OdbcFactory.cs" />
+    <Compile Include="DbAdoProvider\OleDb\OleDbFactory.cs" />
     <Compile Include="DbCommon\Attributes.cs" />
     <Compile Include="DbAdoProvider\Factories\BaseFactory.cs" />
     <Compile Include="DbAdoProvider\DB2\DB2Factory.cs" />
