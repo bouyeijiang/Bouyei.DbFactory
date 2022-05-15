@@ -17,5 +17,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Oracle
         {
             return OracleClientFactory.Instance;
         }
+        public static DbParameter GetParameter(CmdParameter param)
+        {
+            OracleParameter p = new OracleParameter(param.ParameterName, param.Value);
+            p.DbType = param.DbType;
+            p.Size = param.Size;
+            p.Direction = param.Direction;
+            p.SourceColumn = param.SourceColumn;
+            p.SourceVersion = param.SourceVersion;
+            p.SourceColumnNullMapping = param.SourceColumnNullMapping;
+            return p;
+        }
     }
 }

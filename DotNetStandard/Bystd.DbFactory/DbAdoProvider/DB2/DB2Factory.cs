@@ -27,5 +27,16 @@ namespace Bystd.DbFactory.DbAdoProvider.DB2
         {
             return IBM.Data.DB2.Core.DB2Factory.Instance;
         }
+        public static DbParameter GetParameter(CmdParameter param)
+        {
+            var p = new IBM.Data.DB2.DB2Parameter(param.ParameterName, param.Value);
+            p.DbType = param.DbType;
+            p.Size = param.Size;
+            p.Direction = param.Direction;
+            p.SourceColumn = param.SourceColumn;
+            p.SourceVersion = param.SourceVersion;
+            p.SourceColumnNullMapping = param.SourceColumnNullMapping;
+            return p;
+        }
     }
 }

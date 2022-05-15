@@ -19,5 +19,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.Postgresql
         {
             return Npgsql.NpgsqlFactory.Instance;
         }
+        public static DbParameter GetParameter(CmdParameter param)
+        {
+            var p = new Npgsql.NpgsqlParameter(param.ParameterName, param.Value);
+            p.DbType = param.DbType;
+            p.Size = param.Size;
+            p.Direction = param.Direction;
+            p.SourceColumn = param.SourceColumn;
+            p.SourceVersion = param.SourceVersion;
+            p.SourceColumnNullMapping = param.SourceColumnNullMapping;
+            return p;
+        }
     }
 }

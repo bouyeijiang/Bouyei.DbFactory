@@ -9,7 +9,7 @@ namespace Bouyei.DbEntities
 {
     [Table("db_user")]
     [MappedName("db_user")]
-    public class User: BaseEntity<User>
+    public class User : BaseEntity<User>
     {
         public User()
         {
@@ -22,10 +22,8 @@ namespace Bouyei.DbEntities
         public string uname { get; set; }
 
         public int uage { get; set; }
-
-        [Ignore]
-        public int score { get; set; }
-
+        public float score { get; set; }
+        [Ignore(AttributeType.IgnoreWrite)]
         public DateTime gentime { get; set; }
     }
 

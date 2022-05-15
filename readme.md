@@ -12,8 +12,8 @@
 
 Package  | NuGet 
 -------- | :------------ 
-Bouyei.DbFactory		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.svg)](https://www.nuget.org/packages/Bouyei.DbFactory)
-Bouyei.DbFactoryCore		| [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
+Bouyei.DbFactory | [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactory.svg)](https://www.nuget.org/packages/Bouyei.DbFactory)
+Bouyei.DbFactoryCore | [![NuGet](https://img.shields.io/nuget/v/Bouyei.DbFactoryCore.svg)](https://www.nuget.org/packages/Bouyei.DbFactoryCore)
 Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)](https://www.nuget.org/packages/Bystd.DbFactory)
 
 #### Ado基本例子
@@ -37,6 +37,14 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
                  age=30
             });
 
+    //DbParameter 方式插入,字段为二进制blob类型等或其他情况使用
+     var p= dbProvider.InsertParameter<User>(new User()
+        {
+            uname = "bouyei",
+            uage = 33,
+            score = 23.44f
+        });
+
 	//查询 like '%bouyei%'
 	var users = adoProvider.Query<user>(x =>x.name.Contains("bouyei"));
 
@@ -47,6 +55,17 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 	{
 		Console.WriteLine(string.Join(",", dr.ItemArray));
 	}
+
+    //大批量数据入库
+    fc3d[] fc = new fc3d[] {
+        new fc3d(){ fname="dd", fcode=121 },
+        new fc3d(){fname="sd",fcode=23 },
+        new fc3d(){ fname="个",fcode=2323}
+    };
+
+    var param = new CopyParameter<Array>(fc);
+    param.TableName = "fc3d";
+    var rt = adoProvider.BulkCopy(param);
 
 #### 表实体映射继承例子
 ---

@@ -526,10 +526,12 @@ namespace Bystd.DbFactory.DbAdoProvider
                     adapter.SelectCommand = cmd;
                     adapter.Fill(dt);
 
-                    if (dt.Rows.Count == 0) return DbResult<int, string>.Create(0, "无可更新的数据行");
+                    if (dt.Rows.Count == 0)
+                        return DbResult<int, string>.Create(0, "无可更新的数据行");
 
                     bool isContinue = action(dt);
-                    if (isContinue == false) return DbResult<int, string>.Create(0, string.Empty);
+                    if (isContinue == false)
+                        return DbResult<int, string>.Create(0, string.Empty);
 
                     DataTable changedt = dt.GetChanges(DataRowState.Added | DataRowState.Deleted | DataRowState.Modified);
 

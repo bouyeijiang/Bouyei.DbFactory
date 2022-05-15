@@ -153,7 +153,7 @@ namespace Bouyei.DbFactoryCore
 
 
         public static DbResult<int, string> Delete<T>(this IAdoProvider dbProvider
-            , Expression<Func<T, bool>> predicate)
+            , Expression<Func<T, bool>> predicate) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
             var commandText = sql.Delete().From<T>().Where<T>(predicate).SqlString;
@@ -235,13 +235,13 @@ namespace Bouyei.DbFactoryCore
 
             int cnt = pros.Length;
             var param = new Parameter(commandText);
-            param.cmdParameters = new CmdParameter[cnt];
+            param.Columns = new CmdParameter[cnt];
             for (int i = 0; i < cnt; ++i)
             {
                 var pro = pros[i];
                 var v = pro.GetValue(value, null);
 
-                param.cmdParameters[i] = new CmdParameter()
+                param.Columns[i] = new CmdParameter()
                 {
                     DbType = (DbType)Enum.Parse(typeof(DbType), pro.PropertyType.Name),
                     Value =v??DBNull.Value,
