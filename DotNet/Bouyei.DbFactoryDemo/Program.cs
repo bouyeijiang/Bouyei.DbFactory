@@ -20,7 +20,7 @@ namespace Bouyei.DbFactoryDemo
     {
         static void Main(string[] args)
         {
-            //SqlDemo();
+            SqlDemo();
             string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=123456;database=postgres;";
             //Bulkcopy(str);
             AdoDemo(str);
@@ -30,7 +30,10 @@ namespace Bouyei.DbFactoryDemo
         private static void SqlDemo()
         {
             //生成简单查询脚本
-            ISqlProvider sqlProvider = SqlProvider.CreateProvider();
+            ISqlProvider sqlProvider = SqlProvider.CreateProvider(FactoryType.Oracle);
+            var bv=sqlProvider.Select<User>().From().Where(x => x.id == 1).Top(FactoryType.Oracle, 0, 10).SqlString;
+
+
             Dictionary<string, string> onWhere = new Dictionary<string, string>();
             onWhere.Add("id", "id");
             onWhere.Add("score", "score");

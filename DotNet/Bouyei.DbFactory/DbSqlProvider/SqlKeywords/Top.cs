@@ -20,6 +20,13 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             this.page = page;
         }
 
+        public string ToString(string subSqlString)
+        {
+            int offset = page * size;
+            string nSql = $"Select * from(Select bouyei_t.*,rownum as ROW_NUM From ({subSqlString})bouyei_t) Where ROW_NUM>{offset} and ROW_NUM<={offset + size}";
+            return nSql;
+        }
+
         public override string ToString()
         {
             if (dbType == FactoryType.SqlServer)
