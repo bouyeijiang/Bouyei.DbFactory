@@ -165,6 +165,26 @@ namespace Bouyei.DbFactoryDemo
         private static void AdoDemo(string connectionString)
         {
             IAdoProvider dbProvider = AdoProvider.CreateProvider(connectionString, FactoryType.PostgreSQL);
+
+            //CmdParameter[] cmdParam = new CmdParameter[] {
+            //new CmdParameter(){  ParameterName="@uname",Value="hellow", DbType= DbType.String},
+            //new CmdParameter(){ParameterName="@uage",Value=32, DbType= DbType.Int32 },
+            //new CmdParameter(){ ParameterName="@score",Value=66.66,DbType= DbType.Single}
+            //};
+
+            //var cmdrt = dbProvider.ExecuteCmd(new Parameter()
+            //{
+            //    CommandText = "insert into luser(uname,uage,score) values(@uname,@uage,@score)",
+            //    Columns = cmdParam
+            //});
+
+           var p= dbProvider.InsertParameter<User>(new User()
+            {
+                uname = "bouyei",
+                uage = 33,
+                score = 23.44f
+            });
+
             //mdb测试
             //var db = AdoProvider.CreateProvider(new ConnectionConfig()
             //{

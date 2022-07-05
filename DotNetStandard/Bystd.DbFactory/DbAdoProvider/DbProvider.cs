@@ -174,12 +174,11 @@ namespace Bystd.DbFactory.DbAdoProvider
         public DbResult<int, string> Query(Parameter dbParameter,
         Func<object[], DataColumn[], bool> rowAction)
         {
+            DataColumn[] cols = null;
             return Query(dbParameter, (reader) =>
             {
                 if (rowAction != null)
                 { 
-                    DataColumn[] cols = null;
-                    
                     if (cols == null)
                     {
                         cols = new DataColumn[reader.FieldCount];
@@ -527,10 +526,12 @@ namespace Bystd.DbFactory.DbAdoProvider
                     adapter.SelectCommand = cmd;
                     adapter.Fill(dt);
 
-                    if (dt.Rows.Count == 0) return DbResult<int, string>.Create(0, "无可更新的数据行");
+                    if (dt.Rows.Count == 0)
+                        return DbResult<int, string>.Create(0, "无可更新的数据行");
 
                     bool isContinue = action(dt);
-                    if (isContinue == false) return DbResult<int, string>.Create(0, string.Empty);
+                    if (isContinue == false)
+                        return DbResult<int, string>.Create(0, string.Empty);
 
                     DataTable changedt = dt.GetChanges(DataRowState.Added | DataRowState.Deleted | DataRowState.Modified);
 

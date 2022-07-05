@@ -52,7 +52,7 @@ namespace Bouyei.DbFactoryCore
 
         public Parameter(params CmdParameter[] dbProviderParameters)
         {
-            this.cmdParameters = dbProviderParameters;
+            this.Columns = dbProviderParameters;
         }
 
         public Parameter(string CommandText,
@@ -61,7 +61,7 @@ namespace Bouyei.DbFactoryCore
             :base(ExectueTimeout)
         {
             this.CommandText = CommandText;
-            this.cmdParameters = dbProviderParameters;
+            this.Columns = dbProviderParameters;
         }
         public Parameter(string format,params object[] args)
             :base()
@@ -79,9 +79,9 @@ namespace Bouyei.DbFactoryCore
         public bool IsStoredProcedure { get; set; }
 
         /// <summary>
-        /// 指定脚本的传入参数
+        /// 指定脚本的Parameter列传入参数
         /// </summary>
-        public CmdParameter[] cmdParameters { get; set; }
+        public CmdParameter[] Columns { get; set; }
     }
     
     public class BulkParameter : BaseParameter

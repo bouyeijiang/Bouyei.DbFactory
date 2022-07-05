@@ -117,7 +117,8 @@ namespace Bystd.DbFactory.DbAdoProvider
                     return copy.WriteToServer(data, batchSize);
                 }
             }
-            else throw new Exception("not supported factory type");
+            else
+                throw new Exception("not supported factory type");
         }
 
         public void WriteToServer(IDataReader dataSource, string tableName, int batchSize = 10240)
@@ -160,7 +161,8 @@ namespace Bystd.DbFactory.DbAdoProvider
                     copy.WriteToServer(dataSource,tableName, batchSize);
                 }
             }
-            else throw new Exception("not supported factory type");
+            else
+                throw new Exception("not supported factory type");
         }
 
         public void ReadFromServer<T>(string tableName, Func<T, bool> action)

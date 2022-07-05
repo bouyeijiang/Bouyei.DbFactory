@@ -8,7 +8,7 @@
     <PackageLicenseUrl>http://bouyeijiang.com</PackageLicenseUrl>
     <PackageIconUrl>http://anystore.bouyeijiang.com</PackageIconUrl>
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
-    <SignAssembly>False</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
     <Version>22.5.6</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>

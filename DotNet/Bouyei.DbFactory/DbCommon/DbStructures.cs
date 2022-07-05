@@ -20,6 +20,11 @@ namespace Bouyei.DbFactory
 
     public class CmdParameter : DbParameter
     {
+        public CmdParameter()
+        {
+            Direction = ParameterDirection.Input;
+        }
+
         public override DbType DbType { get; set; }
 
         public override string ParameterName { get; set; }
@@ -52,7 +57,7 @@ namespace Bouyei.DbFactory
 
         public Parameter(params CmdParameter[] cmdParameters)
         {
-            this.cmdParameters = cmdParameters;
+            this.Columns = cmdParameters;
         }
 
         public Parameter(string CommandText,
@@ -61,7 +66,7 @@ namespace Bouyei.DbFactory
             :base(ExectueTimeout)
         {
             this.CommandText = CommandText;
-            this.cmdParameters = dbProviderParameters;
+            this.Columns = dbProviderParameters;
         }
 
         public Parameter(string format,params object[] args)
@@ -81,7 +86,7 @@ namespace Bouyei.DbFactory
         /// <summary>
         /// 指定脚本的传入参数
         /// </summary>
-        public CmdParameter[] cmdParameters { get; set; }
+        public CmdParameter[] Columns { get; set; }
     }
     
     public class BulkParameter : BaseParameter

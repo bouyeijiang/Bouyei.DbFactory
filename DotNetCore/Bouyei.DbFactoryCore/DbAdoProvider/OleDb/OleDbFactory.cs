@@ -24,5 +24,16 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.OleDb
         {
             return System.Data.OleDb.OleDbFactory.Instance;
         }
+        public static DbParameter GetParameter(CmdParameter param)
+        {
+            var p = new System.Data.OleDb.OleDbParameter(param.ParameterName, param.Value);
+            p.DbType = param.DbType;
+            p.Size = param.Size;
+            p.Direction = param.Direction;
+            p.SourceColumn = param.SourceColumn;
+            p.SourceVersion = param.SourceVersion;
+            p.SourceColumnNullMapping = param.SourceColumnNullMapping;
+            return p;
+        }
     }
 }

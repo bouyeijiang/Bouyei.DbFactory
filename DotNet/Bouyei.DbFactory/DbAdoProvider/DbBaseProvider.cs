@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using OracleDataAccess = Oracle.DataAccess.Client;
 
 namespace Bouyei.DbFactory.DbAdoProvider
 {
@@ -84,9 +81,9 @@ namespace Bouyei.DbFactory.DbAdoProvider
             dbCommand.CommandText = dbParameter.CommandText;
             dbCommand.CommandTimeout = dbParameter.ExecuteTimeout;
 
-            if (dbParameter.cmdParameters != null)
+            if (dbParameter.Columns != null)
             {
-                foreach (CmdParameter param in dbParameter.cmdParameters)
+                foreach (CmdParameter param in dbParameter.Columns)
                 {
                     dbCommand.Parameters.Add(CreateParameter(param));
                 }
@@ -101,41 +98,39 @@ namespace Bouyei.DbFactory.DbAdoProvider
             return dbTransaction;
         }
 
-        protected DbParameter CreateParameter(CmdParameter cmdParameter)
+        protected DbParameter CreateParameter(CmdParameter parameter)
         {
             DbParameter dbParam = null;
 
             switch (FactoryType)
             {
                 case FactoryType.PostgreSQL:
-                    dbParam = new Npgsql.NpgsqlParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    dbParam =Postgresql.NpgFactory.GetParameter(parameter);
                     break;
                 case FactoryType.SQLite:
-                    dbParam = new System.Data.SQLite.SQLiteParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    dbParam = Sqlite.SqliteFactory.GetParameter(parameter);
                     break;
                 case FactoryType.MySql:
-                    dbParam = new MySql.Data.MySqlClient.MySqlParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    dbParam = Mysql.MysqlFactory.GetParameter(parameter);
                     break;
                 case FactoryType.SqlServer:
-                    dbParam = new System.Data.SqlClient.SqlParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    dbParam = SqlServer.SqlFactory.GetParameter(parameter);
                     break;
                 case FactoryType.DB2:
-                    dbParam = new IBM.Data.DB2.DB2Parameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    dbParam = DB2.Db2Factory.GetParameter(parameter);
                     break;
                 case FactoryType.Oracle:
-                    dbParam = new OracleDataAccess.OracleParameter(cmdParameter.ParameterName, cmdParameter.Value);
+                    dbParam = Oracle.OracleFactory.GetParameter(parameter);
+                    break;
+                case FactoryType.OleDb:
+                    dbParam = OleDb.OleDbFactory.GetParameter(parameter);
+                    break;
+                case FactoryType.Odbc:
+                    dbParam = Odbc.OdbcFactory.GetParameter(parameter);
                     break;
                 default:
                     throw new Exception("not supported");
             }
-
-            dbParam.DbType = cmdParameter.DbType;
-            dbParam.Size = cmdParameter.Size;
-            dbParam.Direction = cmdParameter.Direction;
-            dbParam.SourceColumn = cmdParameter.SourceColumn;
-            dbParam.SourceVersion = cmdParameter.SourceVersion;
-            dbParam.SourceColumnNullMapping = cmdParameter.SourceColumnNullMapping;
-
             return dbParam;
         }
 
