@@ -191,14 +191,6 @@ namespace Bouyei.DbFactoryDemo
 
             //var mrt=db.Query(new Parameter("select * from 52"));
 
-
-            var rt = dbProvider.InsertParameter<User>(new User()
-            {
-                score = 11,
-                uage = 12,
-                uname = "dsf"
-            });
-
             //var ext = dbProvider.Connect(connectionString);
 
             //var adort = dbProvider.Query(new Parameter()
