@@ -29,7 +29,7 @@ namespace Bouyei.DbFactoryCore.DbAdoProvider.DB2
         }
         public static DbParameter GetParameter(CmdParameter param)
         {
-            var p = new IBM.Data.DB2.DB2Parameter(param.ParameterName, param.Value);
+            var p = new IBM.Data.DB2.Core.DB2Parameter(param.ParameterName, param.Value);
             p.DbType = param.DbType;
             p.Size = param.Size;
             p.Direction = param.Direction;

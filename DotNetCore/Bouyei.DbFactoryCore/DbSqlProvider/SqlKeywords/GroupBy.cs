@@ -33,5 +33,11 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
             var ColumnNames = GetColumns();
             return string.Format("Group By {0} ", base.ToString(ColumnNames));
         }
+
+        public virtual string ToString<R>(Func<T, R> selector)
+        {
+            var ColumnNames = GetColumns(selector);
+            return string.Format("Group By {0} ", base.ToString(ColumnNames));
+        }
     }
 }

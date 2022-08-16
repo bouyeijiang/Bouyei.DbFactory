@@ -52,5 +52,11 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
 
             return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(columnNames));
         }
+
+        public string ToString<R>(Func<T, R> selector)
+        {
+            var columnNames = GetColumns(selector);
+            return string.Format("Insert Into {0}({1}) ", TableName, base.ToString(columnNames));
+        }
     }
 }

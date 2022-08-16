@@ -61,6 +61,34 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             return items.Where(x => ExistIgnoreAttribute(x) == false);
         }
 
+        protected Dictionary<string, object> GetColumnsKeyValue<T, R>(Func<T, R> selector)
+        {
+            var r = selector.Invoke(Activator.CreateInstance<T>());
+            var pros = r.GetType().GetProperties();
+            Dictionary<string, object> kv = new Dictionary<string, object>();
+
+            foreach (var pro in pros)
+            {
+                var val = pro.GetValue(r, null);
+                if (val == null) continue;
+
+                kv.Add(pro.Name, val);
+            }
+            return kv;
+        }
+
+        protected List<string> GetColumns<T, R>(Func<T, R> selector)
+        {
+            var r = selector.Invoke(Activator.CreateInstance<T>());
+            var pros = r.GetType().GetProperties();
+            List<string> cols = new List<string>(pros.Length);
+            foreach (var pro in pros)
+            {
+                cols.Add(pro.Name);
+            }
+            return cols;
+        }
+
         protected string ParameterFormat(PropertyInfo[] pInfo,object value)
         {
             var pInfos = pInfo;// typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);

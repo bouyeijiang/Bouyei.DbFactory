@@ -43,5 +43,17 @@ namespace Bouyei.DbFactoryCore.DbSqlProvider.SqlKeywords
             }
             return "Set " + string.Join(",", tmp) + " ";
         }
+
+        public string ToString<R>(Func<T, R> selector)
+        {
+            var kv = GetColumnsKeyValue(selector);
+            List<string> tmp = new List<string>(kv.Count());
+
+            foreach (KeyValuePair<string, object> item in kv)
+            {
+                tmp.Add(string.Format("{0}={1}", item.Key, IsDigital(item.Value) ? item.Value : string.Format("'{0}'", item.Value)));
+            }
+            return "Set " + string.Join(",", tmp) + " ";
+        }
     }
 }

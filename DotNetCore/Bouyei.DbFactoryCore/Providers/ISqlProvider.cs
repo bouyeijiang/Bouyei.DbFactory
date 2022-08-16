@@ -16,6 +16,7 @@ namespace Bouyei.DbFactoryCore
         Select Select(params string[] columns);
 
         Select<T> Select<T>() where T : class;
+        Select<T> Select<T, R>(Func<T, R> selector) where T : class;
         Select<T> Select<T>(Max input) where T : class;
 
         Select<T> Select<T>(Min input) where T : class;
@@ -30,7 +31,7 @@ namespace Bouyei.DbFactoryCore
 
         Insert<T> Insert<T>() where T : class;
         Insert<T> Insert<T>(Dictionary<string, object> columns) where T : class;
-
+        Insert<T> Insert<T, R>(Func<T, R> selector) where T : class;
         Update Update(string tableName);
 
         Update<T> Update<T>() where T : class;

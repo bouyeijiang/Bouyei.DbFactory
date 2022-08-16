@@ -13,9 +13,24 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
         private string funString = string.Empty;
         private string topString = string.Empty;
 
-        public Select() : base(typeof(T), AttributeType.IgnoreRead | AttributeType.Ignore)
+        public Select()
+            : base(typeof(T), AttributeType.IgnoreRead | AttributeType.Ignore)
         {
 
+        }
+
+        public virtual string ToString<R>(Func<T, R> selector)
+        {
+            var ColumnNames = GetColumns(selector);
+
+            if (funString != string.Empty)
+            {
+                return string.Format("Select {0}{1} ", funString,base.ToString(ColumnNames));
+            }
+            else
+            {
+                return string.Format("Select {0}{1} ", topString, base.ToString(ColumnNames));
+            }
         }
 
         public Select(Count input) : this()

@@ -82,6 +82,19 @@ namespace Bouyei.DbFactory
             return rt;
         }
 
+        public static DbResult<DataTable, string> Query<T>(this IAdoProvider dbProvider,
+        Func<T,dynamic>selector, Expression<Func<T, bool>> predicate) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+
+            var commandText = sql.Select(selector).From<T>().Where(predicate).SqlString;
+            var rt = dbProvider.Query(new Parameter(commandText));
+            if (rt.IsSuccess() == false)
+                rt.Info = rt.Info + "\r\n" + commandText;
+
+            return rt;
+        }
+
         public static DbResult<List<T>, string>QueryPage<T>(this IAdoProvider dbProvider,
            Expression<Func<T, bool>> predicate, int page = 0, int size = 1) where T : class
         {
@@ -93,6 +106,22 @@ namespace Bouyei.DbFactory
  
             var rt = dbProvider.Query<T>(new Parameter(commandText));
             if (rt.IsSuccess()==false)
+                rt.Info = rt.Info + "\n\r" + commandText;
+
+            return rt;
+        }
+
+        public static DbResult<DataTable, string> QueryPage<T>(this IAdoProvider dbProvider,
+            Func<T,dynamic> selector,Expression<Func<T, bool>> predicate, int page = 0, int size = 1) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+            int offset = page * size;
+
+            string commandText = sql.Select(selector).From<T>()
+                .Where<T>(predicate).Top<T>(dbProvider.FactoryType, offset, size).SqlString;
+
+            var rt = dbProvider.Query(new Parameter(commandText));
+            if (rt.IsSuccess() == false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -110,6 +139,23 @@ namespace Bouyei.DbFactory
 
             var rt = dbProvider.Query<T>(new Parameter(commandText));
             if (rt.IsSuccess()==false)
+                rt.Info = rt.Info + "\n\r" + commandText;
+
+            return rt;
+        }
+
+        public static DbResult<DataTable, string> QueryOrderBy<T>(this IAdoProvider dbProvider,
+    Expression<Func<T, bool>> predicate, Func<T,dynamic> selector,
+    string[] orderColumnNames,SortType sType = SortType.Desc, int page = 0, int size = 1) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+            int offset = page * size;
+
+            string commandText = sql.Select(selector).From<T>()
+                .Where<T>(predicate).OrderBy(sType, orderColumnNames).Top<T>(dbProvider.FactoryType, offset, size).SqlString;
+
+            var rt = dbProvider.Query(new Parameter(commandText));
+            if (rt.IsSuccess() == false)
                 rt.Info = rt.Info + "\n\r" + commandText;
 
             return rt;
@@ -194,7 +240,33 @@ namespace Bouyei.DbFactory
 
             return rt;
         }
- 
+
+        public static DbResult<int, string> Update<T>(this IAdoProvider dbProvider,
+        Func<T, dynamic> selector, Expression<Func<T, bool>> predicate) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+            var commandText = sql.Update<T>().Set(selector).Where(predicate).SqlString;
+
+            var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
+
+            if (rt.IsSuccess() == false)
+                rt.Info = rt.Info + "\r\n" + commandText;
+
+            return rt;
+        }
+
+        public static DbResult<int, string> Insert<T>(this IAdoProvider dbProvider, Func<T,dynamic>selector) where T : class
+        {
+            ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);
+            var commandText = sql.Insert(selector).Values(selector).SqlString;
+            var rt = dbProvider.ExecuteCmd(new Parameter(commandText));
+
+            if (rt.IsSuccess() == false)
+                rt.Info = rt.Info + "\n\r" + commandText;
+
+            return rt;
+        }
+
         public static DbResult<int, string> Insert<T>(this IAdoProvider dbProvider, params T[] values) where T : class
         {
             ISqlProvider sql = SqlProvider.CreateProvider(dbProvider.FactoryType);

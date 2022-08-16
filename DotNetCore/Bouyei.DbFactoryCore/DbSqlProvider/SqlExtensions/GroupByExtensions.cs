@@ -10,7 +10,7 @@ namespace Bouyei.DbFactoryCore
 
     public static class GroupByExtensions
     {
-        public static GroupBy GroupBy(this From from,params string[] columnNames)
+        public static GroupBy GroupBy(this From from, params string[] columnNames)
         {
             GroupBy groupby = new GroupBy(columnNames);
             groupby.SqlString = from.SqlString + groupby.ToString();
@@ -22,6 +22,14 @@ namespace Bouyei.DbFactoryCore
         {
             GroupBy groupby = new GroupBy(columnNames);
             groupby.SqlString = from.SqlString + groupby.ToString();
+
+            return groupby;
+        }
+
+        public static GroupBy<T> GroupBy<T, R>(this From<T> from, Func<T, R> selector)
+        {
+            GroupBy<T> groupby = new GroupBy<T>();
+            groupby.SqlString = from.SqlString + groupby.ToString(selector);
 
             return groupby;
         }
@@ -46,6 +54,13 @@ namespace Bouyei.DbFactoryCore
         {
             GroupBy<T> groupby = new GroupBy<T>();
             groupby.SqlString = where.SqlString + groupby.ToString();
+
+            return groupby;
+        }
+        public static GroupBy<T> GroupBy<T, R>(this Where<T> where, Func<T, R> selector)
+        {
+            GroupBy<T> groupby = new GroupBy<T>();
+            groupby.SqlString = where.SqlString + groupby.ToString(selector);
 
             return groupby;
         }

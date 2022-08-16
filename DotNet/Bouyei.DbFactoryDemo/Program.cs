@@ -20,8 +20,15 @@ namespace Bouyei.DbFactoryDemo
     {
         static void Main(string[] args)
         {
-            SqlDemo();
-            string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=123456;database=postgres;";
+            //SelectDo<User> todo = new SelectDo<User>();
+            //var rt = todo.ToDo(x => new
+            //{
+            //    x.id,
+            //    x.uname
+            //});
+
+            // SqlDemo();
+            string str = "Server=127.0.0.1;Port=5432;Userid=postgres;password=12356;database=postgres;";
             //Bulkcopy(str);
             AdoDemo(str);
             //OrmDemo(str);
@@ -31,8 +38,10 @@ namespace Bouyei.DbFactoryDemo
         {
             //生成简单查询脚本
             ISqlProvider sqlProvider = SqlProvider.CreateProvider(FactoryType.Oracle);
-            var bv=sqlProvider.Select<User>().From().Where(x => x.id == 1).Top(FactoryType.Oracle, 0, 10).SqlString;
+            var bv = sqlProvider.Select<User>().From().Where(x => x.id == 1).Top(FactoryType.Oracle, 0, 10).SqlString;
 
+            //动态对象列映射查询脚本
+            var nsql =sqlProvider.Select<User, dynamic>(x => new { x.uname }).From<User>().SqlString;
 
             Dictionary<string, string> onWhere = new Dictionary<string, string>();
             onWhere.Add("id", "id");
@@ -49,14 +58,14 @@ namespace Bouyei.DbFactoryDemo
             //join 
             string join = sqlProvider.Select<User>().Join<User, User, User>(x => x.id == 1, y => y.id == 2, onWhere).SqlString;
 
-           join=sqlProvider.Select<User>().Join<User, User, User>(x => x.id == 1, y => y.id == 2, (a, b) => a.id == b.id && a.uname==b.uname).SqlString;
+            join = sqlProvider.Select<User>().Join<User, User, User>(x => x.id == 1, y => y.id == 2, (a, b) => a.id == b.id && a.uname == b.uname).SqlString;
 
             //group by 
             string sqlgroupby = sqlProvider.Select<User>().Count().From<User>()
                 .Where(x => x.uage == 1).GroupBy<User>().SqlString;
 
             //in 语法
-            string[] values = new string[] { "a","b"};
+            string[] values = new string[] { "a", "b" };
             var inSql = sqlProvider.Select<User>().From().Where(x => values.Contains(x.uname)).SqlString;
 
             //like 语法 '%bouyei%'
@@ -69,10 +78,10 @@ namespace Bouyei.DbFactoryDemo
             var endSql = sqlProvider.Select<User>().From().Where(x => x.uname.EndsWith("bouyei")).SqlString;
 
             //select count(*) from user where id=1
-            string commandText = sqlProvider.Select<User>(new Count("*")).From<User>().Where(x=>x.id==1).SqlString;
+            string commandText = sqlProvider.Select<User>(new Count("*")).From<User>().Where(x => x.id == 1).SqlString;
 
             //function 
-            string sqlfun = sqlProvider.Select<User>(new Max("age")).From<User>().Where(x=>x.uage>20).SqlString;
+            string sqlfun = sqlProvider.Select<User>(new Max("age")).From<User>().Where(x => x.uage > 20).SqlString;
 
             //order by
             var osql = sqlProvider.Select<User>().From<User>().OrderBy(SortType.Asc, "name").SqlString;
@@ -178,12 +187,12 @@ namespace Bouyei.DbFactoryDemo
             //    Columns = cmdParam
             //});
 
-           var p= dbProvider.InsertParameter<User>(new User()
-            {
-                uname = "bouyei",
-                uage = 33,
-                score = 23.44f
-            });
+            //var p = dbProvider.InsertParameter<User>(new User()
+            //{
+            //    uname = "bouyei",
+            //    uage = 33,
+            //    score = 23.44f
+            //});
 
             //mdb测试
             //var db = AdoProvider.CreateProvider(new ConnectionConfig()
@@ -225,19 +234,26 @@ namespace Bouyei.DbFactoryDemo
             //});
 
             //删除
-           // var drt = dbProvider.Delete<User>(x => x.uname == "bouyei" || x.uage > 30);
+            // var drt = dbProvider.Delete<User>(x => x.uname == "bouyei" || x.uage > 30);
 
             //查询
             string[] orderbyColumn = new string[] { "uname" };
-            var qrt = dbProvider.QueryOrderBy<User>(x => true, orderbyColumn, SortType.Desc, 0, 10);
+            var qrt = dbProvider.QueryOrderBy<User>(x => true,
+                c => new { c.uname, c.id },/*动态列名返回*/
+                orderbyColumn, SortType.Desc, 0, 10);
 
-            //更改
-            var urt = dbProvider.Update<User>(new User()
-            {
-                score = 90,
-                uage = 29,
-                uname = "jiang"
-            }, x => x.id == 1);
+            //插入
+            //var irt= dbProvider.Insert<User>(x => new
+            // {
+            //    uname="hello",
+            //    id=11
+            // });
+
+            //修改
+            //var urt = dbProvider.Update<User>(x => new
+            //{
+            //    uname = "bouyei_hello"
+            //}, w => w.id == 11);
 
         }
 
@@ -264,22 +280,37 @@ namespace Bouyei.DbFactoryDemo
 
                 ////使用mapper修改对象
                 User u = new User() {
-                    uname="b",
-                      id=1
+                    uname = "b",
+                    id = 1
                 };
 
                 User b = new User() {
-                     uname="a",
-                      id=2
+                    uname = "a",
+                    id = 2
                 };
                 EntityMapper.MapTo(u, b, FilterType.Include, "name");
 
-                ormProvider.Update(item,true);
+                ormProvider.Update(item, true);
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
             }
+        }
+    }
+
+    class SelectDo<T>
+    {
+        public IEnumerable<string> ToDo<R>(Func<T, R> selector)
+        {
+            var r=selector.Invoke(Activator.CreateInstance<T>());
+            return r.GetType().GetProperties().Select(x => x.Name);
+        }
+
+        public List<string> FToDo<C,R>(Func<C, R> selector)
+        {
+            var r = selector.Invoke(Activator.CreateInstance<C>());
+            return r.GetType().GetProperties().Select(x => x.Name).ToList();
         }
     }
 

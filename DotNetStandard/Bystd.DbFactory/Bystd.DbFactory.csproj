@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Bystd.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>22.5.6</Version>
+    <Version>22.8.16</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/Bouyei.DbFactory</RepositoryUrl>
     <Authors>bouyei</Authors>
@@ -13,19 +13,19 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>postgresql,oracle,sqlserver,sqlite,db2 etc.</Description>
     <Copyright>bouyei</Copyright>
-    <AssemblyVersion>22.5.6</AssemblyVersion>
-    <FileVersion>22.5.6</FileVersion>
+    <AssemblyVersion>22.8.16</AssemblyVersion>
+    <FileVersion>22.8.16</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IBM.Data.DB2.Core" Version="3.1.0.500" />
-    <PackageReference Include="MySql.Data" Version="8.0.28" />
-    <PackageReference Include="Npgsql" Version="6.0.3" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.50" />
+    <PackageReference Include="IBM.Data.DB2.Core" Version="3.1.0.600" />
+    <PackageReference Include="MySql.Data" Version="8.0.30" />
+    <PackageReference Include="Npgsql" Version="6.0.6" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.70" />
     <PackageReference Include="System.Data.Odbc" Version="6.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
   </ItemGroup>
 
   <ItemGroup>

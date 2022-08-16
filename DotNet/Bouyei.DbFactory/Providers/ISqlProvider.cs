@@ -15,8 +15,14 @@ namespace Bouyei.DbFactory
 
         Select Select(params string[] columns);
 
-        Select<T> Select<T>() where T : class;
+        Insert Insert(string tableName, string[] columnNames);
 
+        Update Update(string tableName);
+
+        Delete Delete();
+
+        Select<T> Select<T,R>(Func<T, R> selector) where T : class;
+        Select<T> Select<T>() where T : class;
         Select<T> Select<T>(Max input) where T : class;
 
         Select<T> Select<T>(Min input) where T : class;
@@ -26,18 +32,11 @@ namespace Bouyei.DbFactory
         Select<T> Select<T>(Count input) where T : class;
 
         Select<T> Select<T>(Sum input) where T : class;
-
-       // Select<T> Select<T,L,R>(Join Select<L> left, Select<R> right,JoinType joinType=JoinType.Left) where T : class;
-
-        Insert Insert(string tableName, string[] columnNames);
-
         Insert<T> Insert<T>() where T : class;
-        Insert<T> Insert<T>(Dictionary<string,object> columns) where T : class;
-
-        Update Update(string tableName);
-
+        Insert<T> Insert<T, R>(Func<T, R> selector) where T : class;
+        Insert<T> Insert<T>(Dictionary<string, object> columns) where T : class;
         Update<T> Update<T>() where T : class;
-
-        Delete Delete();
     }
+
+   
 }

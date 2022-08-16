@@ -23,12 +23,17 @@ namespace Bystd.DbFactory
             set.SqlString = update.SqlString + set.ToString(value);
             return set;
         }
+        public static Set<T> Set<T, R>(this Update<T> update, Func<T, R> selector)
+        {
+            Set<T> set = new Set<T>();
+            set.SqlString = update.SqlString + set.ToString(selector);
+            return set;
+        }
         public static Set Set<T>(this Update<T> update, Dictionary<string, object> setKeyValues)
         {
             Set set = new Set();
             set.SqlString = update.SqlString + set.ToString(setKeyValues);
             return set;
         }
-
     }
 }

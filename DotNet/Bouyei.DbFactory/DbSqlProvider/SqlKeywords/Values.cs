@@ -59,5 +59,17 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
             return "Values (" + string.Join(",", array) + ") ";
         }
 
+        public string ToString<R>(Func<T,R> selector)
+        {
+            var columns = GetColumnsKeyValue(selector);
+            List<string> array = new List<string>(columns.Count);
+            foreach (KeyValuePair<string, object> kv in columns)
+            {
+                if (IsDigital(kv.Value)) array.Add(kv.Value.ToString());
+                else array.Add("'" + kv.Value + "'");
+            }
+
+            return "Values (" + string.Join(",", array) + ") ";
+        }
     }
 }

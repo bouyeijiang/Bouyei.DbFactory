@@ -46,7 +46,7 @@ namespace Bouyei.DbFactory.DbSqlProvider.SqlKeywords
                 string.Format("({0}) ", string.Join(",", ColumnNames)) : ColumnNames[0]);
         }
 
-        public string ToString(T value)
+        public virtual string ToString(T value)
         {
             StringBuilder builder = new StringBuilder(_in);
             var items = GetProperties();

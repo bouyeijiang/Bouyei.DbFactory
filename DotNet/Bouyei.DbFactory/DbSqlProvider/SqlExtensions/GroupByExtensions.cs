@@ -26,6 +26,14 @@ namespace Bouyei.DbFactory
             return groupby;
         }
 
+        public static GroupBy<T> GroupBy<T,R>(this From<T> from, Func<T,R> selector)
+        {
+            GroupBy<T> groupby = new GroupBy<T>();
+            groupby.SqlString = from.SqlString + groupby.ToString(selector);
+
+            return groupby;
+        }
+
         public static GroupBy GroupBy(this Where where,params string[] columnNames)
         {
             GroupBy groupby = new GroupBy(columnNames);
@@ -46,6 +54,13 @@ namespace Bouyei.DbFactory
         {
             GroupBy<T> groupby = new GroupBy<T>();
             groupby.SqlString = where.SqlString + groupby.ToString();
+
+            return groupby;
+        }
+        public static GroupBy<T> GroupBy<T,R>(this Where<T> where,Func<T,R>selector)
+        {
+            GroupBy<T> groupby = new GroupBy<T>();
+            groupby.SqlString = where.SqlString + groupby.ToString(selector);
 
             return groupby;
         }

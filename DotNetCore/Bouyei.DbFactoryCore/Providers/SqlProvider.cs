@@ -36,7 +36,12 @@ namespace Bouyei.DbFactoryCore
             _select.SqlString = _select.ToString();
             return _select;
         }
-
+        public Select<T> Select<T, R>(Func<T, R> selector) where T : class
+        {
+            Select<T> _select = new Select<T>();
+            _select.SqlString = _select.ToString(selector);
+            return _select;
+        }
         public Select<T> Select<T>(Max input) where T : class
         {
             Select<T> _select = new Select<T>(input);
@@ -103,7 +108,13 @@ namespace Bouyei.DbFactoryCore
 
             return insert;
         }
+        public Insert<T> Insert<T, R>(Func<T, R> selector) where T : class
+        {
+            Insert<T> insert = new Insert<T>();
+            insert.SqlString = insert.ToString(selector);
 
+            return insert;
+        }
         public Update Update(string tableName)
         {
             Update up = new Update();

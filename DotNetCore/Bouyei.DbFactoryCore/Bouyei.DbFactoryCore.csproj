@@ -10,11 +10,11 @@
     <PackageReleaseNotes>open source no limit</PackageReleaseNotes>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Bouyei.DbFactory.pfx</AssemblyOriginatorKeyFile>
-    <Version>22.5.6</Version>
+    <Version>22.8.16</Version>
     <PackageProjectUrl>https://gitee.com/bouyei/Bouyei.DbFactory</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/bouyei/Bouyei.DbFactory</RepositoryUrl>
-    <AssemblyVersion>22.5.6</AssemblyVersion>
-    <FileVersion>22.5.6</FileVersion>
+    <AssemblyVersion>22.8.16</AssemblyVersion>
+    <FileVersion>22.8.16</FileVersion>
     <PackageTags>DbFactoryCore</PackageTags>
     <Authors>bouyei</Authors>
     <Company>bouyei</Company>
@@ -29,18 +29,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IBM.Data.DB2.Core" Version="3.1.0.500" />
+    <PackageReference Include="IBM.Data.DB2.Core" Version="3.1.0.600" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
     <PackageReference Include="Mono.Data.OracleClientCore" Version="1.0.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.28" />
-    <PackageReference Include="Npgsql" Version="6.0.3" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.50" />
+    <PackageReference Include="MySql.Data" Version="8.0.30" />
+    <PackageReference Include="Npgsql" Version="6.0.6" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.70" />
     <PackageReference Include="System.Data.Odbc" Version="6.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
   </ItemGroup>
 
 </Project>
