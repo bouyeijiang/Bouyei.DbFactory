@@ -31,11 +31,18 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 	//删除
 	var del= adoProvider.Delete<user>(x => x.uname =="hkj" && (x.sex==Sex.Female ||x.uage==30));
 
-	//插入
-	  var insert = adoProvider.Insert<user>(new user() {
-                 name="bouyei",
-                 age=30
-            });
+	       //动态对象插入
+           var irt= dbProvider.Insert<User>(x => new
+             {
+             uname="hello",
+             id=11
+           });
+
+            //动态对象修改
+         var urt = dbProvider.Update<User>(x => new
+         {
+            uname = "bouyei_hello"
+         }, w => w.id == 11);
 
     //DbParameter 方式插入,字段为二进制blob类型等或其他情况使用
      var p= dbProvider.InsertParameter<User>(new User()
@@ -48,8 +55,11 @@ Bystd.DbFactory	| [![NuGet](https://img.shields.io/nuget/v/Bystd.DbFactory.svg)]
 	//查询 like '%bouyei%'
 	var users = adoProvider.Query<user>(x =>x.name.Contains("bouyei"));
 
-    //分页查询
-	var users = adoProvider.QueryPage<user>(x => 1 == 1,0,10);
+    //分页查询,动态对象返回
+	string[] orderbyColumn = new string[] { "uname" };
+        var qrt = dbProvider.QueryOrderBy<User>(x => true,
+        c => new { c.uname, c.id },/*动态列名返回*/
+        orderbyColumn, SortType.Desc, 0, 10);
 
 	foreach (DataRow dr in rt.Result.Rows)
 	{
